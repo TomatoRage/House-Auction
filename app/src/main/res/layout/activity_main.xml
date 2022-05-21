@@ -1,61 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/house"
     tools:context=".MainActivity">
 
-<ImageView
-    android:layout_width="400dp"
-    android:layout_height="wrap_content"
-    android:id="@+id/autcion_house_logo"
-    android:layout_centerHorizontal="true"
-    android:layout_marginTop="50dp"
-    android:background="@drawable/auction_house_logo"/>
 
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_sign_up"
-        android:layout_width="360dp"
-        android:layout_height="58dp"
-        android:layout_below="@+id/autcion_house_logo"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="140dp"
-        android:text="SIGN UP"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        app:cornerRadius="16dp"
-        android:backgroundTint="#D8428CE7"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_log_in"
-        android:layout_width="360dp"
-        android:layout_height="58dp"
-        android:layout_below="@+id/btn_sign_up"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:text="LOG IN"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        app:cornerRadius="16dp"
-        android:backgroundTint="#e7bd42"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:layout_width="115dp"
-        android:layout_height="110dp"
-        android:background="@drawable/technion2"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        />
-
-
-
-
-</RelativeLayout>
+</FrameLayout>
