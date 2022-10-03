@@ -27,4 +27,7 @@
     <string name="address">Address</string>
     <string name="email">Email</string>
     <string name="user_type">User Type</string>
+    <string name="example_com">example@.com</string>
+    <string name="nickname">Nickname</string>
+    <string name="log_out">Log Out</string>
 </resources>
