@@ -11,22 +11,22 @@ enum class UserType(val Type:Int){
 
 open class User {
 
-    protected var Name:String = ""
-    protected var Email:String = ""
-    protected var Type:UserType = UserType.Customer
-    protected var PhoneNumber:String = ""
-    protected var Location:String = ""
-    protected var UserID:String? = null
+    protected lateinit var Name:String
+    protected lateinit var Email:String
+    protected lateinit var Type:UserType
+    protected lateinit var PhoneNumber:String
+    protected lateinit var Location:String
+    protected lateinit var UserID:String
 
 
-    constructor(Data: HashMap<String,Any>){
+    constructor(Data: MutableMap<String,Any>?){
         SetData(Data)
     }
 
     constructor()
 
-    fun SetData(Data: HashMap<String,Any>){
-        Name = Data[Constants.USER_NAME] as String
+    fun SetData(Data: MutableMap<String,Any>?){
+        Name = Data!![Constants.USER_NAME] as String
         Email = Data[Constants.USER_EMAIL] as String
         Type = UserType.getByValue( Data[Constants.USER_TYPE] as Int)
         PhoneNumber = Data[Constants.USER_PHONE] as String
