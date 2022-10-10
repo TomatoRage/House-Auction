@@ -26,7 +26,7 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import com.example.auctionhouseapp.Utils.Extensions
+import com.example.auctionhouseapp.Utils.Constants
 
 
 class SignUpActivity : AppCompatActivity() {
@@ -326,7 +326,7 @@ class SignUpActivity : AppCompatActivity() {
                         startActivity(intent)
                         finish()
                     } else {
-                        val intent = Intent(applicationContext, MainActivity::class.java)
+                        val intent = Intent(applicationContext, AuctionDaysListFragment::class.java)
                         startActivity(intent)
                         finish()
                     }

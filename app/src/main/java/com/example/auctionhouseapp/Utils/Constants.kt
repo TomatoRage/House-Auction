@@ -1,4 +1,4 @@
-package com.example.auctionhouseapp
+package com.example.auctionhouseapp.Utils
 
 /** This file contains global constants to be used in the project i.e. Data base fields**/
 

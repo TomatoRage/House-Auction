@@ -1,9 +1,9 @@
 package com.example.auctionhouseapp
 
 import android.util.Log
+import com.example.auctionhouseapp.Utils.Constants
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlin.reflect.KFunction0
 
 class AuctionHouse: User {
 
@@ -60,10 +60,6 @@ class AuctionHouse: User {
             }.addOnFailureListener { execption ->
                 Log.d(TAG, "user data read failed with", execption)
             }
-
-       /* db.collection(Constants.HOUSES_COLLECTION)
-            .document(UserID)
-            .collection(Constants.SALES_DAY_COLLECTION)*/
     }
 
     private fun SetupHoduseData(Data:MutableMap<String,Any>?){

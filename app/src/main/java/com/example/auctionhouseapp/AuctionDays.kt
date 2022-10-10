@@ -1,5 +1,6 @@
 package com.example.auctionhouseapp
 
+import com.example.auctionhouseapp.Utils.Constants
 import com.google.firebase.Timestamp
 
 class AuctionDays {
