@@ -26,7 +26,9 @@ open class User {
     constructor()
 
     fun SetData(Data: MutableMap<String,Any>?){
-        Name = Data!![Constants.USER_NAME] as String
+        if(Data == null)
+            return
+        Name = Data[Constants.USER_NAME] as String
         Email = Data[Constants.USER_EMAIL] as String
         Type = UserType.getByValue( (Data[Constants.USER_TYPE] as Long).toInt())
         PhoneNumber = Data[Constants.USER_PHONE] as String

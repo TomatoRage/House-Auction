@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity(), FragmentNavigation{
         val currenUser = fAuth.currentUser
         if(currenUser != null) {
             supportFragmentManager.beginTransaction()
-                .add(R.id.house,AuctionHouseListFragment()).addToBackStack(null)
+                .add(R.id.house,AuctionDaysListFragment()).addToBackStack(null)
                 .commit()
         } else {
             supportFragmentManager.beginTransaction()
