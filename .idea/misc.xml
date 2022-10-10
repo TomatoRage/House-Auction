@@ -3,14 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="../../../../layout/custom_preview.xml" value="0.11810551558752998" />
         <entry key="..\:/Users/odaib/StudioProjects/House-auction/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.5065" />
+        <entry key="..\:/Users/odaib/StudioProjects/House-auction/app/src/main/res/drawable/btn_bg.xml" value="0.367" />
+        <entry key="..\:/Users/odaib/StudioProjects/House-auction/app/src/main/res/drawable/btn_bg2.xml" value="0.367" />
+        <entry key="..\:/Users/odaib/StudioProjects/House-auction/app/src/main/res/drawable/edit_text_bg.xml" value="0.367" />
+        <entry key="..\:/Users/odaib/StudioProjects/House-auction/app/src/main/res/drawable/ic_check.xml" value="0.367" />
         <entry key="..\:/Users/odaib/StudioProjects/House-auction/app/src/main/res/drawable/ic_launcher_background.xml" value="0.5065" />
         <entry key="..\:/Users/odaib/StudioProjects/House-auction/app/src/main/res/drawable/ripple.xml" value="0.5065" />
         <entry key="..\:/Users/odaib/StudioProjects/House-auction/app/src/main/res/drawable/rounded_shape.xml" value="0.5065" />
+        <entry key="..\:/Users/odaib/StudioProjects/House-auction/app/src/main/res/layout/activity_customer.xml" value="0.31197916666666664" />
         <entry key="..\:/Users/odaib/StudioProjects/House-auction/app/src/main/res/layout/activity_log_in.xml" value="0.4578125" />
+        <entry key="..\:/Users/odaib/StudioProjects/House-auction/app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="..\:/Users/odaib/StudioProjects/House-auction/app/src/main/res/layout/activity_main.xml" value="0.42481884057971014" />
-        <entry key="..\:/Users/odaib/StudioProjects/House-auction/app/src/main/res/layout/activity_sign_up.xml" value="0.22" />
+        <entry key="..\:/Users/odaib/StudioProjects/House-auction/app/src/main/res/layout/activity_sign_up.xml" value="0.33" />
+        <entry key="..\:/Users/odaib/StudioProjects/House-auction/app/src/main/res/layout/activity_splash_screen.xml" value="0.2601851851851852" />
         <entry key="..\:/Users/odaib/StudioProjects/House-auction/app/src/main/res/layout/content_main.xml" value="0.5541666666666667" />
         <entry key="..\:/Users/odaib/StudioProjects/House-auction/app/src/main/res/layout/custom_butt_main.xml" value="0.5541666666666667" />
         <entry key="..\:/Users/odaib/StudioProjects/House-auction/app/src/main/res/layout/fragment_auction_house_list.xml" value="0.31197916666666664" />
@@ -18,21 +24,7 @@
         <entry key="..\:/Users/odaib/StudioProjects/House-auction/app/src/main/res/layout/fragment_login.xml" value="0.25" />
         <entry key="..\:/Users/odaib/StudioProjects/House-auction/app/src/main/res/layout/fragment_register.xml" value="0.28402366863905326" />
         <entry key="..\:/Users/odaib/StudioProjects/House-auction/app/src/main/res/layout/fragment_second.xml" value="0.5541666666666667" />
-        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1365" />
-        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1365" />
-        <entry key="app/src/main/res/layout/activity_log_in.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1800460815429688" />
-        <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.1497161865234378" />
-        <entry key="app/src/main/res/layout/content_main.xml" value="0.13333333333333333" />
-        <entry key="app/src/main/res/layout/fragment_auction_days.xml" value="0.2921195652173913" />
-        <entry key="app/src/main/res/layout/fragment_auction_house_list.xml" value="0.21324889270971856" />
-        <entry key="app/src/main/res/layout/fragment_first.xml" value="0.5986389160156249" />
-        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.15070921985815602" />
-        <entry key="app/src/main/res/layout/fragment_register.xml" value="0.15070921985815602" />
-        <entry key="app/src/main/res/layout/fragment_second.xml" value="0.13333333333333333" />
-        <entry key="app/src/main/res/menu/menu_main.xml" value="0.19807179768880212" />
-        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1365" />
-        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1365" />
+        <entry key="..\:/Users/odaib/StudioProjects/House-auction/app/src/main/res/layout/signup_activity.xml" value="0.5541666666666667" />
       </map>
     </option>
   </component>

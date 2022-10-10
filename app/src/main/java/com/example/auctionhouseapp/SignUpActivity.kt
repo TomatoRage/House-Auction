@@ -2,152 +2,359 @@ package com.example.auctionhouseapp
 
 import android.app.ProgressDialog
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+
+import android.text.Editable
+import android.text.TextWatcher
+
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 
-class SignupActivity : AppCompatActivity() {
+import androidx.core.content.ContextCompat
+import com.example.auctionhouseapp.Utils.Extensions.toast
 
-    private var _nameText: EditText? = null
-    private var _addressText: EditText? = null
-    private var _emailText: EditText? = null
-    private var _mobileText: EditText? = null
-    private var _passwordText: EditText? = null
-    private var _reEnterPasswordText: EditText? = null
-    private var _signupButton: Button? = null
-    private var _loginLink: TextView? = null
+import com.google.firebase.auth.FirebaseAuth
 
-    public override fun onCreate(savedInstanceState: Bundle?) {
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import com.example.auctionhouseapp.Utils.Extensions
+
+
+class SignUpActivity : AppCompatActivity() {
+
+
+    private lateinit var fullName: EditText
+    private lateinit var emailEt: EditText
+    private lateinit var passEt: EditText
+    private lateinit var CpassEt: EditText
+    private lateinit var phoneNoEt: EditText
+    private lateinit var addressEt: EditText
+    private var userType = -1
+
+    private val userCollectionRef = Firebase.firestore.collection("Users")
+    val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+
+    lateinit var progressDialog:ProgressDialog
+
+    private val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
-        _nameText = findViewById<EditText>(R.id.user_name)
-        _addressText = findViewById<EditText>(R.id.input_address)
-        _emailText = findViewById<EditText>(R.id.input_email)
-        _mobileText = findViewById<EditText>(R.id.input_mobile)
-        _passwordText = findViewById<EditText>(R.id.input_password)
-        _reEnterPasswordText = findViewById<EditText>(R.id.input_reEnterPassword)
+        val signUpBtn = findViewById<Button>(R.id.signUpBtn_signUpPage)
+        fullName = findViewById(R.id.nameEt_signUpPage)
+        emailEt = findViewById(R.id.emailEt_signUpPage)
+        passEt = findViewById(R.id.PassEt_signUpPage)
+        CpassEt = findViewById(R.id.cPassEt_signUpPage)
+        phoneNoEt = findViewById(R.id.phoneNoEt_signUpPage)
+        addressEt = findViewById(R.id.addressEt_signUpPage)
+        val radioGroup = findViewById<RadioButton>(R.id.radioGroup) as RadioGroup
+        val signInTv = findViewById<TextView>(R.id.signInTv_signUpPage)
 
-        _signupButton = findViewById(R.id.btn_signup) as Button
-        _loginLink = findViewById(R.id.link_login) as TextView
+        radioGroup.setOnCheckedChangeListener { group, ID ->
+            when (ID) {
+                R.id.customer -> {
+                    userType = 0
+                }
+                R.id.auction_house -> {
+                    userType = 1
+                }
+            }
+        }
 
-        _signupButton!!.setOnClickListener { signup() }
 
-        _loginLink!!.setOnClickListener {
-            // Finish the registration screen and return to the Login activity
-            val intent = Intent(applicationContext, LogInActivity::class.java)
+        progressDialog = ProgressDialog(this)
+
+        textAutoCheck()
+
+        signInTv.setOnClickListener {
+            intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
-            finish()
+        }
+
+
+        signUpBtn.setOnClickListener {
+            checkInput()
+
         }
     }
 
-    private fun signup() {
-        Log.d(TAG, "Signup")
+    private fun textAutoCheck() {
 
-        if (!validate()) {
-            onSignupFailed()
+        fullName.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {
+                if (fullName.text.isEmpty()){
+                    fullName.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+
+                }
+                else if (fullName.text.length >= 4){
+                    fullName.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+
+                fullName.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+                if (count >= 4){
+                    fullName.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                }
+            }
+        })
+
+        emailEt.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {
+                if (emailEt.text.isEmpty()){
+                    emailEt.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+
+                }
+                else if (emailEt.text.matches(emailPattern.toRegex())) {
+                    emailEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+
+                emailEt.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+                if (emailEt.text.matches(emailPattern.toRegex())) {
+                    emailEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                }
+            }
+        })
+
+        passEt.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {
+                if (passEt.text.isEmpty()){
+                    passEt.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+
+                }
+                else if (passEt.text.length > 5){
+                    passEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+
+                passEt.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+                if (count > 5){
+                    passEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                }
+            }
+        })
+
+        CpassEt.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {
+                if (CpassEt.text.isEmpty()){
+                    CpassEt.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+
+                }
+                else if (CpassEt.text.toString() == passEt.text.toString()){
+                    CpassEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+
+                CpassEt.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+                if (CpassEt.text.toString() == passEt.text.toString()){
+                    CpassEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                }
+            }
+        })
+
+        phoneNoEt.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {
+                if (phoneNoEt.text.isEmpty()){
+                    phoneNoEt.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+
+                }
+                else if (phoneNoEt.text.length == 10){
+                    fullName.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+
+                phoneNoEt.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+                if (count >= 4){
+                    phoneNoEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                }
+            }
+        })
+
+        addressEt.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {
+                if (addressEt.text.isEmpty()){
+                    addressEt.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+
+                }
+                else if (addressEt.text.length >= 4){
+                    addressEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+
+                addressEt.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+                if (count >= 4){
+                    addressEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                }
+            }
+        })
+
+    }
+
+    private fun checkInput() {
+        if (fullName.text.isEmpty()){
+            toast("Name can't be empty!")
+            return
+        }
+        if (emailEt.text.isEmpty()){
+            toast("Email can't be empty!")
             return
         }
 
-        _signupButton!!.isEnabled = false
+        if (!emailEt.text.matches(emailPattern.toRegex())) {
+            toast("Enter Valid Email")
+            return
+        }
+        if(passEt.text.isEmpty()){
+            toast("Password can't be empty!")
+            return
+        }
+        if (passEt.text.toString() != CpassEt.text.toString()){
+            toast("Password not Match")
+            return
+        }
+        if (phoneNoEt.text.isEmpty()){
+            toast("Phone No' can't be empty!")
+            return
+        }
+        if (addressEt.text.isEmpty()){
+            toast("Address can't be empty!")
+            return
+        }
+        if(userType == -1) {
+            toast("Please Select Any One!")
+            return
+        }
 
-        val progressDialog = ProgressDialog(this@SignupActivity,
-            R.style.ThemeOverlay_AppCompat_Dark)
-        progressDialog.isIndeterminate = true
-        progressDialog.setMessage("Creating Account...")
+        signIn()
+    }
+
+
+
+    private fun signIn() {
+
+        progressDialog.setTitle("Please Wait")
+        progressDialog.setMessage("Creating Account")
         progressDialog.show()
 
-        val name = _nameText!!.text.toString()
-        val address = _addressText!!.text.toString()
-        val email = _emailText!!.text.toString()
-        val mobile = _mobileText!!.text.toString()
-        val password = _passwordText!!.text.toString()
-        val reEnterPassword = _reEnterPasswordText!!.text.toString()
+        val emailV: String = emailEt.text.toString()
+        val passV: String = passEt.text.toString()
+        val fullname : String = fullName.text.toString()
+        val address : String = addressEt.text.toString()
+        val phone : String = phoneNoEt.text.toString()
 
-        // TODO: Implement your own signup logic here.
 
-        android.os.Handler().postDelayed(
-            {
-                // On complete call either onSignupSuccess or onSignupFailed
-                // depending on success
-                onSignupSuccess()
-                // onSignupFailed();
+        /*create a user*/
+        firebaseAuth.createUserWithEmailAndPassword(emailV,passV)
+
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    progressDialog.setMessage("Save User Data")
+
+                    val userHashMap : HashMap<String, Any>
+                            = HashMap<String, Any> ()
+                    userHashMap.put(Constants.USER_NAME,fullname)
+                    userHashMap.put(Constants.USER_EMAIL,emailV)
+                    userHashMap.put(Constants.USER_TYPE,userType)
+                    userHashMap.put(Constants.USER_PHONE,phone)
+                    userHashMap.put(Constants.USER_ADDR,address)
+                    userHashMap.put(Constants.USERID,firebaseAuth.uid.toString())
+
+                    val user = User(userHashMap)
+                    storeUserData(user)
+
+                    if (userType == 0) {
+                        val intent = Intent(applicationContext, CustomerActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        val intent = Intent(applicationContext, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+
+                } else {
+                    progressDialog.dismiss()
+                    toast("failed to Authenticate !")
+                }
+            }
+
+    }
+
+    private fun storeUserData(user: User) = CoroutineScope(Dispatchers.IO).launch {
+        try {
+
+            userCollectionRef.document(firebaseAuth.uid.toString()).set(user).await()
+            withContext(Dispatchers.Main){
+                toast("Data Saved")
                 progressDialog.dismiss()
-            }, 3000)
+            }
+
+        }catch (e:Exception){
+            withContext(Dispatchers.Main){
+                toast(""+ e.message.toString())
+                progressDialog.dismiss()
+            }
+        }
     }
 
 
-    fun onSignupSuccess() {
-        _signupButton!!.isEnabled = true
-        startActivity(Intent(this, MainActivity::class.java))
-        finish()
-    }
-
-    fun onSignupFailed() {
-        Toast.makeText(baseContext, "Login failed", Toast.LENGTH_LONG).show()
-        _signupButton!!.isEnabled = true
-    }
-
-    fun validate(): Boolean {
-        var valid = true
-        val name = _nameText!!.text.toString()
-        val address = _addressText!!.text.toString()
-        val email = _emailText!!.text.toString()
-        val mobile = _mobileText!!.text.toString()
-        val password = _passwordText!!.text.toString()
-        val reEnterPassword = _reEnterPasswordText!!.text.toString()
-
-        if (name.isEmpty() || name.length < 3) {
-            _nameText!!.error = "at least 3 characters"
-            valid = false
-        } else {
-            _nameText!!.error = null
-        }
-
-        if (address.isEmpty()) {
-            _addressText!!.error = "Enter Valid Address"
-            valid = false
-        } else {
-            _addressText!!.error = null
-        }
-
-
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText!!.error = "enter a valid email address"
-            valid = false
-        } else {
-            _emailText!!.error = null
-        }
-
-        if (mobile.isEmpty() || mobile.length != 10) {
-            _mobileText!!.error = "Enter Valid Mobile Number"
-            valid = false
-        } else {
-            _mobileText!!.error = null
-        }
-
-        if (password.isEmpty() || password.length < 4 || password.length > 10) {
-            _passwordText!!.error = "between 4 and 10 alphanumeric characters"
-            valid = false
-        } else {
-            _passwordText!!.error = null
-        }
-
-        if (reEnterPassword.isEmpty() || reEnterPassword.length < 4 || reEnterPassword.length > 10 || reEnterPassword != password) {
-            _reEnterPasswordText!!.error = "Password Do not match"
-            valid = false
-        } else {
-            _reEnterPasswordText!!.error = null
-        }
-
-        return valid
-    }
-
-    companion object {
-        private val TAG = "SignupActivity"
-    }
 }

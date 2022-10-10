@@ -28,8 +28,6 @@ class MainActivity : AppCompatActivity(), FragmentNavigation{
                 .add(R.id.house,LoginFragment())
                 .commit()
         }
-
-
     }
 
     override fun navigateFrag(fragment: Fragment, addToStack: Boolean) {

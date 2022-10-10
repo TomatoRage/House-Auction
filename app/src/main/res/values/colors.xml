@@ -17,6 +17,7 @@
     <color name="lavenderblush">#FFF0F5</color>
     <color name="papayawhip">#FFEFD5</color>
     <color name="blanchedalmond">#FFEBCD</color>
+    <color name="black">#000000</color>
     <color name="mistyrose">#FFE4E1</color>
     <color name="bisque">#FFE4C4</color>
     <color name="moccasin">#FFE4B5</color>
@@ -145,5 +146,12 @@
     <color name="mediumblue">#0000CD</color>
     <color name="darkblue">#00008B</color>
     <color name="navy">#000080</color>
-    <color name="black">#000000</color>
+    <color name="primary">#DB3022</color>
+    <color name="background">#F9F9F9</color>
+    <color name="backgroundAd">#FFFFFFFF</color>
+    <color name="error">#F01F0E</color>
+    <color name="success">#2AA952</color>
+    <color name="sale">#DB3022</color>
+    <color name="mainText">#222222</color>
+    <color name="textAd">#9B9B9B</color>
 </resources>

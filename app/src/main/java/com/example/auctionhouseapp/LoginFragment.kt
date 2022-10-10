@@ -40,7 +40,6 @@ class LoginFragment : Fragment() {
         view.findViewById<Button>(R.id.btn_register).setOnClickListener {
             var navRegister = activity as FragmentNavigation
             navRegister.navigateFrag(RegisterFragment(),false)
-
         }
         view.findViewById<Button>(R.id.btn_login).setOnClickListener {
             validateForm()
@@ -62,11 +61,10 @@ class LoginFragment : Fragment() {
                     btn_login.isEnabled = true
                     btn_login.alpha = 1.0f
                     Toast.makeText(context,task.exception?.message,Toast.LENGTH_SHORT).show()
-
                 }
         }
-
     }
+
     private fun validateForm() {
         val icon = AppCompatResources.getDrawable(requireContext(),R.drawable.warning_icon)
         when{
@@ -76,7 +74,6 @@ class LoginFragment : Fragment() {
             TextUtils.isEmpty(password.text.toString().trim())->{
                 password.setError("Please Enter Password")
             }
-
             username.text.toString().isNotEmpty() &&
                     password.text.toString().isNotEmpty() ->
             {
@@ -87,9 +84,8 @@ class LoginFragment : Fragment() {
                 }
             }
         }
-
-
     }
+
 
 
 }

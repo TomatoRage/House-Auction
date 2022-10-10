@@ -53,7 +53,6 @@ class RegisterFragment : Fragment() {
         view.findViewById<Button>(R.id.btn_login_reg).setOnClickListener {
             val navRegister = activity as FragmentNavigation
             navRegister.navigateFrag(LoginFragment(),false)
-
         }
         view.findViewById<Button>(R.id.btn_register_reg).setOnClickListener {
             validateEmptyForm()
@@ -76,10 +75,8 @@ class RegisterFragment : Fragment() {
                     Toast.makeText(context,task.exception?.message,Toast.LENGTH_SHORT).show()
                 }
         }
-
-
-
     }
+
     private fun validateEmptyForm() {
         val icon = AppCompatResources.getDrawable(requireContext(),R.drawable.warning_icon)
         when{
