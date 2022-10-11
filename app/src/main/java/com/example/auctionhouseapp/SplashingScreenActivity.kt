@@ -39,7 +39,7 @@ class SplashingScreenActivity : AppCompatActivity() {
                             startActivity(intent)
                             finish()
                         } else {
-                            val intent = Intent(applicationContext, CustomerActivity::class.java) // TODO: UPDATE ACTIVITY
+                            val intent = Intent(applicationContext, HouseActivity::class.java)
                             startActivity(intent)
                             finish()
                         }

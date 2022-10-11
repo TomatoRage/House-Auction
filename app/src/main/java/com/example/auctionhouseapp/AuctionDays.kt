@@ -24,7 +24,7 @@ class AuctionDays {
             return
         Title = Data[Constants.DAY_NAME] as String
         StartDate = Data[Constants.DAY_START_DATE] as Timestamp
-        Commission = (Data[Constants.DAY_COMMISSION] as Long).toDouble()
+        Commission = Data[Constants.DAY_COMMISSION] as Double
         LockBefore = (Data[Constants.DAY_LOCK_TIME] as Long).toInt()
         ParticipantsNum = (Data[Constants.DAY_NUM_OF_PARTICIPANTS] as Long).toInt()
         Earnings = (Data[Constants.DAY_EARNINGS] as Long).toInt()

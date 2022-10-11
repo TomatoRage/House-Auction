@@ -326,7 +326,7 @@ class SignUpActivity : AppCompatActivity() {
                         startActivity(intent)
                         finish()
                     } else {
-                        val intent = Intent(applicationContext, AuctionDaysListFragment::class.java)
+                        val intent = Intent(applicationContext, HouseActivity::class.java)
                         startActivity(intent)
                         finish()
                     }

@@ -2,8 +2,14 @@ package com.example.auctionhouseapp
 
 import android.util.Log
 import com.example.auctionhouseapp.Utils.Constants
+import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.google.type.Date
+import java.lang.Exception
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AuctionHouse: User {
 
@@ -23,42 +29,85 @@ class AuctionHouse: User {
 
     fun FetchHouseData(UserID:String, ToPerform:()->Unit){
 
-        val db = FirebaseFirestore.getInstance()
         var ReadFirstData = false
         var ReadSecondData = false
+        var ReadThirdData = false
+        var TodayDate = Timestamp(Date())
 
-        db.collection(Constants.USER_COLLECTION).document(UserID).get()
+            FirebaseUtils.userCollectionRef.document(UserID).get()
             .addOnSuccessListener { doc ->
                 if(doc != null){
                     SetData(doc.data)
-                    if(ReadFirstData && ReadSecondData){
+                    if(ReadFirstData && ReadSecondData && ReadThirdData)
                         ToPerform()
-                    }else if(ReadFirstData){
+                    else if(ReadFirstData && ReadSecondData)
+                         ReadThirdData = true
+                    else if(ReadFirstData)
                         ReadSecondData = true
-                    }else {
+                    else
                         ReadFirstData = true
-                    }
                 }
 
             }.addOnFailureListener { execption ->
                 Log.d(TAG, "user data read failed with", execption)
             }
 
-        db.collection(Constants.HOUSES_COLLECTION).document(UserID).get()
-            .addOnSuccessListener { doc ->
+        FirebaseUtils.houseCollectionRef.document(UserID).get()
+            .addOnSuccessListener {   doc ->
                 if(doc != null){
                     SetupHoduseData(doc.data)
-                    if(ReadFirstData && ReadSecondData){
+                    if(ReadFirstData && ReadSecondData && ReadThirdData)
                         ToPerform()
-                    }else if(ReadFirstData){
+                    else if(ReadFirstData && ReadSecondData)
+                        ReadThirdData = true
+                    else if(ReadFirstData)
                         ReadSecondData = true
-                    }else {
+                    else
                         ReadFirstData = true
-                    }
                 }
 
-            }.addOnFailureListener { execption ->
-                Log.d(TAG, "user data read failed with", execption)
+            }.addOnFailureListener { exception ->
+                Log.d(TAG, "user data read failed with", exception)
+            }
+
+        FirebaseUtils.houseCollectionRef.document(UserID)
+            .collection(Constants.SALES_DAY_COLLECTION)
+            .whereLessThanOrEqualTo(Constants.DAY_START_DATE,TodayDate).limit(3)
+            .orderBy(Constants.DAY_START_DATE,Query.Direction.DESCENDING).get()
+            .addOnSuccessListener { documents ->
+                for(doc in documents)
+                    this.Days.add(AuctionDays(doc.data))
+                if(ReadFirstData && ReadSecondData && ReadThirdData)
+                    ToPerform()
+                else if(ReadFirstData && ReadSecondData)
+                    ReadThirdData = true
+                else if(ReadFirstData)
+                    ReadSecondData = true
+                else
+                    ReadFirstData = true
+            }
+            .addOnFailureListener{ exception ->
+                Log.d(TAG, "day data read failed with", exception)
+            }
+
+        FirebaseUtils.houseCollectionRef.document(UserID)
+            .collection(Constants.SALES_DAY_COLLECTION)
+            .whereGreaterThan(Constants.DAY_START_DATE,TodayDate)
+            .orderBy(Constants.DAY_START_DATE).get()
+            .addOnSuccessListener { documents ->
+                for(doc in documents)
+                    this.Days.add(AuctionDays(doc.data))
+                if(ReadFirstData && ReadSecondData && ReadThirdData)
+                    ToPerform()
+                else if(ReadFirstData && ReadSecondData)
+                    ReadThirdData = true
+                else if(ReadFirstData)
+                    ReadSecondData = true
+                else
+                    ReadFirstData = true
+            }
+            .addOnFailureListener{ exception ->
+                Log.d(TAG, "day data read failed with", exception)
             }
     }
 
