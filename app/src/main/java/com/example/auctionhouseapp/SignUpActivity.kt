@@ -7,6 +7,7 @@ import android.os.Bundle
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 
 import android.widget.Button
 import android.widget.EditText
@@ -27,6 +28,7 @@ import kotlinx.coroutines.withContext
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.example.auctionhouseapp.Utils.Constants
+import com.example.auctionhouseapp.Utils.FirebaseUtils.firebaseUser
 
 
 class SignUpActivity : AppCompatActivity() {
@@ -203,7 +205,7 @@ class SignUpActivity : AppCompatActivity() {
 
                 }
                 else if (phoneNoEt.text.length == 10){
-                    fullName.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    phoneNoEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
                 }
             }
 
@@ -300,7 +302,7 @@ class SignUpActivity : AppCompatActivity() {
         val fullname : String = fullName.text.toString()
         val address : String = addressEt.text.toString()
         val phone : String = phoneNoEt.text.toString()
-
+        Log.i("-E- odaie",emailV + "*" +passV)
 
         /*create a user*/
         firebaseAuth.createUserWithEmailAndPassword(emailV,passV)
@@ -311,15 +313,13 @@ class SignUpActivity : AppCompatActivity() {
 
                     val userHashMap : HashMap<String, Any>
                             = HashMap<String, Any> ()
-                    userHashMap.put(Constants.USER_NAME,fullname)
-                    userHashMap.put(Constants.USER_EMAIL,emailV)
-                    userHashMap.put(Constants.USER_TYPE,userType)
-                    userHashMap.put(Constants.USER_PHONE,phone)
-                    userHashMap.put(Constants.USER_ADDR,address)
-                    userHashMap.put(Constants.USERID,firebaseAuth.uid.toString())
-
-                    val user = User(userHashMap)
-                    storeUserData(user)
+                    userHashMap[Constants.USER_NAME] = fullname
+                    userHashMap[Constants.USER_EMAIL] = emailV
+                    userHashMap[Constants.USER_TYPE] = userType
+                    userHashMap[Constants.USER_PHONE] = phone
+                    userHashMap[Constants.USER_ADDR] = address
+                    userHashMap[Constants.USERID] = firebaseAuth.uid.toString()
+                    storeUserData(userHashMap)
 
                     if (userType == 0) {
                         val intent = Intent(applicationContext, CustomerActivity::class.java)
@@ -332,6 +332,7 @@ class SignUpActivity : AppCompatActivity() {
                     }
 
                 } else {
+                    // check if user document is no
                     progressDialog.dismiss()
                     toast("failed to Authenticate !")
                 }
@@ -339,20 +340,20 @@ class SignUpActivity : AppCompatActivity() {
 
     }
 
-    private fun storeUserData(user: User) = CoroutineScope(Dispatchers.IO).launch {
+    private fun storeUserData(user: HashMap<String, Any>) {
         try {
-
-            userCollectionRef.document(firebaseAuth.uid.toString()).set(user).await()
-            withContext(Dispatchers.Main){
-                toast("Data Saved")
-                progressDialog.dismiss()
+            firebaseUser?.let { Log.d("tage" , it.uid) }
+            firebaseUser?.let {
+                userCollectionRef.document(it.uid).set(user)
+                    .addOnSuccessListener {
+                        toast("Data Saved")
+                        progressDialog.dismiss()
+                    }
+                    .addOnFailureListener { toast("Sign Up Failed !!") }
             }
-
-        }catch (e:Exception){
-            withContext(Dispatchers.Main){
+        } catch (e:Exception){
                 toast(""+ e.message.toString())
                 progressDialog.dismiss()
-            }
         }
     }
 
