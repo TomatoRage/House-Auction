@@ -173,7 +173,7 @@ class LoginActivity : AppCompatActivity() {
             }
     }
 
-    private fun checkUser(){
+    private fun checkUser() {
         firebaseUser?.let {
             FirebaseUtils.userCollectionRef
                 .document(it.uid)
