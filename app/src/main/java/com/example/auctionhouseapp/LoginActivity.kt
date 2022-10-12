@@ -16,10 +16,8 @@ import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.Extensions.toast
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.example.auctionhouseapp.Utils.FirebaseUtils.firebaseAuth
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
+import com.example.auctionhouseapp.Utils.FirebaseUtils.firebaseUser
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -69,8 +67,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun textAutoCheck() {
-
-
 
         emailEt.addTextChangedListener(object : TextWatcher {
 
@@ -129,8 +125,6 @@ class LoginActivity : AppCompatActivity() {
             }
         })
 
-
-
     }
 
     private fun checkInput() {
@@ -179,28 +173,31 @@ class LoginActivity : AppCompatActivity() {
             }
     }
 
-    private fun checkUser() = CoroutineScope(Dispatchers.IO).launch {
-        try {
-            val querySnapshot = FirebaseUtils.firebaseUser?.let {
-                FirebaseUtils.userCollectionRef
-                    .document(it.uid)
-                    .get().await()
-            }
-
-            val userType:Int =  querySnapshot?.data?.get(Constants.USER_TYPE).toString().toInt()
-            if (userType == 0) {
-                val intent = Intent(applicationContext, CustomerActivity::class.java)
-                startActivity(intent)
-                finish()
-            } else {
-                val intent = Intent(applicationContext, HouseActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-
-        } catch (e:Exception) {
-            Log.i("SplashScreenActivity","-E- WHILE RUNNING CHECK USER FUNCTION")
+    private fun checkUser(){
+        firebaseUser?.let {
+            FirebaseUtils.userCollectionRef
+                .document(it.uid)
+                .get().addOnSuccessListener{ doc ->
+                    if(doc != null){
+                        val userType:Int =  (doc.data!![Constants.USER_TYPE] as Long).toInt()
+                        if (userType == 0) {
+                            val intent = Intent(applicationContext, CustomerActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            val intent = Intent(applicationContext, CustomerActivity::class.java) // TODO: UPDATE ACTIVITY
+                            startActivity(intent)
+                            finish()
+                        }
+                    }else {
+                        Log.d(TAG,"DOCUMENT NOT FOUND")
+                    }
+                }
         }
+    }
+
+    companion object {
+        private val TAG = "LoginActivity"
     }
 
 

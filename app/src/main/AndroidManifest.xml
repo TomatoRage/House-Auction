@@ -11,8 +11,7 @@
         android:theme="@style/Theme.AuctionHouseApp">
         <activity
             android:name=".SplashingScreenActivity"
-            android:exported="true"
-            android:theme="@style/Theme.AuctionHouseApp.NoActionBar">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -21,6 +20,7 @@
 
         <activity android:name=".CustomerActivity"/>
         <activity android:name=".LoginActivity" />
+        <activity android:name=".SignUpActivity" />
         <activity android:name=".HouseActivity" />
 
     </application>

@@ -30,7 +30,7 @@ open class User {
             return
         Name = Data[Constants.USER_NAME] as String
         Email = Data[Constants.USER_EMAIL] as String
-        Type = UserType.getByValue( (Data[Constants.USER_TYPE] as Long).toInt())
+        Type = UserType.getByValue((Data[Constants.USER_TYPE] as Int))
         PhoneNumber = Data[Constants.USER_PHONE] as String
         Location = Data[Constants.USER_ADDR] as String
         UserID = Data[Constants.USERID] as String

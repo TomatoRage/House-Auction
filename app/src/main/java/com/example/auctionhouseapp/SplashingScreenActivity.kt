@@ -28,31 +28,9 @@ class SplashingScreenActivity : AppCompatActivity() {
 
     private fun checkUser(){
 
-        if(firebaseUser != null){
-            val querySnapshot = userCollectionRef
-                .document(firebaseUser.uid)
-                .get().addOnSuccessListener{ doc ->
-                    if(doc != null){
-                        val userType:Int =  (doc.data!![Constants.USER_TYPE] as Long).toInt()
-                        if (userType == 0) {
-                            val intent = Intent(applicationContext, CustomerActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            val intent = Intent(applicationContext, HouseActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        }
-                    }else {
-                        Log.d(TAG,"DOCUMENT NOT FOUND")
-                    }
-                }
-        }
-        if(firebaseUser == null){
-            val intent = Intent(applicationContext, LoginActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
-        }
     }
 
     companion object {
