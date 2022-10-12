@@ -4,7 +4,7 @@ package com.example.auctionhouseapp.Utils
 
 object Constants{
     //Collections' Names
-    const val USER_COLLECTION:String                = "users" // Collection Contains all users
+    const val USER_COLLECTION:String                = "Users" // Collection Contains all users
     const val HOUSES_COLLECTION:String              = "Houses" // Collection Contains auction houses additional data
     const val SALES_DAY_COLLECTION:String           = "Sales Day"// Collection Contains Sales Days per Auction House
     const val REQUESTED_ITEMS_COLLECTION:String     = "Requested Items"// Collection Contains Requested Items per Day

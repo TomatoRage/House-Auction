@@ -1,7 +1,12 @@
 package com.example.auctionhouseapp
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.example.auctionhouseapp.Utils.Constants
 import com.google.firebase.Timestamp
+import com.google.type.DateTime
+import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 
 class AuctionDays {
     lateinit var Title:String
@@ -31,5 +36,16 @@ class AuctionDays {
         NumOfItems = (Data[Constants.DAY_NUM_OF_ITEMS] as Long).toInt()
         NumOfRequested = (Data[Constants.DAY_NUM_OF_REQUESTED] as Long).toInt()
 
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun PrintDate():String{
+        val formatter = SimpleDateFormat("dd/MM/yyyy").format(StartDate.toDate())
+        return formatter.toString()
+    }
+
+    fun PrintStartTime():String{
+        val formatter = SimpleDateFormat("HH:mm").format(StartDate.toDate())
+        return formatter.toString()
     }
 }
