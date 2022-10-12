@@ -189,7 +189,7 @@ class LoginActivity : AppCompatActivity() {
                             startActivity(intent)
                             finish()
                         }
-                    }else {
+                    } else {
                         Log.d(TAG,"DOCUMENT NOT FOUND")
                     }
                 }
