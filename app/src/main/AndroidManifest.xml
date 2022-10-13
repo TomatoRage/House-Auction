@@ -22,7 +22,7 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".HouseActivity" />
-
+        <activity android:name=".CreateDayActivity" />
     </application>
 
 </manifest>

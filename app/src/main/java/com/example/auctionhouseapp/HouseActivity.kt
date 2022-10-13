@@ -1,8 +1,10 @@
 package com.example.auctionhouseapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -24,9 +26,18 @@ class HouseActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btn_add_day).setOnClickListener {
-            //TODO: Navigate to add day screen
+            val intent = Intent(applicationContext, CreateDayActivity::class.java)
+            intent.putExtra("House", House.GetUID())
+            startActivity(intent)
+            finish()
         }
 
+        findViewById<Button>(R.id.btn_sign_out).setOnClickListener {
+            FirebaseUtils.firebaseAuth.signOut()
+            val intent = Intent(applicationContext, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
     }
 
