@@ -12,7 +12,6 @@
         android:layout_marginTop="16dp">
 
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -23,13 +22,14 @@
                 android:id="@+id/textview_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/metropolis_semibold"
-                android:layout_gravity="center"
                 android:text="House Name"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@color/black"
-                android:textSize="23sp" />
+                android:textSize="23sp"
+                tools:ignore="HardcodedText" />
 
             <LinearLayout
                 android:id="@+id/LayoutTop"
@@ -38,10 +38,12 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    app:srcCompat="@drawable/item_pic">
-                </ImageView>
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
+                    android:layout_marginStart="15dp"
+                    app:srcCompat="@drawable/item_pic"
+                    android:contentDescription="Auction House"
+                    tools:ignore="HardcodedText"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -50,47 +52,85 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/rating"
                         android:layout_width="match_parent"
-                        android:layout_height="25dp"
+                        android:layout_height="27dp"
                         android:text="Rating:"
+                        android:layout_marginTop="5dp"
                         android:textColor="@color/black"
-                        android:textSize="15sp"
+                        android:textSize="17sp"
                         tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="27dp"
+                        android:gravity="center"
+                        android:text="Closest Sale Day:"
+                        android:textColor="@color/black"
+                        android:textSize="17sp"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="29dp"
+                        android:text="Listed Items:"
+                        android:textColor="@color/black"
+                        android:textSize="17sp"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="110sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:orientation="vertical">
+
+                    <RatingBar
+                        android:id="@+id/house_rating"
+                        style="@style/Widget.AppCompat.RatingBar.Indicator"
+                        android:layout_width="180dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:numStars="5"
+                        android:rating="3"
+                        android:scaleX=".5"
+                        android:scaleY=".5"
+                        android:transformPivotX="0dp"
+                        android:transformPivotY="15dp" />
 
                     <TextView
                         android:id="@+id/closest_sale_day"
                         android:layout_width="match_parent"
-                        android:layout_height="25dp"
-                        android:gravity="center"
-                        android:text="Closest Sale Day"
-                        android:textColor="@color/black"
-                        android:textSize="15sp" />
+                        android:layout_height="27dp"
+                        android:layout_marginStart="10dp"
+                        android:text="30.2.2022"
+                        android:textColor="@color/firebrick"
+                        android:textSize="17sp"
+                        tools:ignore="HardcodedText" />
 
                     <TextView
                         android:id="@+id/listed_items"
                         android:layout_width="match_parent"
                         android:layout_height="25dp"
-
-                        android:text="Listed Items:"
-                        android:textColor="@color/black"
-                        android:textSize="15sp" />
+                        android:layout_marginStart="10dp"
+                        android:text="IGI3, Canon4, Nike Ball"
+                        android:textColor="@color/firebrick"
+                        android:textSize="17sp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        tools:ignore="HardcodedText" />
                 </LinearLayout>
 
                 <ImageView
                     android:id="@+id/imageView2"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="150dp"
+                    android:layout_marginStart="15dp"
+
                     app:srcCompat="@drawable/arrow" />
             </LinearLayout>
 
 
-
         </LinearLayout>
-
-
-
 
 
     </RelativeLayout>
