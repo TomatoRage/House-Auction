@@ -4,10 +4,7 @@ import android.util.Log
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.type.Date
-import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -34,6 +31,7 @@ class AuctionHouse: User {
         var ReadThirdData = false
         var TodayDate = Timestamp(Date())
 
+
             FirebaseUtils.userCollectionRef.document(UserID).get()
             .addOnSuccessListener { doc ->
                 if(doc != null){
@@ -56,9 +54,10 @@ class AuctionHouse: User {
             .addOnSuccessListener {   doc ->
                 if(doc != null){
                     SetupHoduseData(doc.data)
-                    if(ReadFirstData && ReadSecondData && ReadThirdData)
+                    if(ReadFirstData && ReadSecondData && ReadThirdData){
+                        Days.sort()
                         ToPerform()
-                    else if(ReadFirstData && ReadSecondData)
+                    }else if(ReadFirstData && ReadSecondData)
                         ReadThirdData = true
                     else if(ReadFirstData)
                         ReadSecondData = true
@@ -72,14 +71,15 @@ class AuctionHouse: User {
 
         FirebaseUtils.houseCollectionRef.document(UserID)
             .collection(Constants.SALES_DAY_COLLECTION)
-            .whereLessThanOrEqualTo(Constants.DAY_START_DATE,TodayDate).limit(3)
+            .whereLessThanOrEqualTo(Constants.DAY_START_DATE,TodayDate)//.limit(3)
             .orderBy(Constants.DAY_START_DATE,Query.Direction.DESCENDING).get()
             .addOnSuccessListener { documents ->
                 for(doc in documents)
                     this.Days.add(AuctionDays(doc.data))
-                if(ReadFirstData && ReadSecondData && ReadThirdData)
+                if(ReadFirstData && ReadSecondData && ReadThirdData) {
+                    Days.sort()
                     ToPerform()
-                else if(ReadFirstData && ReadSecondData)
+                }else if(ReadFirstData && ReadSecondData)
                     ReadThirdData = true
                 else if(ReadFirstData)
                     ReadSecondData = true
@@ -97,8 +97,10 @@ class AuctionHouse: User {
             .addOnSuccessListener { documents ->
                 for(doc in documents)
                     this.Days.add(AuctionDays(doc.data))
-                if(ReadFirstData && ReadSecondData && ReadThirdData)
+                if(ReadFirstData && ReadSecondData && ReadThirdData) {
+                    Days.sort()
                     ToPerform()
+                }
                 else if(ReadFirstData && ReadSecondData)
                     ReadThirdData = true
                 else if(ReadFirstData)

@@ -1,6 +1,8 @@
 package com.example.auctionhouseapp
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -69,6 +71,20 @@ class AuctionDaysListFragment : Fragment() {
             View.findViewById<TextView>(R.id.textview_numofitems).setText("No' of Listed Items: " + House.Days[position].NumOfItems.toString())
             View.findViewById<TextView>(R.id.textview_earnings).setText("Total Earnings: " + House.Days[position].Earnings.toString())
             View.findViewById<TextView>(R.id.textview_numofpeople).setText("No' of Participants: " + House.Days[position].ParticipantsNum.toString())
+            if(House.Days[position].Status == AuctionDayStatus.Pending) {
+                View.findViewById<View>(R.id.indication_light).backgroundTintList = ColorStateList.valueOf(Color.RED)
+                View.findViewById<TextView>(R.id.textview_status).setText("Pending")
+                View.findViewById<TextView>(R.id.textview_status).setTextColor(Color.RED)
+            }else if(House.Days[position].Status == AuctionDayStatus.Happening) {
+                View.findViewById<View>(R.id.indication_light).backgroundTintList = ColorStateList.valueOf(Color.BLUE)
+                View.findViewById<TextView>(R.id.textview_status).setText("Happening")
+                View.findViewById<TextView>(R.id.textview_status).setTextColor(Color.BLUE)
+            }else if(House.Days[position].Status == AuctionDayStatus.Occurred) {
+                View.findViewById<View>(R.id.indication_light).backgroundTintList = ColorStateList.valueOf(Color.GREEN)
+                View.findViewById<TextView>(R.id.textview_status).setText("Occurred")
+                View.findViewById<TextView>(R.id.textview_status).setTextColor(Color.GREEN)
+            }
+
 
             return View
         }

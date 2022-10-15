@@ -6,11 +6,17 @@ import androidx.annotation.RequiresApi
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.Timestamp
-import com.google.type.DateTime
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
+import java.util.*
 
-class AuctionDays {
+enum class AuctionDayStatus(val Type:Int){
+    Occurred(0),Happening(1),Pending(3);
+    companion object {
+        fun getByValue(value:Int) = values().first { it.Type == value}
+    }
+}
+
+class AuctionDays: Comparable<AuctionDays> {
     lateinit var Title:String
     lateinit var StartDate:Timestamp
     var Commission:Double = 0.0
@@ -19,11 +25,36 @@ class AuctionDays {
     var Earnings:Int = -1
     var NumOfItems:Int = -1
     var NumOfRequested:Int = -1
+    var NumOfSoldItems:Int = -1
+    var Status:AuctionDayStatus = AuctionDayStatus.Pending
 
     constructor()
 
     constructor(Data:MutableMap<String,Any>?){
         SetData(Data)
+    }
+
+    override fun compareTo(other: AuctionDays): Int {
+        if(Status == AuctionDayStatus.Happening && other.Status == AuctionDayStatus.Pending){
+            return -1
+        }else if(Status == AuctionDayStatus.Happening && other.Status == AuctionDayStatus.Occurred){
+            return -1
+        }else if(Status == AuctionDayStatus.Happening && other.Status == AuctionDayStatus.Happening){
+            return StartDate.compareTo(other.StartDate)
+        }else if(Status == AuctionDayStatus.Pending && other.Status == AuctionDayStatus.Occurred){
+            return -1
+        }else if(Status == AuctionDayStatus.Pending && other.Status == AuctionDayStatus.Happening){
+            return 1
+        }else if(Status == AuctionDayStatus.Pending && other.Status == AuctionDayStatus.Pending){
+            return StartDate.compareTo(other.StartDate)
+        }else if(Status == AuctionDayStatus.Occurred && other.Status == AuctionDayStatus.Happening){
+            return 1
+        } else if(Status == AuctionDayStatus.Occurred && other.Status == AuctionDayStatus.Pending){
+            return 1
+        }else if(Status == AuctionDayStatus.Occurred && other.Status == AuctionDayStatus.Occurred){
+            return StartDate.compareTo(other.StartDate) * -1
+        }
+        return 0
     }
 
     fun SetData(Data:MutableMap<String,Any>?){
@@ -37,7 +68,23 @@ class AuctionDays {
         Earnings = (Data[Constants.DAY_EARNINGS] as Long).toInt()
         NumOfItems = (Data[Constants.DAY_NUM_OF_ITEMS] as Long).toInt()
         NumOfRequested = (Data[Constants.DAY_NUM_OF_REQUESTED] as Long).toInt()
+        NumOfSoldItems = (Data[Constants.DAY_NUM_OF_SOLD] as Long).toInt()
 
+        val Time:Date = Timestamp(Date()).toDate()
+
+        if(StartDate.toDate().before(Time)){
+            if(NumOfSoldItems < NumOfItems) {
+                Status = AuctionDayStatus.Happening
+                return
+            }
+            if(NumOfSoldItems == NumOfItems){
+                Status = AuctionDayStatus.Occurred
+                return
+            }
+        }else{
+            Status = AuctionDayStatus.Pending
+            return
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -65,7 +112,8 @@ class AuctionDays {
                     Constants.DAY_NUM_OF_PARTICIPANTS to ParticipantsNum,
                     Constants.DAY_EARNINGS to Earnings,
                     Constants.DAY_NUM_OF_ITEMS to NumOfItems,
-                    Constants.DAY_NUM_OF_REQUESTED to NumOfRequested
+                    Constants.DAY_NUM_OF_REQUESTED to NumOfRequested,
+                    Constants.DAY_NUM_OF_SOLD to NumOfSoldItems
                 )
             )
             .addOnSuccessListener {

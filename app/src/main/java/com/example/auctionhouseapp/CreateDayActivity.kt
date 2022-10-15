@@ -345,6 +345,7 @@ class CreateDayActivity : AppCompatActivity() {
         Day.Earnings = 0
         Day.NumOfItems = 0
         Day.NumOfRequested = 0
+        Day.NumOfSoldItems = 0
 
         Day.StoreData(FirebaseUtils.firebaseAuth.currentUser!!.uid,::OnSuccPerform)
 

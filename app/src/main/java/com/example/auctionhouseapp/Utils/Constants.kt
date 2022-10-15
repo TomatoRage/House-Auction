@@ -33,6 +33,7 @@ object Constants{
     const val DAY_EARNINGS:String                   = "Total Earnings" // Total Earnings On Auction Day Commission
     const val DAY_NUM_OF_ITEMS:String               = "Listed Items" // No' Of Accepted Items
     const val DAY_NUM_OF_REQUESTED:String           = "Requested Items" // No' Of Requested Items
+    const val DAY_NUM_OF_SOLD:String                = "Sold Items" // No' of sold items so far
 
     //Items' Data
     const val ITEM_NAME:String                      = "Name" // Item Name
