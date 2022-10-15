@@ -13,9 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="75dp"
+        android:layout_marginTop="45dp"
         android:fontFamily="@font/metropolis_bold"
-        android:text="Sign up"
+        android:text="Create Day"
         android:textColor="@color/mainText"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,166 +26,236 @@
         android:orientation="vertical"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/metropolis_bold"
+            android:text="Day Title:"
+            android:textSize="16sp" />
+
         <EditText
-            android:id="@+id/nameEt_signUpPage"
+            android:id="@+id/day_title"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:textSize="15sp"
-            android:paddingLeft="20dp"
-            android:drawableRight="@null"
-            android:paddingRight="20dp"
-            android:textColor="@color/mainText"
+            android:layout_marginTop="10dp"
             android:background="@drawable/edit_text_bg"
+            android:drawableRight="@null"
             android:fontFamily="@font/metropolis_regular"
-            android:hint="Full Name"
+            android:hint="Title"
             android:inputType="textPersonName"
-            android:maxLines="1" />
-        <EditText
-            android:layout_marginTop="10dp"
-            android:id="@+id/emailEt_signUpPage"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:textSize="15sp"
+            android:maxLines="1"
+            android:maxLength="15"
             android:paddingLeft="20dp"
-            android:drawableRight="@null"
             android:paddingRight="20dp"
             android:textColor="@color/mainText"
-            android:background="@drawable/edit_text_bg"
-            android:fontFamily="@font/metropolis_regular"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:maxLines="1" />
+            android:textSize="15sp" />
 
-        <EditText
-            android:layout_marginTop="10dp"
-            android:id="@+id/PassEt_signUpPage"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:textSize="15sp"
-            android:textColor="@color/mainText"
-            android:drawableRight="@null"
-            android:paddingRight="20dp"
-            android:paddingLeft="20dp"
-            android:background="@drawable/edit_text_bg"
-            android:fontFamily="@font/metropolis_regular"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:maxLines="1" />
-        <EditText
-            android:layout_marginTop="10dp"
-            android:id="@+id/cPassEt_signUpPage"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:textSize="15sp"
-            android:textColor="@color/mainText"
-            android:drawableRight="@null"
-            android:paddingRight="20dp"
-            android:paddingLeft="20dp"
-            android:background="@drawable/edit_text_bg"
-            android:fontFamily="@font/metropolis_regular"
-            android:hint="Confirm Password"
-            android:inputType="textPassword"
-            android:maxLines="1" />
-
-        <EditText
-            android:layout_marginTop="10dp"
-            android:id="@+id/phoneNoEt_signUpPage"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:textSize="15sp"
-            android:textColor="@color/mainText"
-            android:drawableRight="@null"
-            android:paddingRight="20dp"
-            android:paddingLeft="20dp"
-            android:background="@drawable/edit_text_bg"
-            android:fontFamily="@font/metropolis_regular"
-            android:hint="Phone Number"
-            android:inputType= "phone"
-            android:maxLines="1" />
-
-        <EditText
-            android:layout_marginTop="10dp"
-            android:id="@+id/addressEt_signUpPage"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:textSize="15sp"
-            android:textColor="@color/mainText"
-            android:drawableRight="@null"
-            android:paddingRight="20dp"
-            android:paddingLeft="20dp"
-            android:background="@drawable/edit_text_bg"
-            android:fontFamily="@font/metropolis_regular"
-            android:hint="Address"
-            android:inputType="text"
-            android:maxLines="1" />
-
-        <RadioGroup
-            android:id="@+id/radioGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:orientation="horizontal"
-            android:paddingRight="20dp"
-            android:layout_marginTop="0dp"
-            android:gravity="center">
-
-            <RadioButton
-                android:id="@+id/customer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Customer" />
-
-            <RadioButton
-                android:id="@+id/auction_house"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="10dp"
-                android:text="Auction House" />
-
-        </RadioGroup>
-
-        <Button
-            android:id="@+id/signUpBtn_signUpPage"
+        <TextView
+            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/btn_bg"
-            android:text="Sign Up"
-            android:textColor = "@color/white"
-            android:layout_marginTop="40dp"
-            android:elevation="10dp"
-            />
-
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/metropolis_bold"
+            android:text="Start Date:"
+            android:textSize="16sp" />
 
         <LinearLayout
-            android:layout_marginTop="30dp"
-            android:gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <EditText
+
+                android:id="@+id/edittext_day"
+                android:layout_width="110dp"
+                android:layout_marginStart="10dp"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_text_bg"
+                android:drawableRight="@null"
                 android:fontFamily="@font/metropolis_regular"
-                android:text="Have an Account? "
+                android:hint="Day"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:maxLength="2"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:textColor="@color/mainText"
-                android:textSize="14sp"
-                />
-            <TextView
-                android:id="@+id/signInTv_signUpPage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:textSize="15sp" />
+            <EditText
+
+                android:id="@+id/edittext_month"
+                android:layout_width="110dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/edit_text_bg"
+                android:drawableRight="@null"
                 android:fontFamily="@font/metropolis_regular"
-                android:text=" Sign in"
-                android:textColor="@color/primary"
-                android:textSize="14sp"
-                />
+                android:hint="Month"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:maxLength="2"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textColor="@color/mainText"
+                android:textSize="15sp" />
+
+            <EditText
+
+                android:id="@+id/edittext_year"
+                android:layout_width="110dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/edit_text_bg"
+                android:drawableRight="@null"
+                android:fontFamily="@font/metropolis_regular"
+                android:hint="Year"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:maxLength="4"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textColor="@color/mainText"
+                android:textSize="15sp" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/metropolis_bold"
+            android:text="Start Time:"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <EditText
+
+                android:id="@+id/edittext_hour"
+                android:layout_width="110dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="75dp"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/edit_text_bg"
+                android:drawableRight="@null"
+                android:fontFamily="@font/metropolis_regular"
+                android:hint="Hour"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:maxLength="2"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textColor="@color/mainText"
+                android:textSize="15sp" />
+
+            <EditText
+
+                android:id="@+id/edittext_minute"
+                android:layout_width="110dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="60dp"
+                android:background="@drawable/edit_text_bg"
+                android:drawableRight="@null"
+                android:fontFamily="@font/metropolis_regular"
+                android:hint="Minute"
+                android:maxLength="2"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textColor="@color/mainText"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/metropolis_bold"
+            android:text="Commission:"
+            android:textSize="16sp" />
+
+        <EditText
+
+            android:id="@+id/edittext_commission"
+            android:layout_width="140dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edit_text_bg"
+            android:drawableRight="@null"
+            android:fontFamily="@font/metropolis_regular"
+            android:hint="Percentage"
+            android:inputType="phone"
+            android:maxLines="1"
+            android:maxLength="2"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/mainText"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/metropolis_bold"
+            android:text="Can Participate Untill:"
+            android:textSize="16sp" />
+
+        <EditText
+
+            android:id="@+id/edittext_lock"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="140dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edit_text_bg"
+            android:drawableRight="@null"
+            android:fontFamily="@font/metropolis_regular"
+            android:hint="Hour"
+            android:inputType="phone"
+            android:maxLines="1"
+            android:maxLength="3"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:textColor="@color/mainText"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/btn_create_day_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/btn_bg"
+            android:elevation="10dp"
+            android:text="Create"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/btn_back_create_day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_bg"
+            android:elevation="10dp"
+            android:text="Back"
+            android:textColor="@color/black"
+            app:backgroundTint="#E1DFDF" />
+
 
     </LinearLayout>
 

@@ -1,8 +1,10 @@
 package com.example.auctionhouseapp
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.auctionhouseapp.Utils.Constants
+import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.Timestamp
 import com.google.type.DateTime
 import java.text.SimpleDateFormat
@@ -47,5 +49,34 @@ class AuctionDays {
     fun PrintStartTime():String{
         val formatter = SimpleDateFormat("HH:mm").format(StartDate.toDate())
         return formatter.toString()
+    }
+
+    fun StoreData(HouseID:String,ToPerform:()->Unit){
+        FirebaseUtils.houseCollectionRef
+            .document(HouseID)
+            .collection(Constants.SALES_DAY_COLLECTION)
+            .document()
+            .set(
+                mapOf(
+                    Constants.DAY_NAME to Title,
+                    Constants.DAY_START_DATE to StartDate,
+                    Constants.DAY_COMMISSION to Commission,
+                    Constants.DAY_LOCK_TIME to LockBefore,
+                    Constants.DAY_NUM_OF_PARTICIPANTS to ParticipantsNum,
+                    Constants.DAY_EARNINGS to Earnings,
+                    Constants.DAY_NUM_OF_ITEMS to NumOfItems,
+                    Constants.DAY_NUM_OF_REQUESTED to NumOfRequested
+                )
+            )
+            .addOnSuccessListener {
+                ToPerform()
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "day data read failed with", exception)
+            }
+    }
+
+    companion object {
+        private val TAG = "Auction Day"
     }
 }
