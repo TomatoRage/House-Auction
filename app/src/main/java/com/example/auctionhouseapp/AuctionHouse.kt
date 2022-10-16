@@ -14,6 +14,7 @@ class AuctionHouse: User {
     var TotalRaters:Int = -1
     var NextSalesDay:Timestamp? = null
     val Days:ArrayList<AuctionDays> = arrayListOf<AuctionDays>()
+    val Items:ArrayList<Item> = arrayListOf<Item>()
 
     constructor(Data:MutableMap<String,Any>?){
         SetData(Data)
@@ -120,6 +121,13 @@ class AuctionHouse: User {
         Rating = (Data[Constants.HOUSE_RATING_SUM] as Long).toDouble()/TotalRaters
         NextSalesDay = Data[Constants.HOUSE_NEXT_SALES_DATE] as Timestamp?
     }
+// Odai wants getters and setters for the 3 new variables in Auction House Obj
+//TODO
+//    public fun getRating():Double? { return this.Rating }
+//    public fun setRating(rating:Double) { this.Rating = rating}
+//..
+
+
 
     companion object {
         private val TAG = "Auction House"

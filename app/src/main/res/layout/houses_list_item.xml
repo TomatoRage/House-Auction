@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <data
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <variable
+            name="isAuctionHouse"
+            type="com.example.auctionhouseapp.AuctionHouse" />
+
+
+    </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -91,7 +102,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:numStars="5"
-                        android:rating="3"
+                        android:rating="@{isAuctionHouse.rating}"
                         android:scaleX=".5"
                         android:scaleY=".5"
                         android:transformPivotX="0dp"
@@ -102,7 +113,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="27dp"
                         android:layout_marginStart="10dp"
-                        android:text="30.2.2022"
+                        android:text="@{isAuctionHouse.nextSalesDay}"
                         android:textColor="@color/firebrick"
                         android:textSize="17sp"
                         tools:ignore="HardcodedText" />
@@ -112,7 +123,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="25dp"
                         android:layout_marginStart="10dp"
-                        android:text="IGI3, Canon4, Nike Ball"
+                        android:text="@{isAuctionHouse.}"
                         android:textColor="@color/firebrick"
                         android:textSize="17sp"
                         android:ellipsize="end"
@@ -134,4 +145,4 @@
 
 
     </RelativeLayout>
-</LinearLayout>
+</layout>

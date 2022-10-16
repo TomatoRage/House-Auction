@@ -44,4 +44,7 @@ object Constants{
     const val ITEM_LAST_BID_AMOUNT:String           = "Last Bid" // Last Amount Of Money Bidded
     const val ITEM_LAST_BIDDER:String               = "Last Bidder ID " // UserID Of The Last Bidder
     const val ITEM_NUM_IN_QUEUE:String              = "Pos In Queue" // Holds The No' Of Items Before Current Item
+    const val ITEM_IMAGE:String                     = "Image" // Holds photo of Item published by User
+    const val ITEM_IS_ACCEPTED:String              = "Is Accepted" // Identifier between accepted & not accepted Items
+
 }
