@@ -100,6 +100,9 @@ class AuctionDays: Comparable<AuctionDays> {
     }
 
     fun StoreData(HouseID:String,ToPerform:()->Unit){
+        val Today = Timestamp(Date())
+
+        /**Store Day Data**/
         FirebaseUtils.houseCollectionRef
             .document(HouseID)
             .collection(Constants.SALES_DAY_COLLECTION)
@@ -118,7 +121,29 @@ class AuctionDays: Comparable<AuctionDays> {
                 )
             )
             .addOnSuccessListener {
-                ToPerform()
+                /**Get Closest Sales Day**/
+                FirebaseUtils.houseCollectionRef
+                    .document(HouseID)
+                    .collection(Constants.SALES_DAY_COLLECTION)
+                    .whereGreaterThan(Constants.DAY_START_DATE,Today).limit(1)
+                    .get()
+                    .addOnSuccessListener{ docs ->
+
+                        var NextDate = docs.documents[0].data!![Constants.DAY_START_DATE] as Timestamp
+                        /**Set Closest Sales Day to house**/
+                        FirebaseUtils.houseCollectionRef
+                            .document(HouseID)
+                            .update(Constants.HOUSE_NEXT_SALES_DATE, NextDate)
+                            .addOnSuccessListener {
+                                ToPerform()
+                            }
+                            .addOnFailureListener { exception ->
+                                Log.d(TAG, "house data write failed with", exception)
+                            }
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.d(TAG, "day data read failed with", exception)
+                    }
             }
             .addOnFailureListener { exception ->
                 Log.d(TAG, "day data read failed with", exception)

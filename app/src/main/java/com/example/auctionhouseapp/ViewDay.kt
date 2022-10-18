@@ -1,5 +1,6 @@
 package com.example.auctionhouseapp
 
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.Timestamp
@@ -77,24 +79,70 @@ class ViewDay : AppCompatActivity() {
             //TODO: Fill in functionality
         }
         findViewById<Button>(R.id.btn_delete_day).setOnClickListener {
-            FirebaseUtils.houseCollectionRef
-                .document(FirebaseUtils.firebaseAuth.currentUser!!.uid)
-                .collection(Constants.SALES_DAY_COLLECTION)
-                .document(ID).delete()
-                .addOnSuccessListener {
-                    val intent = Intent(applicationContext, HouseActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                }
-                .addOnFailureListener { exception ->
-                    Log.d(TAG, "day data read failed with", exception)
-                }
+            DeleteDay()
         }
         findViewById<Button>(R.id.btn_back).setOnClickListener {
             val intent = Intent(applicationContext, HouseActivity::class.java)
             startActivity(intent)
             finish()
         }
+    }
+
+    /**Delete Day Document and update next sales day**/
+
+    fun DeleteDay(){
+
+        var Today:Timestamp = Timestamp(Date())
+        var builder = AlertDialog.Builder(this)
+
+        builder.setTitle("Confirm Delete")
+        builder.setMessage("Are you sure you want to delete this day?")
+        builder.setPositiveButton("Confirm",DialogInterface.OnClickListener{dialog,id ->
+            /** Delete Document **/
+            FirebaseUtils.houseCollectionRef
+                .document(FirebaseUtils.firebaseUser!!.uid)
+                .collection(Constants.SALES_DAY_COLLECTION)
+                .document(ID).delete()
+                .addOnSuccessListener {
+                    /** Get Next Sales Date from days collection**/
+                    FirebaseUtils.houseCollectionRef
+                        .document(FirebaseUtils.firebaseAuth.currentUser!!.uid)
+                        .collection(Constants.SALES_DAY_COLLECTION)
+                        .whereGreaterThan(Constants.DAY_START_DATE,Today).limit(1)
+                        .get()
+                        .addOnSuccessListener{ docs ->
+
+                            var NextDate = docs.documents[0].data!![Constants.DAY_START_DATE] as Timestamp
+
+                            /**Store the next sales day in house document**/
+                            FirebaseUtils.houseCollectionRef
+                                .document(FirebaseUtils.firebaseUser!!.uid)
+                                .update(Constants.HOUSE_NEXT_SALES_DATE, NextDate)
+                                .addOnSuccessListener {
+                                    dialog.cancel()
+                                    val intent = Intent(applicationContext, HouseActivity::class.java)
+                                    startActivity(intent)
+                                    finish()
+                                }
+                                .addOnFailureListener { exception ->
+                                    Log.d(TAG, "house data write failed with", exception)
+                                }
+
+                        }
+                        .addOnFailureListener { exception ->
+                            Log.d(TAG, "day data read failed with", exception)
+                        }
+
+                }
+                .addOnFailureListener { exception ->
+                    Log.d(TAG, "day data delete failed with", exception)
+                }
+        })
+        builder.setNegativeButton("Cancel",DialogInterface.OnClickListener { dialog, which ->
+            dialog.cancel()
+        })
+        var alert = builder.create()
+        alert.show()
     }
 
     companion object {

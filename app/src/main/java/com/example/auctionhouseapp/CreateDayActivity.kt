@@ -313,7 +313,7 @@ class CreateDayActivity : AppCompatActivity() {
 
         currentDate.set(Calendar.YEAR, Currentdate.year)
         currentDate.set(Calendar.MONTH, Currentdate.monthValue)
-        currentDate.set(Calendar.DAY_OF_MONTH, Currentdate.dayOfMonth)
+        currentDate.set(Calendar.DAY_OF_MONTH, Currentdate.dayOfMonth+2)
         currentDate.set(Calendar.HOUR_OF_DAY, Currentdate.hour)
         currentDate.set(Calendar.MINUTE, Currentdate.minute)
 
@@ -329,6 +329,8 @@ class CreateDayActivity : AppCompatActivity() {
             toast("Participation lock time must be a valid number")
             return
         }
+
+        inputedDate.set(Calendar.MONTH, AuctionMonth.text.toString().toInt()-1)
 
         StoreData(inputedDate.time)
     }
