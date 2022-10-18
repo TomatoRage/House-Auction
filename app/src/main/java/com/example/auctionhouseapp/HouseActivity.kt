@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-Syncimport android.widget.ListView
+import android.widget.ListView
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -39,13 +39,6 @@ class HouseActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-
-//        findViewById<ListView>(R.id.auction_days_list).setOnItemClickListener { parent, view, position, id ->
- //           val intent = Intent(this, ViewDay::class.java)
- //           intent.putExtra("House", House.GetUID())
- //           startActivity(intent)
- //           finish()
- //       }
     }
 
     fun PerformAfterData() {

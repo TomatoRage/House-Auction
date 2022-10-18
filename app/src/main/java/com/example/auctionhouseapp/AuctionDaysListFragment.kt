@@ -1,6 +1,7 @@
 package com.example.auctionhouseapp
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Build
@@ -13,8 +14,7 @@ import android.widget.BaseAdapter
 import android.widget.ListView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import java.util.*
 
 class AuctionDaysListFragment : Fragment() {
 
@@ -27,8 +27,23 @@ class AuctionDaysListFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_auction_days_list, container, false)
         val ListView = view.findViewById<ListView>(R.id.auction_days_list)
+        val Context = activity as HouseActivity
 
-        ListView.adapter = CustomListAdapter(activity as HouseActivity,House)
+        ListView.adapter = CustomListAdapter(Context,House)
+
+        ListView.setOnItemClickListener { parent, view, position, id ->
+            val intent = Intent(Context, ViewDay::class.java)
+            intent.putExtra("Day Title",House.Days[position].Title)
+            intent.putExtra("Start Date",House.Days[position].StartDate.toDate().time)
+            intent.putExtra("Commission",House.Days[position].Commission)
+            intent.putExtra("Lock Time",House.Days[position].LockBefore)
+            intent.putExtra("Participation",House.Days[position].ParticipantsNum)
+            intent.putExtra("Earnings",House.Days[position].Earnings)
+            intent.putExtra("Items",House.Days[position].NumOfItems)
+            intent.putExtra("Requested",House.Days[position].NumOfRequested)
+            intent.putExtra("Sold",House.Days[position].NumOfSoldItems)
+            startActivity(intent)
+        }
 
         return view
     }
@@ -56,7 +71,7 @@ class AuctionDaysListFragment : Fragment() {
         }
 
         override fun getItem(position: Int): Any {
-            TODO("Not yet implemented")
+            return position
         }
 
         @RequiresApi(Build.VERSION_CODES.O)
