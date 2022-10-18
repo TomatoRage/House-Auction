@@ -21,27 +21,194 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:layout_width="412dp"
+        android:id="@+id/linearLayout"
+        android:layout_width="409dp"
         android:layout_height="0dp"
-        android:layout_marginTop="24dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview_day_title">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/textView_start_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:fontFamily="@font/metropolis_bold"
+                android:text="Start Date: 10/06/2022"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/textView_sales_commission"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/metropolis_bold"
+                android:text="Commission: 20%"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/textview_total_earnings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/metropolis_bold"
+                android:text="Total Earnings: 30000₪"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/textview_num_of_items"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/metropolis_bold"
+                android:text="Items: 30"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView_start_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="20dp"
+
+                android:layout_weight="1"
+                android:fontFamily="@font/metropolis_bold"
+                android:text="Start Time: 13:50"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/textView_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/metropolis_bold"
+                android:text="Status: Happening"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/textView_participants"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="0"
+                android:fontFamily="@font/metropolis_bold"
+                android:text="Participants: 150"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/textView_requested_items"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/metropolis_bold"
+                android:text="Requested: 150"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:maxLines="1"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="412dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <Button
+            android:id="@+id/btn_listed_items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/btn_bg"
+            android:elevation="10dp"
+            android:text="Listed Items"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/btn_requested_items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/btn_bg"
+            android:elevation="10dp"
+            android:text="Requested Items"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/steelblue" />
+
+        <Button
+            android:id="@+id/btn_delete_day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/btn_bg"
+            android:elevation="10dp"
+            android:text="delete day"
+            android:textColor="@color/white"
+            app:backgroundTint="#292929" />
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/btn_bg"
+            android:elevation="10dp"
+            android:text="Back"
+            android:textColor="@color/black"
+            app:backgroundTint="#E1DFDF" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

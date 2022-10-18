@@ -29,19 +29,16 @@ class AuctionHouse: User {
 
         var ReadFirstData = false
         var ReadSecondData = false
-        var ReadThirdData = false
         var TodayDate = Timestamp(Date())
-
 
             FirebaseUtils.userCollectionRef.document(UserID).get()
             .addOnSuccessListener { doc ->
                 if(doc != null){
                     SetData(doc.data)
-                    if(ReadFirstData && ReadSecondData && ReadThirdData)
+                    if(ReadFirstData && ReadSecondData) {
+                        Days.sort()
                         ToPerform()
-                    else if(ReadFirstData && ReadSecondData)
-                         ReadThirdData = true
-                    else if(ReadFirstData)
+                    }else if(ReadFirstData)
                         ReadSecondData = true
                     else
                         ReadFirstData = true
@@ -55,12 +52,10 @@ class AuctionHouse: User {
             .addOnSuccessListener {   doc ->
                 if(doc != null){
                     SetupHoduseData(doc.data)
-                    if(ReadFirstData && ReadSecondData && ReadThirdData){
+                    if(ReadFirstData && ReadSecondData){
                         Days.sort()
                         ToPerform()
-                    }else if(ReadFirstData && ReadSecondData)
-                        ReadThirdData = true
-                    else if(ReadFirstData)
+                    } else if(ReadFirstData)
                         ReadSecondData = true
                     else
                         ReadFirstData = true
@@ -72,44 +67,22 @@ class AuctionHouse: User {
 
         FirebaseUtils.houseCollectionRef.document(UserID)
             .collection(Constants.SALES_DAY_COLLECTION)
-            .whereLessThanOrEqualTo(Constants.DAY_START_DATE,TodayDate)//.limit(3)
             .orderBy(Constants.DAY_START_DATE,Query.Direction.DESCENDING).get()
             .addOnSuccessListener { documents ->
-                for(doc in documents)
-                    this.Days.add(AuctionDays(doc.data))
-                if(ReadFirstData && ReadSecondData && ReadThirdData) {
-                    Days.sort()
-                    ToPerform()
-                }else if(ReadFirstData && ReadSecondData)
-                    ReadThirdData = true
-                else if(ReadFirstData)
-                    ReadSecondData = true
-                else
-                    ReadFirstData = true
-            }
-            .addOnFailureListener{ exception ->
-                Log.d(TAG, "day data read failed with", exception)
-            }
-
-        FirebaseUtils.houseCollectionRef.document(UserID)
-            .collection(Constants.SALES_DAY_COLLECTION)
-            .whereGreaterThan(Constants.DAY_START_DATE,TodayDate)
-            .orderBy(Constants.DAY_START_DATE).get()
-            .addOnSuccessListener { documents ->
-                for(doc in documents)
-                    this.Days.add(AuctionDays(doc.data))
-                if(ReadFirstData && ReadSecondData && ReadThirdData) {
-                    Days.sort()
-                    ToPerform()
+                for(doc in documents) {
+                    var Day = AuctionDays(doc.data)
+                    Day.DocumentID = doc.id
+                    this.Days.add(Day)
                 }
-                else if(ReadFirstData && ReadSecondData)
-                    ReadThirdData = true
-                else if(ReadFirstData)
+                if(ReadFirstData && ReadSecondData) {
+                    Days.sort()
+                    ToPerform()
+                }else if(ReadFirstData)
                     ReadSecondData = true
                 else
                     ReadFirstData = true
             }
-            .addOnFailureListener{ exception ->
+            .addOnFailureListener { exception ->
                 Log.d(TAG, "day data read failed with", exception)
             }
     }
@@ -121,12 +94,6 @@ class AuctionHouse: User {
         Rating = (Data[Constants.HOUSE_RATING_SUM] as Long).toDouble()/TotalRaters
         NextSalesDay = Data[Constants.HOUSE_NEXT_SALES_DATE] as Timestamp?
     }
-// Odai wants getters and setters for the 3 new variables in Auction House Obj
-//TODO
-//    public fun getRating():Double? { return this.Rating }
-//    public fun setRating(rating:Double) { this.Rating = rating}
-//..
-
 
 
     companion object {

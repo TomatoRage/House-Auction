@@ -1,12 +1,16 @@
 package com.example.auctionhouseapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Button
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.example.auctionhouseapp.Utils.Constants
+import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.Timestamp
 import java.util.*
-import kotlin.collections.HashMap
 
 class ViewDay : AppCompatActivity() {
 
@@ -20,6 +24,7 @@ class ViewDay : AppCompatActivity() {
     var Items:Long = -1
     var Requested:Long = -1
     var Sold:Long = -1
+    var ID:String = String()
 
     @RequiresApi(33)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +40,7 @@ class ViewDay : AppCompatActivity() {
         Items = intent.getLongExtra("Items",0)
         Requested = intent.getLongExtra("Requested",0)
         Sold = intent.getLongExtra("Sold",0)
+        ID = intent.getStringExtra("Document ID")!!
 
         AuctionDay = AuctionDays( hashMapOf<String,Any>(
             Constants.DAY_NAME to Title,
@@ -46,5 +52,53 @@ class ViewDay : AppCompatActivity() {
             Constants.DAY_NUM_OF_ITEMS to Items,
             Constants.DAY_NUM_OF_REQUESTED to Requested,
             Constants.DAY_NUM_OF_SOLD to Sold))
+
+        AuctionDay.DocumentID = ID
+
+        findViewById<TextView>(R.id.textview_day_title).setText(AuctionDay.Title)
+        findViewById<TextView>(R.id.textView_start_date).setText("Start Date: " + AuctionDay.PrintDate())
+        findViewById<TextView>(R.id.textView_start_time).setText("Start Time: " + AuctionDay.PrintStartTime())
+        findViewById<TextView>(R.id.textView_sales_commission).setText("Commission: " + (AuctionDay.Commission*100).toInt().toString()+"%")
+        if(AuctionDay.Status == AuctionDayStatus.Pending)
+            findViewById<TextView>(R.id.textView_status).setText("Status: Pending")
+        if(AuctionDay.Status == AuctionDayStatus.Occurred)
+            findViewById<TextView>(R.id.textView_status).setText("Status: Occurred")
+        if(AuctionDay.Status == AuctionDayStatus.Happening)
+            findViewById<TextView>(R.id.textView_status).setText("Status: Happening")
+        findViewById<TextView>(R.id.textview_total_earnings).setText("Earnings: " + AuctionDay.Earnings.toString()+"₪")
+        findViewById<TextView>(R.id.textView_participants).setText("Participants: " + AuctionDay.ParticipantsNum.toString())
+        findViewById<TextView>(R.id.textView_requested_items).setText("Requested: " + AuctionDay.NumOfRequested.toString())
+        findViewById<TextView>(R.id.textview_num_of_items).setText("Items: " + AuctionDay.NumOfItems.toString())
+
+        findViewById<Button>(R.id.btn_listed_items).setOnClickListener {
+            //TODO: Fill in functionality
+        }
+        findViewById<Button>(R.id.btn_requested_items).setOnClickListener {
+            //TODO: Fill in functionality
+        }
+        findViewById<Button>(R.id.btn_delete_day).setOnClickListener {
+            FirebaseUtils.houseCollectionRef
+                .document(FirebaseUtils.firebaseAuth.currentUser!!.uid)
+                .collection(Constants.SALES_DAY_COLLECTION)
+                .document(ID).delete()
+                .addOnSuccessListener {
+                    val intent = Intent(applicationContext, HouseActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+                .addOnFailureListener { exception ->
+                    Log.d(TAG, "day data read failed with", exception)
+                }
+        }
+        findViewById<Button>(R.id.btn_back).setOnClickListener {
+            val intent = Intent(applicationContext, HouseActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
+
+    companion object {
+        private val TAG = "View Day"
+    }
+
 }

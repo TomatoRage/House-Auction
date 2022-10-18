@@ -19,6 +19,7 @@ enum class AuctionDayStatus(val Type:Int){
 class AuctionDays: Comparable<AuctionDays> {
     lateinit var Title:String
     lateinit var StartDate:Timestamp
+    lateinit var DocumentID:String
     var Commission:Double = 0.0
     var LockBefore:Int = -1
     var ParticipantsNum:Int = -1

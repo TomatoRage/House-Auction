@@ -32,13 +32,14 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1800460815429688" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.1497161865234378" />
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.15520833333333334" />
-        <entry key="app/src/main/res/layout/activity_view_day.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layout/activity_view_day.xml" value="0.2761383056640625" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.13333333333333333" />
         <entry key="app/src/main/res/layout/days_list_item.xml" value="0.40640864717787595" />
         <entry key="app/src/main/res/layout/fragment_auction_days.xml" value="0.2921195652173913" />
         <entry key="app/src/main/res/layout/fragment_auction_days_list.xml" value="0.25084745762711863" />
         <entry key="app/src/main/res/layout/fragment_auction_days_spinner.xml" value="0.22866849837764613" />
         <entry key="app/src/main/res/layout/fragment_auction_house_list.xml" value="0.21324889270971856" />
+        <entry key="app/src/main/res/layout/fragment_auction_houses_list.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.5986389160156249" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layout/fragment_register.xml" value="0.15070921985815602" />
