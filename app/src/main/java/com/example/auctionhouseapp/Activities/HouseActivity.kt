@@ -1,17 +1,20 @@
-package com.example.auctionhouseapp
+package com.example.auctionhouseapp.Activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.ListView
+import com.example.auctionhouseapp.*
+import com.example.auctionhouseapp.Fragments.AuctionDaysListFragment
+import com.example.auctionhouseapp.Fragments.AuctionDaysSpinner
+import com.example.auctionhouseapp.Objects.AuctionHouse
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class HouseActivity : AppCompatActivity() {
 
-    val House:AuctionHouse = AuctionHouse()
+    val House: AuctionHouse = AuctionHouse()
     val LoadingFragment = AuctionDaysSpinner()
     val List = AuctionDaysListFragment()
 

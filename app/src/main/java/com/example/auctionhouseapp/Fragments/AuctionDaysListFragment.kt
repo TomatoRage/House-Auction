@@ -1,4 +1,4 @@
-package com.example.auctionhouseapp
+package com.example.auctionhouseapp.Fragments
 
 import android.content.Context
 import android.content.Intent
@@ -14,7 +14,11 @@ import android.widget.BaseAdapter
 import android.widget.ListView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import java.util.*
+import com.example.auctionhouseapp.Activities.HouseActivity
+import com.example.auctionhouseapp.Activities.ViewDay
+import com.example.auctionhouseapp.AuctionDayStatus
+import com.example.auctionhouseapp.Objects.AuctionHouse
+import com.example.auctionhouseapp.R
 
 class AuctionDaysListFragment : Fragment() {
 
@@ -53,10 +57,10 @@ class AuctionDaysListFragment : Fragment() {
         private val TAG = "AuctionDaysList"
     }
 
-    private class CustomListAdapter(context: Context,house:AuctionHouse): BaseAdapter(){
+    private class CustomListAdapter(context: Context,house: AuctionHouse): BaseAdapter(){
 
         private val mContext: Context
-        private var House:AuctionHouse
+        private var House: AuctionHouse
 
         init{
             mContext = context

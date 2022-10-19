@@ -5,7 +5,7 @@
     android:id="@+id/HousesListLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AuctionHousesListFragment">
+    tools:context=".Fragments.AuctionHousesListFragment">
 
     <ListView
         android:id="@+id/auction_houses_list"

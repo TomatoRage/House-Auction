@@ -1,4 +1,4 @@
-package com.example.auctionhouseapp
+package com.example.auctionhouseapp.Activities
 
 import android.app.ProgressDialog
 import android.content.Intent
@@ -20,13 +20,9 @@ import com.google.firebase.auth.FirebaseAuth
 
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.FirebaseUtils.firebaseUser
 
@@ -101,7 +97,9 @@ class SignUpActivity : AppCompatActivity() {
 
                 }
                 else if (fullName.text.length >= 4){
-                    fullName.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    fullName.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
 
@@ -114,7 +112,9 @@ class SignUpActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
                 if (count >= 4){
-                    fullName.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    fullName.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
         })
@@ -127,7 +127,9 @@ class SignUpActivity : AppCompatActivity() {
 
                 }
                 else if (emailEt.text.matches(emailPattern.toRegex())) {
-                    emailEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    emailEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
 
@@ -140,7 +142,9 @@ class SignUpActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
                 if (emailEt.text.matches(emailPattern.toRegex())) {
-                    emailEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    emailEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
         })
@@ -153,7 +157,9 @@ class SignUpActivity : AppCompatActivity() {
 
                 }
                 else if (passEt.text.length > 5){
-                    passEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    passEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
 
@@ -166,7 +172,9 @@ class SignUpActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
                 if (count > 5){
-                    passEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    passEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
         })
@@ -179,7 +187,9 @@ class SignUpActivity : AppCompatActivity() {
 
                 }
                 else if (CpassEt.text.toString() == passEt.text.toString()){
-                    CpassEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    CpassEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
 
@@ -192,7 +202,9 @@ class SignUpActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
                 if (CpassEt.text.toString() == passEt.text.toString()){
-                    CpassEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    CpassEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
         })
@@ -205,7 +217,9 @@ class SignUpActivity : AppCompatActivity() {
 
                 }
                 else if (phoneNoEt.text.length == 10){
-                    phoneNoEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    phoneNoEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
 
@@ -218,7 +232,9 @@ class SignUpActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
                 if (count >= 4){
-                    phoneNoEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    phoneNoEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
         })
@@ -231,7 +247,9 @@ class SignUpActivity : AppCompatActivity() {
 
                 }
                 else if (addressEt.text.length >= 4){
-                    addressEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    addressEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
 
@@ -244,7 +262,9 @@ class SignUpActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
                 if (count >= 4){
-                    addressEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    addressEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
         })

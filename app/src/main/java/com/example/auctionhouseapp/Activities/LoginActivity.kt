@@ -1,4 +1,4 @@
-package com.example.auctionhouseapp
+package com.example.auctionhouseapp.Activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -12,11 +12,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.Extensions.toast
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.example.auctionhouseapp.Utils.FirebaseUtils.firebaseAuth
 import com.example.auctionhouseapp.Utils.FirebaseUtils.firebaseUser
+import com.example.auctionhouseapp.AddOns.loadingDialog
 
 
 class LoginActivity : AppCompatActivity() {
@@ -76,7 +78,9 @@ class LoginActivity : AppCompatActivity() {
 
                 }
                 else if (Patterns.EMAIL_ADDRESS.matcher(emailEt.text).matches()) {
-                    emailEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    emailEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                     emailError.visibility = View.GONE
                 }
             }
@@ -90,7 +94,9 @@ class LoginActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
                 if (Patterns.EMAIL_ADDRESS.matcher(emailEt.text).matches()) {
-                    emailEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    emailEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                     emailError.visibility = View.GONE
                 }
             }
@@ -104,7 +110,9 @@ class LoginActivity : AppCompatActivity() {
 
                 }
                 else if (passEt.text.length > 4){
-                    passEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    passEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
 
                 }
             }
@@ -119,7 +127,9 @@ class LoginActivity : AppCompatActivity() {
                                        before: Int, count: Int) {
                 passwordError.visibility = View.GONE
                 if (count > 4){
-                    passEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    passEt.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
 
                 }
             }

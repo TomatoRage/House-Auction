@@ -1,6 +1,9 @@
-package com.example.auctionhouseapp
+package com.example.auctionhouseapp.Objects
 
 import android.util.Log
+import com.example.auctionhouseapp.AuctionDays
+import com.example.auctionhouseapp.User
+import com.example.auctionhouseapp.UserType
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.Timestamp

@@ -1,4 +1,4 @@
-package com.example.auctionhouseapp
+package com.example.auctionhouseapp.Activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.example.auctionhouseapp.Utils.FirebaseUtils.firebaseUser

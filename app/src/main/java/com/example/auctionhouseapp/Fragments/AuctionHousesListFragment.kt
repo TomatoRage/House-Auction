@@ -1,12 +1,13 @@
-package com.example.auctionhouseapp
+package com.example.auctionhouseapp.Fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
 import android.widget.ListView
+import com.example.auctionhouseapp.Objects.AuctionHouse
+import com.example.auctionhouseapp.R
 
 
 class AuctionHousesListFragment : Fragment() {

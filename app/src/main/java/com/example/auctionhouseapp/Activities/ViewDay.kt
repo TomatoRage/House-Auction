@@ -1,4 +1,4 @@
-package com.example.auctionhouseapp
+package com.example.auctionhouseapp.Activities
 
 import android.content.DialogInterface
 import android.content.Intent
@@ -9,6 +9,9 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import com.example.auctionhouseapp.AuctionDayStatus
+import com.example.auctionhouseapp.AuctionDays
+import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.Timestamp
@@ -16,7 +19,7 @@ import java.util.*
 
 class ViewDay : AppCompatActivity() {
 
-    lateinit var AuctionDay:AuctionDays
+    lateinit var AuctionDay: AuctionDays
     var Title:String = String()
     var Date:Date = Date()
     var Commision:Double = 0.0

@@ -1,4 +1,4 @@
-package com.example.auctionhouseapp
+package com.example.auctionhouseapp.Activities
 
 import android.app.ProgressDialog
 import android.content.Intent
@@ -11,6 +11,8 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import com.example.auctionhouseapp.AuctionDays
+import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.Extensions.toast
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.Timestamp
@@ -68,7 +70,9 @@ class CreateDayActivity : AppCompatActivity() {
 
                 }
                 else if (DayTitle.text.length >= 4){
-                    DayTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    DayTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
 
@@ -81,7 +85,9 @@ class CreateDayActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
                 if (count >= 4){
-                    DayTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    DayTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
         })
@@ -94,7 +100,9 @@ class CreateDayActivity : AppCompatActivity() {
 
                 }
                 else if (AuctionDay.text.length <= 2) {
-                    AuctionDay.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    AuctionDay.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
 
@@ -107,7 +115,9 @@ class CreateDayActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
                 if (AuctionDay.text.length <= 2) {
-                    AuctionDay.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    AuctionDay.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
         })
@@ -120,7 +130,9 @@ class CreateDayActivity : AppCompatActivity() {
 
                 }
                 else if (AuctionMonth.text.length <= 2){
-                    AuctionMonth.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    AuctionMonth.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
 
@@ -133,7 +145,9 @@ class CreateDayActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
                 if (AuctionMonth.text.length <= 2) {
-                    AuctionMonth.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    AuctionMonth.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
         })
@@ -146,7 +160,9 @@ class CreateDayActivity : AppCompatActivity() {
 
                 }
                 else if (AuctionYear.text.length == 4){
-                    AuctionYear.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    AuctionYear.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
 
@@ -159,7 +175,9 @@ class CreateDayActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
                 if (AuctionYear.text.length == 4){
-                    AuctionYear.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    AuctionYear.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
         })
@@ -172,7 +190,9 @@ class CreateDayActivity : AppCompatActivity() {
 
                 }
                 else if (AuctionHour.text.length <= 2){
-                    AuctionHour.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    AuctionHour.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
 
@@ -185,7 +205,9 @@ class CreateDayActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
                 if (count <= 2){
-                    AuctionHour.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    AuctionHour.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
         })
@@ -198,7 +220,9 @@ class CreateDayActivity : AppCompatActivity() {
 
                 }
                 else if (AuctionMin.text.length <= 2){
-                    AuctionMin.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    AuctionMin.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
 
@@ -211,7 +235,9 @@ class CreateDayActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
                 if (count <= 2){
-                    AuctionMin.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    AuctionMin.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
         })
@@ -224,7 +250,9 @@ class CreateDayActivity : AppCompatActivity() {
 
                 }
                 else if (Commission.text.length <= 2){
-                    Commission.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    Commission.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
 
@@ -237,7 +265,9 @@ class CreateDayActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
                 if (count <= 2){
-                    Commission.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    Commission.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
         })
@@ -250,7 +280,9 @@ class CreateDayActivity : AppCompatActivity() {
 
                 }
                 else if (Lock.text.length <= 3){
-                    Lock.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    Lock.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
 
@@ -263,7 +295,9 @@ class CreateDayActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
                 if (count <= 3){
-                    Lock.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,R.drawable.ic_check), null)
+                    Lock.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(applicationContext,
+                        R.drawable.ic_check
+                    ), null)
                 }
             }
         })

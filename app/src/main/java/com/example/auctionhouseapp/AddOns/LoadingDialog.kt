@@ -1,7 +1,8 @@
-package com.example.auctionhouseapp
+package com.example.auctionhouseapp.AddOns
 
 import android.app.Activity
 import android.app.AlertDialog
+import com.example.auctionhouseapp.R
 
 class loadingDialog(private val activity: Activity) {
 

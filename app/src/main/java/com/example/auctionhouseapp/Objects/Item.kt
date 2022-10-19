@@ -1,4 +1,4 @@
-package com.example.auctionhouseapp
+package com.example.auctionhouseapp.Objects
 
 import android.net.Uri
 import com.example.auctionhouseapp.Utils.Constants

@@ -1,16 +1,16 @@
-package com.example.auctionhouseapp
+package com.example.auctionhouseapp.Activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import android.widget.TextView
+import com.example.auctionhouseapp.Fragments.AuctionHousesListFragment
+import com.example.auctionhouseapp.Objects.Customer
+import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.FirebaseUtils
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
 class CustomerActivity : AppCompatActivity() {
-    val customer:Customer = Customer()
+    val customer: Customer = Customer()
     val list = AuctionHousesListFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {

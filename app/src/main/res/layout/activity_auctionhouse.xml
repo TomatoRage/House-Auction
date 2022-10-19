@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HouseActivity">
+    tools:context=".Activities.HouseActivity">
 
     <Button
         android:id="@+id/btn_add_day"
@@ -40,7 +40,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
-        android:name="com.example.auctionhouseapp.AuctionDaysListFragment"
+        android:name="com.example.auctionhouseapp.Fragments.AuctionDaysListFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
