@@ -23,7 +23,8 @@
         <activity android:name=".Activities.SignUpActivity" />
         <activity android:name=".Activities.HouseActivity" />
         <activity android:name=".Activities.CreateDayActivity" />
-        <activity android:name=".Activities.ViewDay"/>
+        <activity android:name=".Activities.ViewDay" />
+        <activity android:name=".Activities.ItemsList"/>
     </application>
 
 </manifest>

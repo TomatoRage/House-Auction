@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import com.example.auctionhouseapp.AuctionDayStatus
 import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.R
+import com.example.auctionhouseapp.UserType
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.Timestamp
@@ -76,7 +77,10 @@ class ViewDay : AppCompatActivity() {
         findViewById<TextView>(R.id.textview_num_of_items).setText("Items: " + AuctionDay.NumOfItems.toString())
 
         findViewById<Button>(R.id.btn_listed_items).setOnClickListener {
-            //TODO: Fill in functionality
+            val intent = Intent(applicationContext, ItemsList::class.java)
+            intent.putExtra("Type",UserType.AuctionHouse)
+            startActivity(intent)
+            finish()
         }
         findViewById<Button>(R.id.btn_requested_items).setOnClickListener {
             //TODO: Fill in functionality
