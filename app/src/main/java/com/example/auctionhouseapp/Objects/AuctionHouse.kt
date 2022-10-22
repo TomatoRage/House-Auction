@@ -15,9 +15,8 @@ class AuctionHouse: User {
 
     var Rating:Double = -1.0
     var TotalRaters:Int = -1
-    var NextSalesDay:Timestamp? = null
+    var NextSalesDay:Date? = null
     val Days:ArrayList<AuctionDays> = arrayListOf<AuctionDays>()
-    val Items:ArrayList<Item> = arrayListOf<Item>()
 
     constructor(Data:MutableMap<String,Any>?){
         SetData(Data)
@@ -95,7 +94,7 @@ class AuctionHouse: User {
             return
         TotalRaters = (Data[Constants.HOUSE_NUM_RATERS] as Long).toInt()
         Rating = (Data[Constants.HOUSE_RATING_SUM] as Long).toDouble()/TotalRaters
-        NextSalesDay = Data[Constants.HOUSE_NEXT_SALES_DATE] as Timestamp?
+        NextSalesDay = (Data[Constants.HOUSE_NEXT_SALES_DATE] as Timestamp?)?.toDate()
     }
 
 

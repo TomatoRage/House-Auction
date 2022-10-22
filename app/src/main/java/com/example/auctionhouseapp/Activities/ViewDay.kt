@@ -20,8 +20,8 @@ import java.util.*
 
 class ViewDay : AppCompatActivity() {
 
-    lateinit var AuctionDay: AuctionDays
-    var Title:String = String()
+    lateinit var Day: AuctionDays
+    /*var Title:String = String()
     var Date:Date = Date()
     var Commision:Double = 0.0
     var LockTime:Long = -1
@@ -30,14 +30,16 @@ class ViewDay : AppCompatActivity() {
     var Items:Long = -1
     var Requested:Long = -1
     var Sold:Long = -1
-    var ID:String = String()
+    var ID:String = String()*/
 
     @RequiresApi(33)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_day)
 
-        Title = intent.getStringExtra("Day Title")!!
+        Day = intent.getSerializableExtra("Day",AuctionDays::class.java)!!
+
+        /*Title = intent.getStringExtra("Day Title")!!
         Date.time = intent.getLongExtra("Start Date",0)
         Commision = intent.getDoubleExtra("Commission", 0.0)
         LockTime = intent.getLongExtra("Lock Time",0)
@@ -59,26 +61,27 @@ class ViewDay : AppCompatActivity() {
             Constants.DAY_NUM_OF_REQUESTED to Requested,
             Constants.DAY_NUM_OF_SOLD to Sold))
 
-        AuctionDay.DocumentID = ID
+        AuctionDay.DocumentID = ID*/
 
-        findViewById<TextView>(R.id.textview_day_title).setText(AuctionDay.Title)
-        findViewById<TextView>(R.id.textView_start_date).setText("Start Date: " + AuctionDay.PrintDate())
-        findViewById<TextView>(R.id.textView_start_time).setText("Start Time: " + AuctionDay.PrintStartTime())
-        findViewById<TextView>(R.id.textView_sales_commission).setText("Commission: " + (AuctionDay.Commission*100).toInt().toString()+"%")
-        if(AuctionDay.Status == AuctionDayStatus.Pending)
+        findViewById<TextView>(R.id.textview_day_title).setText(Day.Title)
+        findViewById<TextView>(R.id.textView_start_date).setText("Start Date: " + Day.PrintDate())
+        findViewById<TextView>(R.id.textView_start_time).setText("Start Time: " + Day.PrintStartTime())
+        findViewById<TextView>(R.id.textView_sales_commission).setText("Commission: " + (Day.Commission*100).toInt().toString()+"%")
+        if(Day.Status == AuctionDayStatus.Pending)
             findViewById<TextView>(R.id.textView_status).setText("Status: Pending")
-        if(AuctionDay.Status == AuctionDayStatus.Occurred)
+        if(Day.Status == AuctionDayStatus.Occurred)
             findViewById<TextView>(R.id.textView_status).setText("Status: Occurred")
-        if(AuctionDay.Status == AuctionDayStatus.Happening)
+        if(Day.Status == AuctionDayStatus.Happening)
             findViewById<TextView>(R.id.textView_status).setText("Status: Happening")
-        findViewById<TextView>(R.id.textview_total_earnings).setText("Earnings: " + AuctionDay.Earnings.toString()+"₪")
-        findViewById<TextView>(R.id.textView_participants).setText("Participants: " + AuctionDay.ParticipantsNum.toString())
-        findViewById<TextView>(R.id.textView_requested_items).setText("Requested: " + AuctionDay.NumOfRequested.toString())
-        findViewById<TextView>(R.id.textview_num_of_items).setText("Items: " + AuctionDay.NumOfItems.toString())
+        findViewById<TextView>(R.id.textview_total_earnings).setText("Earnings: " + Day.Earnings.toString()+"₪")
+        findViewById<TextView>(R.id.textView_participants).setText("Participants: " + Day.ParticipantsNum.toString())
+        findViewById<TextView>(R.id.textView_requested_items).setText("Requested: " + Day.NumOfRequested.toString())
+        findViewById<TextView>(R.id.textview_num_of_items).setText("Items: " + Day.NumOfItems.toString())
 
         findViewById<Button>(R.id.btn_listed_items).setOnClickListener {
             val intent = Intent(applicationContext, ItemsList::class.java)
             intent.putExtra("Type",UserType.AuctionHouse)
+            intent.putExtra("Day",Day)
             startActivity(intent)
             finish()
         }
@@ -109,7 +112,7 @@ class ViewDay : AppCompatActivity() {
             FirebaseUtils.houseCollectionRef
                 .document(FirebaseUtils.firebaseUser!!.uid)
                 .collection(Constants.SALES_DAY_COLLECTION)
-                .document(ID).delete()
+                .document(Day.DocumentID).delete()
                 .addOnSuccessListener {
                     /** Get Next Sales Date from days collection**/
                     FirebaseUtils.houseCollectionRef

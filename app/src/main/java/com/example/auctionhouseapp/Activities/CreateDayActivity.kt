@@ -374,7 +374,7 @@ class CreateDayActivity : AppCompatActivity() {
         val Day = AuctionDays()
 
         Day.Title = DayTitle.text.toString()
-        Day.StartDate = Timestamp(inputDate)
+        Day.StartDate = inputDate
         Day.Commission = (Commission.text.toString().toDouble())/100
         Day.LockBefore = Lock.text.toString().toInt()
         Day.ParticipantsNum = 0

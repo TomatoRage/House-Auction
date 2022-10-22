@@ -3,11 +3,14 @@ package com.example.auctionhouseapp
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import com.example.auctionhouseapp.Objects.Item
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.Timestamp
+import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 enum class AuctionDayStatus(val Type:Int){
     Occurred(0),Happening(1),Pending(3);
@@ -16,9 +19,9 @@ enum class AuctionDayStatus(val Type:Int){
     }
 }
 
-class AuctionDays: Comparable<AuctionDays> {
+class AuctionDays: Serializable,Comparable<AuctionDays> {
     lateinit var Title:String
-    lateinit var StartDate:Timestamp
+    lateinit var StartDate:Date
     lateinit var DocumentID:String
     var Commission:Double = 0.0
     var LockBefore:Int = -1
@@ -28,6 +31,7 @@ class AuctionDays: Comparable<AuctionDays> {
     var NumOfRequested:Int = -1
     var NumOfSoldItems:Int = -1
     var Status:AuctionDayStatus = AuctionDayStatus.Pending
+    var Items:ArrayList<Item>? = null
 
     constructor()
 
@@ -62,7 +66,7 @@ class AuctionDays: Comparable<AuctionDays> {
         if(Data == null)
             return
         Title = Data[Constants.DAY_NAME] as String
-        StartDate = Data[Constants.DAY_START_DATE] as Timestamp
+        StartDate = (Data[Constants.DAY_START_DATE] as Timestamp).toDate()
         Commission = Data[Constants.DAY_COMMISSION] as Double
         LockBefore = (Data[Constants.DAY_LOCK_TIME] as Long).toInt()
         ParticipantsNum = (Data[Constants.DAY_NUM_OF_PARTICIPANTS] as Long).toInt()
@@ -73,7 +77,7 @@ class AuctionDays: Comparable<AuctionDays> {
 
         val Time:Date = Timestamp(Date()).toDate()
 
-        if(StartDate.toDate().before(Time)){
+        if(StartDate.before(Time)){
             if(NumOfSoldItems < NumOfItems) {
                 Status = AuctionDayStatus.Happening
                 return
@@ -90,12 +94,12 @@ class AuctionDays: Comparable<AuctionDays> {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun PrintDate():String{
-        val formatter = SimpleDateFormat("dd/MM/yyyy").format(StartDate.toDate())
+        val formatter = SimpleDateFormat("dd/MM/yyyy").format(StartDate)
         return formatter.toString()
     }
 
     fun PrintStartTime():String{
-        val formatter = SimpleDateFormat("HH:mm").format(StartDate.toDate())
+        val formatter = SimpleDateFormat("HH:mm").format(StartDate)
         return formatter.toString()
     }
 
@@ -148,6 +152,11 @@ class AuctionDays: Comparable<AuctionDays> {
             .addOnFailureListener { exception ->
                 Log.d(TAG, "day data read failed with", exception)
             }
+    }
+
+    fun FetchItems(NumToFetch:Int,ToPerform: () -> Unit){
+        Items = arrayListOf()
+        //FirebaseUtils.houseCollectionRef
     }
 
     companion object {
