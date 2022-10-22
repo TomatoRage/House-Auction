@@ -38,8 +38,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="85dp"
-                    android:layout_height="85dp"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
                     android:layout_marginStart="15dp"
                     app:srcCompat="@drawable/item_pic"
                     android:contentDescription="Auction House"
@@ -62,20 +62,14 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="27dp"
+                        android:layout_height="30dp"
                         android:gravity="center"
                         android:text="Closest Sale Day:"
                         android:textColor="@color/black"
                         android:textSize="17sp"
                         tools:ignore="HardcodedText" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="29dp"
-                        android:text="Listed Items:"
-                        android:textColor="@color/black"
-                        android:textSize="17sp"
-                        tools:ignore="HardcodedText" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -91,7 +85,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:numStars="5"
-                        android:rating="4"
+                        android:rating="3"
+                        android:clickable="false"
+                        android:focusableInTouchMode="false"
+                        android:isIndicator="true"
+                        android:focusable="false"
                         android:scaleX=".5"
                         android:scaleY=".5"
                         android:transformPivotX="0dp"
@@ -102,22 +100,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="27dp"
                         android:layout_marginStart="10dp"
-                        android:text="stam"
+                        android:text="29/02/2023"
                         android:textColor="@color/firebrick"
                         android:textSize="17sp"
                         tools:ignore="HardcodedText" />
 
-                    <TextView
-                        android:id="@+id/listed_items"
-                        android:layout_width="match_parent"
-                        android:layout_height="25dp"
-                        android:layout_marginStart="10dp"
-                        android:text="3"
-                        android:textColor="@color/firebrick"
-                        android:textSize="17sp"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        tools:ignore="HardcodedText" />
+
                 </LinearLayout>
 
                 <ImageView
