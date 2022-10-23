@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.HouseInformationActivity">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/img_house"
+                android:scaleType="fitXY"
+                android:layout_marginBottom="15dp"
+                app:srcCompat="@drawable/house_tmp"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"/>
+            <View
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+            <TextView
+                android:id="@+id/name"
+                android:text="Auction House Information"
+                android:gravity="center"
+                android:textStyle="bold|normal"
+                android:textSize="22sp"
+                android:elevation="15dp"
+                android:padding="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@color/darkorange"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="House Name:"
+                    android:layout_marginTop="15dp"
+                    android:textSize="17sp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginStart="15dp"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textStyle="bold|normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/house_name"
+                android:text="The North Auction"
+                android:layout_marginTop="15dp"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:textStyle="bold|normal"
+                android:layout_width="match_parent"
+                tools:ignore="HardcodedText"
+                android:layout_height="30dp"/>
+        </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="Rating:"
+                    android:layout_marginTop="5dp"
+                    android:textSize="17sp"
+                    android:gravity="center"
+                    android:layout_marginEnd="45dp"
+                    android:layout_marginStart="15dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold|normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    tools:ignore="HardcodedText" />
+
+                <RatingBar
+                    android:id="@+id/house_rating"
+                    style="@style/Widget.AppCompat.RatingBar.Indicator"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="35dp"
+                    android:layout_marginTop="5dp"
+                    android:numStars="5"
+                    android:rating="3.5"
+                    android:clickable="false"
+                    android:focusableInTouchMode="false"
+                    android:isIndicator="true"
+                    android:focusable="false"
+                    android:scaleX=".5"
+                    android:scaleY=".5"
+                    android:transformPivotX="0dp"
+                    android:transformPivotY="15dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="Phone No':"
+                    android:layout_marginTop="5dp"
+                    android:textSize="17sp"
+                    android:layout_marginEnd="55dp"
+                    android:layout_marginStart="15dp"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textStyle="bold|normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/house_phone"
+                    android:text="050-7234564"
+                    android:layout_marginTop="5dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold|normal"
+                    android:inputType="phone"
+                    android:layout_width="match_parent"
+                    tools:ignore="HardcodedText"
+                    android:layout_height="30dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="Email:"
+                    android:layout_marginTop="5dp"
+                    android:textSize="17sp"
+                    android:layout_marginEnd="88dp"
+                    android:layout_marginStart="15dp"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textStyle="bold|normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/house_email"
+                    android:text="northen.1927@gmail.com"
+                    android:layout_marginTop="5dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold|normal"
+                    android:inputType="textEmailAddress"
+                    android:layout_width="match_parent"
+                    tools:ignore="HardcodedText"
+                    android:layout_height="30dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="15dp"
+                    android:gravity="center"
+                    android:text="Closest Sales Date:"
+                    android:textColor="@color/black"
+                    android:textSize="17sp"
+                    android:textStyle="bold|normal"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/house_closes_sales_day"
+                    android:text="18/12/2022"
+                    android:layout_marginTop="5dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:inputType="date"
+                    android:textStyle="bold|normal"
+                    android:layout_width="match_parent"
+                    tools:ignore="HardcodedText"
+                    android:layout_height="30dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="Start Time:"
+                    android:layout_marginTop="5dp"
+                    android:textSize="17sp"
+                    android:layout_marginEnd="50dp"
+                    android:layout_marginStart="15dp"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textStyle="bold|normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/house_closes_sale_start_time"
+                    android:text="13:50"
+                    android:layout_marginTop="5dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold|normal"
+                    android:layout_width="match_parent"
+                    tools:ignore="HardcodedText"
+                    android:layout_height="30dp"/>
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/btn_upcoming_sales"
+                android:layout_width="200dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="17dp"
+                android:layout_marginEnd="24dp"
+                android:backgroundTint = "@color/darkorange"
+                android:elevation="10dp"
+                android:text="UPCOMING SALES"
+                android:textColor="@color/white"/>
+
+
+
+
+
+        </LinearLayout>
+
+
+</LinearLayout>

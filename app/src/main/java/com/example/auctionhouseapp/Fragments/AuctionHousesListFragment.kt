@@ -1,6 +1,7 @@
 package com.example.auctionhouseapp.Fragments
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Build
@@ -17,6 +18,8 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.example.auctionhouseapp.Activities.CustomerActivity
 import com.example.auctionhouseapp.Activities.HouseActivity
+import com.example.auctionhouseapp.Activities.HouseInformationActivity
+import com.example.auctionhouseapp.Activities.ViewDay
 import com.example.auctionhouseapp.AuctionDayStatus
 import com.example.auctionhouseapp.Objects.AuctionHouse
 import com.example.auctionhouseapp.R
@@ -39,6 +42,11 @@ class AuctionHousesListFragment : Fragment() {
         val ListView = view.findViewById<ListView>(R.id.auction_houses_list)
         val Context = activity as CustomerActivity
         ListView.adapter = CustomListAdapter2(Context,HousesList)
+        ListView.setOnItemClickListener { parent, view, position, id ->
+            val intent = Intent(Context, HouseInformationActivity::class.java)
+            //intent.putExtra("Day",House.Days[position])
+            startActivity(intent)
+        }
         return view
     }
 

@@ -24,7 +24,8 @@
         <activity android:name=".Activities.HouseActivity" />
         <activity android:name=".Activities.CreateDayActivity" />
         <activity android:name=".Activities.ViewDay" />
-        <activity android:name=".Activities.ItemsList"/>
+        <activity android:name=".Activities.ItemsList" />
+        <activity android:name=".Activities.HouseInformationActivity" />
     </application>
 
 </manifest>
