@@ -38,16 +38,6 @@ class AuctionDaysListFragment : Fragment() {
         ListView.setOnItemClickListener { parent, view, position, id ->
             val intent = Intent(Context, ViewDay::class.java)
             intent.putExtra("Day",House.Days[position])
-            /*intent.putExtra("Day Title",House.Days[position].Title)
-            intent.putExtra("Start Date",House.Days[position].StartDate.time)
-            intent.putExtra("Commission",House.Days[position].Commission)
-            intent.putExtra("Lock Time",House.Days[position].LockBefore.toLong())
-            intent.putExtra("Participation",House.Days[position].ParticipantsNum.toLong())
-            intent.putExtra("Earnings",House.Days[position].Earnings.toLong())
-            intent.putExtra("Items",House.Days[position].NumOfItems.toLong())
-            intent.putExtra("Requested",House.Days[position].NumOfRequested.toLong())
-            intent.putExtra("Sold",House.Days[position].NumOfSoldItems.toLong())
-            intent.putExtra("Document ID",House.Days[position].DocumentID)*/
             startActivity(intent)
         }
 

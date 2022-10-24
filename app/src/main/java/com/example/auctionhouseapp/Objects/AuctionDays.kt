@@ -154,9 +154,28 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
             }
     }
 
-    fun FetchItems(NumToFetch:Int,ToPerform: () -> Unit){
+    fun FetchItems(NumToFetch:Int,HouseID: String,ToPerform: () -> Unit){
+
         Items = arrayListOf()
-        //FirebaseUtils.houseCollectionRef
+        FirebaseUtils.houseCollectionRef
+            .document(HouseID)
+            .collection(Constants.SALES_DAY_COLLECTION)
+            .document(DocumentID)
+            .collection(Constants.ITEMS_COLLECTION)
+            .limit(NumToFetch.toLong())
+            .get()
+            .addOnSuccessListener { documents ->
+                for(doc in documents){
+
+                    val ToAdd = Item(doc.data)
+                    ToAdd.docID = doc.id
+                    ToAdd.FetchImages(ToPerform)
+                    Items!!.add(ToAdd)
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "Items data read failed with", exception)
+            }
     }
 
     companion object {

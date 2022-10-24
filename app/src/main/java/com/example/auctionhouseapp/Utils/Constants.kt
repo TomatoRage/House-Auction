@@ -10,6 +10,10 @@ object Constants{
     const val REQUESTED_ITEMS_COLLECTION:String     = "Requested Items"// Collection Contains Requested Items per Day
     const val ITEMS_COLLECTION:String               = "Items" // Collection Contains Accepted Items per Day
 
+    //Storage Directories
+     const val STORAGE_ITEM:String                  = "Items/" // Items Dir in Storage
+     const val STORAGE_HOUSE:String                  = "Houses/" // Houses Dir in Storage
+
     //Users' Data
     const val USER_EMAIL:String                     = "Email" // User Email
     const val USER_NAME:String                      = "Full Name" // User Full Name
@@ -44,7 +48,6 @@ object Constants{
     const val ITEM_LAST_BID_AMOUNT:String           = "Last Bid" // Last Amount Of Money Bidded
     const val ITEM_LAST_BIDDER:String               = "Last Bidder ID " // UserID Of The Last Bidder
     const val ITEM_NUM_IN_QUEUE:String              = "Pos In Queue" // Holds The No' Of Items Before Current Item
-    const val ITEM_IMAGE:String                     = "Image" // Holds photo of Item published by User
-    const val ITEM_IS_ACCEPTED:String              = "Is Accepted" // Identifier between accepted & not accepted Items
+    const val ITEM_IS_ACCEPTED:String               = "Is Accepted" // Identifier between accepted & not accepted Items
 
 }

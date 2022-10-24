@@ -1,17 +1,21 @@
 package com.example.auctionhouseapp.Objects
 
-import android.net.Uri
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Log
 import com.example.auctionhouseapp.Utils.Constants
+import com.example.auctionhouseapp.Utils.FirebaseUtils
 
 class Item {
-    private lateinit var ownerId: String
-    private lateinit var Name: String
-    private lateinit var Description: String
-    private var startingPrice: Int = 0
-    private lateinit var Image: Uri
-    private var isAccepted: Boolean = false
-    private lateinit var lastBidderId: String
-    private var lastBid:Int = 0
+    lateinit var ownerId: String
+    lateinit var Name: String
+    lateinit var Description: String
+    lateinit var docID:String
+    lateinit var ImagesArray:ArrayList<Bitmap>
+    lateinit var imagesIDs:ArrayList<String>
+    var startingPrice: Int = 0
+    var lastBidderId: String? = null
+    var lastBid:Int = 0
 
 
     constructor()
@@ -27,29 +31,39 @@ class Item {
         ownerId = Data[Constants.ITEM_OWNER_ID] as String
         Name = Data[Constants.ITEM_NAME] as String
         Description = Data[Constants.ITEM_DESCRIPTION] as String
-        startingPrice = Data[Constants.ITEM_START_PRICE] as Int
-        Image = Data[Constants.ITEM_IMAGE] as Uri
-        isAccepted = Data[Constants.ITEM_IS_ACCEPTED] as Boolean
-        lastBidderId = Data[Constants.ITEM_LAST_BIDDER] as String
-        lastBid = Data[Constants.ITEM_LAST_BID_AMOUNT] as Int
+        startingPrice = (Data[Constants.ITEM_START_PRICE] as Long).toInt()
+        imagesIDs = Data[Constants.ITEM_PHOTOS_LIST] as ArrayList<String>
+        lastBidderId = Data[Constants.ITEM_LAST_BIDDER] as String?
+        lastBid = (Data[Constants.ITEM_LAST_BID_AMOUNT] as Long).toInt()
         return
     }
-    fun getOwner():String {return this.ownerId}
-    fun getName():String {return this.Name}
-    fun getDescription():String {return this.Description}
-    fun getStartingPrice():Int {return this.startingPrice}
-    fun getIsAccepted():Boolean {return this.isAccepted}
-    fun getLastBidderId():String {return this.lastBidderId}
-    fun getLastBidAmount():Int {return this.lastBid}
 
+    fun FetchImages(ToPerform:() -> Unit){
 
-    fun setOwner(owner:String) {this.ownerId = owner}
-    fun setName(name:String) {this.Name = name}
-    fun setDescription(description:String) {this.Description = description}
-    fun setStartingPrice(startingPrince:Int) {this.startingPrice = startingPrice}
-    fun setIsAccepted(isAccepted:Boolean) {this.isAccepted = isAccepted}
-    fun setImage(image:Uri) {this.Image = image}
-    fun setLastBidderId(lastBidderId:String) {this.lastBidderId = lastBidderId}
-    fun setLastBidAmount(lastBid:Int) {this.lastBid = lastBid}
+        var NumOfImagesRead:Int = 0
+        val MaxImageSize:Long = 1080*1080 * 1000
+        ImagesArray = arrayListOf()
+
+        for(i in 0..imagesIDs.size-1){
+
+            FirebaseUtils.firebaseStore.reference
+                .child(Constants.STORAGE_ITEM+imagesIDs[i])
+                .getBytes(MaxImageSize)
+                .addOnSuccessListener { Bytes ->
+                    val Bitmap = BitmapFactory.decodeByteArray(Bytes,0,Bytes.size)
+                    ImagesArray.add(Bitmap)
+                    NumOfImagesRead +=1
+                    if(NumOfImagesRead == imagesIDs.size)
+                        ToPerform()
+                }
+                .addOnFailureListener { exception ->
+                    Log.d(TAG, "Items Image failed with", exception)
+                }
+        }
+    }
+
+    companion object {
+        private val TAG = "Item Object"
+    }
 
 }
