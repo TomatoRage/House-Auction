@@ -50,7 +50,6 @@ class ViewDay : AppCompatActivity() {
             intent.putExtra("Day",Day)
             intent.putExtra("House ID",FirebaseUtils.firebaseUser!!.uid)
             startActivity(intent)
-            finish()
         }
         findViewById<Button>(R.id.btn_requested_items).setOnClickListener {
             //TODO: Fill in functionality
@@ -59,8 +58,6 @@ class ViewDay : AppCompatActivity() {
             DeleteDay()
         }
         findViewById<Button>(R.id.btn_back).setOnClickListener {
-            val intent = Intent(applicationContext, HouseActivity::class.java)
-            startActivity(intent)
             finish()
         }
     }
@@ -69,8 +66,8 @@ class ViewDay : AppCompatActivity() {
 
     fun DeleteDay(){
 
-        var Today:Timestamp = Timestamp(Date())
-        var builder = AlertDialog.Builder(this)
+        val Today:Timestamp = Timestamp(Date())
+        val builder = AlertDialog.Builder(this)
 
         builder.setTitle("Confirm Delete")
         builder.setMessage("Are you sure you want to delete this day?")
@@ -89,11 +86,11 @@ class ViewDay : AppCompatActivity() {
                         .get()
                         .addOnSuccessListener{ docs ->
 
-                            var NextDate = docs.documents[0].data!![Constants.DAY_START_DATE] as Timestamp
+                            val NextDate = docs.documents[0].data!![Constants.DAY_START_DATE] as Timestamp
 
                             /**Store the next sales day in house document**/
                             FirebaseUtils.houseCollectionRef
-                                .document(FirebaseUtils.firebaseUser!!.uid)
+                                .document(FirebaseUtils.firebaseUser.uid)
                                 .update(Constants.HOUSE_NEXT_SALES_DATE, NextDate)
                                 .addOnSuccessListener {
                                     dialog.cancel()
@@ -118,7 +115,7 @@ class ViewDay : AppCompatActivity() {
         builder.setNegativeButton("Cancel",DialogInterface.OnClickListener { dialog, which ->
             dialog.cancel()
         })
-        var alert = builder.create()
+        val alert = builder.create()
         alert.show()
     }
 

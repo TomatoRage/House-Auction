@@ -1,6 +1,5 @@
 package com.example.auctionhouseapp.Activities
 
-import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +14,6 @@ import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.Extensions.toast
 import com.example.auctionhouseapp.Utils.FirebaseUtils
-import com.google.firebase.Timestamp
 import java.time.LocalDateTime
 import java.util.*
 
@@ -29,8 +27,6 @@ class CreateDayActivity : AppCompatActivity() {
     private lateinit var AuctionMin:EditText
     private lateinit var Commission:EditText
     private lateinit var Lock:EditText
-
-    lateinit var progressDialog: ProgressDialog
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +51,6 @@ class CreateDayActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btn_create_day_confirm).setOnClickListener{
-            progressDialog = ProgressDialog(this)
             checkInput()
         }
     }
@@ -388,7 +383,6 @@ class CreateDayActivity : AppCompatActivity() {
     }
 
     fun OnSuccPerform() {
-        progressDialog.dismiss()
 
         val intent = Intent(applicationContext, HouseActivity::class.java)
         startActivity(intent)

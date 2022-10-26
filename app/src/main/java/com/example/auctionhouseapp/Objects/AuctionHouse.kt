@@ -16,7 +16,7 @@ class AuctionHouse: User {
     var Rating:Double = -1.0
     var TotalRaters:Int = -1
     var NextSalesDay:Date? = null
-    val Days:ArrayList<AuctionDays> = arrayListOf<AuctionDays>()
+    val Days:ArrayList<AuctionDays> = arrayListOf()
 
     constructor(Data:MutableMap<String,Any>?){
         SetData(Data)
@@ -31,7 +31,6 @@ class AuctionHouse: User {
 
         var ReadFirstData = false
         var ReadSecondData = false
-        var TodayDate = Timestamp(Date())
 
             FirebaseUtils.userCollectionRef.document(UserID).get()
             .addOnSuccessListener { doc ->
@@ -72,7 +71,7 @@ class AuctionHouse: User {
             .orderBy(Constants.DAY_START_DATE,Query.Direction.DESCENDING).get()
             .addOnSuccessListener { documents ->
                 for(doc in documents) {
-                    var Day = AuctionDays(doc.data)
+                    val Day = AuctionDays(doc.data)
                     Day.DocumentID = doc.id
                     this.Days.add(Day)
                 }

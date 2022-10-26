@@ -13,7 +13,6 @@ import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.example.auctionhouseapp.Utils.FirebaseUtils.houseCollectionRef
 
 class CustomerActivity : AppCompatActivity() {
-    //val customer: Customer = Customer()
     val List = AuctionHousesListFragment()
     val LoadingFragment = AuctionDaysSpinner()
     val HousesList: ArrayList<AuctionHouse> = arrayListOf()

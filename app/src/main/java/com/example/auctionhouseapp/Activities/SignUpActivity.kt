@@ -4,20 +4,15 @@ import android.app.ProgressDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-
 import androidx.core.content.ContextCompat
 import com.example.auctionhouseapp.Utils.Extensions.toast
-
 import com.google.firebase.auth.FirebaseAuth
-
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import android.widget.RadioButton

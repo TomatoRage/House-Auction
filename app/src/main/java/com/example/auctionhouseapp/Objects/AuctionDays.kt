@@ -133,7 +133,7 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
                     .get()
                     .addOnSuccessListener{ docs ->
 
-                        var NextDate = docs.documents[0].data!![Constants.DAY_START_DATE] as Timestamp
+                        val NextDate = docs.documents[0].data!![Constants.DAY_START_DATE] as Timestamp
                         /**Set Closest Sales Day to house**/
                         FirebaseUtils.houseCollectionRef
                             .document(HouseID)

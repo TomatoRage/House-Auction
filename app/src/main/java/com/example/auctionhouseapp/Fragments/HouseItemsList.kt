@@ -20,7 +20,7 @@ class HouseItemsList : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         val view = inflater.inflate(R.layout.fragment_house_items_list, container, false)
         val Context = activity as ItemsList
         val ListView = view.findViewById<ListView>(R.id.house_items_list)

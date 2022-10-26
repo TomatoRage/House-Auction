@@ -12,7 +12,7 @@ class Item {
     lateinit var Description: String
     lateinit var docID:String
     lateinit var ImagesArray:ArrayList<Bitmap>
-    lateinit var imagesIDs:ArrayList<String>
+    private lateinit var imagesIDs:ArrayList<String>
     var startingPrice: Int = 0
     var lastBidderId: String? = null
     var lastBid:Int = 0

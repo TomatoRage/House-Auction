@@ -8,7 +8,6 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.Constants
-import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.example.auctionhouseapp.Utils.FirebaseUtils.firebaseUser
 import com.example.auctionhouseapp.Utils.FirebaseUtils.userCollectionRef
 
@@ -30,7 +29,7 @@ class SplashingScreenActivity : AppCompatActivity() {
 
     private fun checkUser(){
 
-        if(FirebaseUtils.firebaseUser != null){
+        if(firebaseUser != null){
             firebaseUser.let {
                 userCollectionRef
                     .document(it.uid)
@@ -52,7 +51,7 @@ class SplashingScreenActivity : AppCompatActivity() {
                     }
             }
         }
-        if(FirebaseUtils.firebaseUser == null){
+        if(firebaseUser == null){
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()

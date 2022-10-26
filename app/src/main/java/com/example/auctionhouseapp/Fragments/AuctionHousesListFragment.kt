@@ -2,8 +2,6 @@ package com.example.auctionhouseapp.Fragments
 
 import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -17,10 +15,7 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.example.auctionhouseapp.Activities.CustomerActivity
-import com.example.auctionhouseapp.Activities.HouseActivity
 import com.example.auctionhouseapp.Activities.HouseInformationActivity
-import com.example.auctionhouseapp.Activities.ViewDay
-import com.example.auctionhouseapp.AuctionDayStatus
 import com.example.auctionhouseapp.Objects.AuctionHouse
 import com.example.auctionhouseapp.R
 import java.text.SimpleDateFormat
@@ -28,16 +23,14 @@ import java.text.SimpleDateFormat
 
 class AuctionHousesListFragment : Fragment() {
 
-    private lateinit var listview : ListView
     var HousesList: ArrayList<AuctionHouse> = arrayListOf()
-    //private lateinit var adapterAuctionHousesList: AdapterAuctionHousesList
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
 
     ): View? {
-        // Inflate the layout for this fragment
+
         val view = inflater.inflate(R.layout.fragment_auction_houses_list, container, false)
         val ListView = view.findViewById<ListView>(R.id.auction_houses_list)
         val Context = activity as CustomerActivity
@@ -53,7 +46,7 @@ class AuctionHousesListFragment : Fragment() {
     private class CustomListAdapter2(context: Context, HousesList: ArrayList<AuctionHouse>): BaseAdapter(){
 
         private val mContext: Context
-        private lateinit var mHousesList: ArrayList<AuctionHouse>
+        private var mHousesList: ArrayList<AuctionHouse>
 
         init{
             mContext = context
