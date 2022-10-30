@@ -34,7 +34,15 @@ class ItemsList : AppCompatActivity() {
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+    }
+
     fun AfterDataFetch(){
+
+        if(supportFragmentManager.isDestroyed)
+            return
 
         if(userType == UserType.Customer){
             //TODO: Fill in functionality

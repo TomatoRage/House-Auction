@@ -38,7 +38,7 @@ class AuctionDaysListFragment : Fragment() {
         ListView.setOnItemClickListener { parent, view, position, id ->
             val intent = Intent(Context, ViewDay::class.java)
             intent.putExtra("Day",House.Days[position])
-            startActivity(intent)
+            Context.resultLauncher.launch(intent)
         }
 
         return view

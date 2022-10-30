@@ -27,6 +27,7 @@ class CreateDayActivity : AppCompatActivity() {
     private lateinit var AuctionMin:EditText
     private lateinit var Commission:EditText
     private lateinit var Lock:EditText
+    private lateinit var FinishedDay:AuctionDays
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -385,7 +386,7 @@ class CreateDayActivity : AppCompatActivity() {
     fun OnSuccPerform() {
 
         val intent = Intent(applicationContext, HouseActivity::class.java)
-        startActivity(intent)
+        setResult(RESULT_OK,intent)
         finish()
     }
 }

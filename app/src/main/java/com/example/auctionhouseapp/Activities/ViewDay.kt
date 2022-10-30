@@ -22,7 +22,6 @@ class ViewDay : AppCompatActivity() {
 
     lateinit var Day: AuctionDays
 
-    @RequiresApi(33)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_day)
@@ -95,7 +94,7 @@ class ViewDay : AppCompatActivity() {
                                 .addOnSuccessListener {
                                     dialog.cancel()
                                     val intent = Intent(applicationContext, HouseActivity::class.java)
-                                    startActivity(intent)
+                                    setResult(RESULT_OK)
                                     finish()
                                 }
                                 .addOnFailureListener { exception ->
