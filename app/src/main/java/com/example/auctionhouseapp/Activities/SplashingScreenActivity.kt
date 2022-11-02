@@ -49,6 +49,9 @@ class SplashingScreenActivity : AppCompatActivity() {
                             Log.d("SplashingActivity", "DOCUMENT NOT FOUND")
                         }
                     }
+                    .addOnFailureListener { exception ->
+                        Log.d("SplashingActivity", "USER FAILURE",exception)
+                    }
             }
         }
         if(firebaseUser == null){

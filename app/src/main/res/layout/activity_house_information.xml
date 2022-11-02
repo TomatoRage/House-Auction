@@ -32,15 +32,16 @@
                     <ImageView
                         android:id="@+id/img_house"
                         android:scaleType="fitXY"
+                        android:layout_centerHorizontal="true"
                         android:layout_marginBottom="15dp"
                         app:srcCompat="@drawable/house_info_img"
-                        android:layout_width="match_parent"
-                        android:layout_height="285dp"/>
+                        android:layout_width="320dp"
+                        android:layout_height="275dp"/>
                     <TextView
                         android:id="@+id/name"
                         android:text="Auction House Information"
                         android:textStyle="bold|normal"
-                        android:textSize="20sp"
+                        android:textSize="22sp"
                         android:elevation="15dp"
                         android:layout_below="@+id/img_house"
                         android:layout_marginLeft="5dp"
@@ -66,7 +67,7 @@
                 <TextView
                     android:text="House Name:"
                     android:layout_marginTop="15dp"
-                    android:textSize="17sp"
+                    android:textSize="18sp"
                     android:layout_marginEnd="30dp"
                     android:layout_marginStart="15dp"
                     android:gravity="center"
@@ -80,7 +81,7 @@
                 android:id="@+id/house_name"
                 android:text="The North Auction"
                 android:layout_marginTop="15dp"
-                android:textSize="16sp"
+                android:textSize="17sp"
                 android:textColor="@color/black"
                 android:textStyle="bold|normal"
                 android:layout_width="match_parent"
@@ -97,7 +98,7 @@
                 <TextView
                     android:text="Rating:"
                     android:layout_marginTop="5dp"
-                    android:textSize="17sp"
+                    android:textSize="18sp"
                     android:gravity="center"
                     android:layout_marginEnd="45dp"
                     android:layout_marginStart="15dp"
@@ -135,7 +136,7 @@
                 <TextView
                     android:text="Phone No':"
                     android:layout_marginTop="5dp"
-                    android:textSize="17sp"
+                    android:textSize="18sp"
                     android:layout_marginEnd="55dp"
                     android:layout_marginStart="15dp"
                     android:gravity="center"
@@ -149,7 +150,7 @@
                     android:id="@+id/house_phone"
                     android:text="050-7234564"
                     android:layout_marginTop="5dp"
-                    android:textSize="16sp"
+                    android:textSize="17sp"
                     android:textColor="@color/black"
                     android:textStyle="bold|normal"
                     android:layout_width="match_parent"
@@ -166,7 +167,7 @@
                 <TextView
                     android:text="Email:"
                     android:layout_marginTop="5dp"
-                    android:textSize="17sp"
+                    android:textSize="18sp"
                     android:layout_marginEnd="88dp"
                     android:layout_marginStart="15dp"
                     android:gravity="center"
@@ -180,7 +181,7 @@
                     android:id="@+id/house_email"
                     android:text="northen.1927@gmail.com"
                     android:layout_marginTop="5dp"
-                    android:textSize="16sp"
+                    android:textSize="17sp"
                     android:textColor="@color/black"
                     android:textStyle="bold|normal"
                     android:layout_width="match_parent"
@@ -203,7 +204,7 @@
                     android:gravity="center"
                     android:text="Closest Sales Date:"
                     android:textColor="@color/black"
-                    android:textSize="17sp"
+                    android:textSize="18sp"
                     android:textStyle="bold|normal"
                     tools:ignore="HardcodedText" />
 
@@ -211,7 +212,7 @@
                     android:id="@+id/house_closes_sales_day"
                     android:text="18/12/2022"
                     android:layout_marginTop="5dp"
-                    android:textSize="16sp"
+                    android:textSize="17sp"
                     android:textColor="@color/black"
                     android:textStyle="bold|normal"
                     android:layout_width="match_parent"
@@ -228,7 +229,7 @@
                 <TextView
                     android:text="Start Time:"
                     android:layout_marginTop="5dp"
-                    android:textSize="17sp"
+                    android:textSize="18sp"
                     android:layout_marginEnd="50dp"
                     android:layout_marginStart="15dp"
                     android:gravity="center"
@@ -242,7 +243,7 @@
                     android:id="@+id/house_closes_sale_start_time"
                     android:text="13:50"
                     android:layout_marginTop="5dp"
-                    android:textSize="16sp"
+                    android:textSize="17sp"
                     android:textColor="@color/black"
                     android:textStyle="bold|normal"
                     android:layout_width="match_parent"
@@ -253,11 +254,11 @@
 
             <Button
                 android:id="@+id/btn_upcoming_sales"
-                android:layout_width="200dp"
-                android:layout_height="60dp"
+                android:layout_width="180dp"
+                android:layout_height="55dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="19dp"
                 android:layout_marginEnd="24dp"
                 android:textSize="15sp"
                 android:background="@drawable/button_custom1"
