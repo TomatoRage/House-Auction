@@ -26,6 +26,9 @@
         <activity android:name=".Activities.ViewDay" />
         <activity android:name=".Activities.ItemsList" />
         <activity android:name=".Activities.HouseInformationActivity" />
+        <activity android:name=".Activities.CustomerDaysListActivity" />
+
+
     </application>
 
 </manifest>

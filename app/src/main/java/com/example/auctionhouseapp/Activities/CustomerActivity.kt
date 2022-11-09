@@ -1,16 +1,21 @@
 package com.example.auctionhouseapp.Activities
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.example.auctionhouseapp.Fragments.AuctionDaysSpinner
 import com.example.auctionhouseapp.Fragments.AuctionHousesListFragment
 import com.example.auctionhouseapp.Objects.AuctionHouse
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.example.auctionhouseapp.Utils.FirebaseUtils.houseCollectionRef
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class CustomerActivity : AppCompatActivity() {
     val List = AuctionHousesListFragment()
@@ -18,6 +23,7 @@ class CustomerActivity : AppCompatActivity() {
     val HousesList: ArrayList<AuctionHouse> = arrayListOf()
     var counter :Int = 0
     var numOfHouses:Int = 0
+    lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +36,15 @@ class CustomerActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentContainerViewAuctionHouses, LoadingFragment)
             commit()
+        }
+
+        resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                supportFragmentManager.beginTransaction().apply {
+                    replace(R.id.fragmentContainerViewAuctionHouses,LoadingFragment)
+                    commit()
+                }
+            }
         }
 
         findViewById<TextView>(R.id.txt_sign_out).setOnClickListener {

@@ -1,6 +1,8 @@
 package com.example.auctionhouseapp.Activities
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toolbar
@@ -19,6 +21,11 @@ class HouseInformationActivity : AppCompatActivity() {
 
         HouseId = intent.getStringExtra("HouseId") as String
         House.FetchHouseData(HouseId, ::setHouseInfoOnScreen)
+        findViewById<Button>(R.id.btn_upcoming_sales).setOnClickListener{
+            val intent = Intent(applicationContext, CustomerDaysListActivity::class.java)
+            intent.putExtra("AucHouseId",HouseId)
+            startActivity(intent)
+        }
 
     }
 
