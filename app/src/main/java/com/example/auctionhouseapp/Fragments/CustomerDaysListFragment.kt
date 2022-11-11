@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.core.view.marginStart
 import com.example.auctionhouseapp.Activities.CustomerDaysListActivity
+import com.example.auctionhouseapp.Activities.CustomerItemsListActivity
 import com.example.auctionhouseapp.Activities.HouseActivity
 import com.example.auctionhouseapp.Activities.ViewDay
 import com.example.auctionhouseapp.AuctionDayStatus
@@ -37,7 +38,7 @@ class CustomerDaysListFragment : Fragment() {
         ListView.adapter = CustomListAdapter(Context,House)
 
         ListView.setOnItemClickListener { parent, view, position, id ->
-            val intent = Intent(Context, ViewDay::class.java)
+            val intent = Intent(Context, CustomerItemsListActivity::class.java)
             intent.putExtra("Day",House.Days[position])
             startActivity(intent)
         }
