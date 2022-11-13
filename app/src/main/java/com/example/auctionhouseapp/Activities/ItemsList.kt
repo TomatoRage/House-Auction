@@ -4,8 +4,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.auctionhouseapp.R
 import android.os.Bundle
 import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.Fragments.AuctionDaysSpinner
+import com.example.auctionhouseapp.Fragments.CustomerItemsListFragment
 import com.example.auctionhouseapp.Fragments.HouseItemsList
 import com.example.auctionhouseapp.UserType
 
@@ -46,10 +50,18 @@ class ItemsList : AppCompatActivity() {
 
         if(userType == UserType.Customer){
             //TODO: Fill in functionality
-        }else{
-            val HouseList = HouseItemsList()
+            val HouseList = CustomerItemsListFragment()
             HouseList.Day = Day
-
+            HouseList.HouseId = HouseID
+            findViewById<FragmentContainerView>(R.id.fragmentContainerView3).isVisible=false
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragmentContainerView4, HouseList)
+                commit()
+            }
+        }else{
+            val HouseList = CustomerItemsListFragment()
+            HouseList.Day = Day
+            findViewById<FragmentContainerView>(R.id.fragmentContainerView4).isVisible=false
             supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fragmentContainerView3, HouseList)
                 commit()

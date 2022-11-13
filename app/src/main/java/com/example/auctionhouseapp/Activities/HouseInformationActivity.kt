@@ -23,7 +23,7 @@ class HouseInformationActivity : AppCompatActivity() {
         House.FetchHouseData(HouseId, ::setHouseInfoOnScreen)
         findViewById<Button>(R.id.btn_upcoming_sales).setOnClickListener{
             val intent = Intent(applicationContext, CustomerDaysListActivity::class.java)
-            intent.putExtra("AucHouseId",HouseId)
+            intent.putExtra("HouseId",HouseId)
             startActivity(intent)
         }
 

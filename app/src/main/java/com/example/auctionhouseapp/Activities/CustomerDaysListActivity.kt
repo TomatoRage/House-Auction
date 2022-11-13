@@ -18,12 +18,12 @@ class CustomerDaysListActivity : AppCompatActivity() {
     val House: AuctionHouse = AuctionHouse()
     val LoadingFragment = AuctionDaysSpinner()
     val List = CustomerDaysListFragment()
-    lateinit var houseId: String
+    lateinit var HouseId: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_days_list)
-        houseId = intent.getStringExtra("AucHouseId") as String
-        House.FetchHouseData(houseId, ::setHouseDaysOnScreen)
+        HouseId = intent.getStringExtra("HouseId") as String
+        House.FetchHouseData(HouseId, ::setHouseDaysOnScreen)
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentContainerViewAuctionDays,LoadingFragment)
             commit()
@@ -38,7 +38,7 @@ class CustomerDaysListActivity : AppCompatActivity() {
     }
     fun setHouseDaysOnScreen() {
         List.House = House
-
+        List.HouseId = HouseId
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentContainerViewAuctionDays,List)
             commit()

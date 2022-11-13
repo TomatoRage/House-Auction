@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.CustomerItemsListActivity">
+    tools:context=".Fragments.CustomerItemsListFragment">
 
     <Toolbar
         android:id="@+id/my_toolbar"
@@ -18,6 +18,7 @@
         app:layout_constraintHorizontal_bias="0.13"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
@@ -26,22 +27,24 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="62dp"
+        android:layout_marginTop="72dp"
         android:background="@drawable/button_custom1"
         android:elevation="10dp"
         android:text="Auction Item"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/my_toolbar" />
 
     <TextView
         android:id="@+id/btn_sign_out_customer_list_items"
-        android:layout_width="60dp"
+        android:layout_width="65dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="10dp"
         android:elevation="10dp"
         android:text="Sign Out"
+        android:textStyle = "bold"
+        android:textSize="16sp"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.902"
@@ -50,27 +53,29 @@
 
     <TextView
         android:id="@+id/btn_back_customer_list_items"
-        android:layout_width="30dp"
+        android:layout_width="35dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="352dp"
+        android:layout_marginEnd="250dp"
+        android:layout_marginStart="20dp"
         android:background="@drawable/back_arrow"
         android:elevation="10dp"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/btn_sign_out_customer_list_items"
+        app:layout_constraintEnd_toStartOf="@+id/btn_sign_out_customer_list_items"
+        app:layout_constraintStart_toStartOf="@+id/my_toolbar"
+        app:layout_constraintTop_toTopOf="@+id/btn_sign_out_customer_list_items"
+        app:layout_constraintVertical_bias="1.0" />
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentContainerViewCustomerListItems"
-        android:name="com.example.auctionhouseapp.Fragments.CustomerItemsListFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="16dp"
+    <ListView
+        android:id="@+id/auction_house_items"
+        android:layout_width="406dp"
+        android:layout_height="697dp"
+        android:layout_marginTop="135dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_auction_house" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_auction_house"
+        tools:listitem="@layout/house_item_list_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

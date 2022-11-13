@@ -14,17 +14,17 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.core.view.marginStart
-import com.example.auctionhouseapp.Activities.CustomerDaysListActivity
-import com.example.auctionhouseapp.Activities.CustomerItemsListActivity
-import com.example.auctionhouseapp.Activities.HouseActivity
-import com.example.auctionhouseapp.Activities.ViewDay
+import com.example.auctionhouseapp.Activities.*
 import com.example.auctionhouseapp.AuctionDayStatus
 import com.example.auctionhouseapp.Objects.AuctionHouse
 import com.example.auctionhouseapp.R
+import com.example.auctionhouseapp.UserType
+import com.example.auctionhouseapp.Utils.FirebaseUtils
 
 class CustomerDaysListFragment : Fragment() {
 
     var House = AuctionHouse()
+    lateinit var HouseId:String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,10 +36,11 @@ class CustomerDaysListFragment : Fragment() {
         val Context = activity as CustomerDaysListActivity
 
         ListView.adapter = CustomListAdapter(Context,House)
-
         ListView.setOnItemClickListener { parent, view, position, id ->
-            val intent = Intent(Context, CustomerItemsListActivity::class.java)
+            val intent = Intent(Context, ItemsList::class.java)
             intent.putExtra("Day",House.Days[position])
+            intent.putExtra("House ID", HouseId)
+            intent.putExtra("Type", UserType.Customer.Type)
             startActivity(intent)
         }
         return view

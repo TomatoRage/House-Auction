@@ -4,10 +4,15 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import com.example.auctionhouseapp.AuctionDays
+import com.example.auctionhouseapp.Fragments.AuctionDaysSpinner
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 
 class CustomerItemsListActivity : AppCompatActivity() {
+    lateinit var Day: AuctionDays
+    lateinit var HouseID:String
+    val LoadingFragment = AuctionDaysSpinner()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_items_list)
