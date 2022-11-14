@@ -27,7 +27,6 @@
         <activity android:name=".Activities.ItemsList" />
         <activity android:name=".Activities.HouseInformationActivity" />
         <activity android:name=".Activities.CustomerDaysListActivity" />
-        <activity android:name=".Activities.CustomerItemsListActivity" />
         <activity android:name=".Activities.AuctionItemActivity" />
     </application>
 

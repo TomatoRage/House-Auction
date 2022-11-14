@@ -35,6 +35,10 @@ class CustomerDaysListActivity : AppCompatActivity() {
             finish()
         }
 
+        findViewById<TextView>(R.id.txt_back).setOnClickListener {
+            finish()
+        }
+
     }
     fun setHouseDaysOnScreen() {
         List.House = House

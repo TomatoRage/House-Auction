@@ -27,6 +27,11 @@ class HouseInformationActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        findViewById<TextView>(R.id.txt_back).setOnClickListener {
+            finish()
+        }
+
+
     }
 
     fun setHouseInfoOnScreen () {

@@ -31,7 +31,7 @@
         android:fontFamily="@font/metropolis_regular"
         android:text="Sign Out"
         android:textColor="@color/darkblue"
-        android:textSize="20sp" />
+        android:textSize="19sp" />
 
 
     <androidx.fragment.app.FragmentContainerView

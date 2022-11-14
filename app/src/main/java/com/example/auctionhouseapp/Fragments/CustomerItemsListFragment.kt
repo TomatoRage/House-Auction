@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.*
 import com.example.auctionhouseapp.Activities.AuctionItemActivity
 import com.example.auctionhouseapp.Activities.ItemsList
+import com.example.auctionhouseapp.Activities.LoginActivity
 import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.Objects.Item
 import com.example.auctionhouseapp.R
@@ -30,11 +31,17 @@ class CustomerItemsListFragment : Fragment() {
         val Context = activity as ItemsList
         val ListView = view.findViewById<ListView>(R.id.auction_house_items)
 
-        view.findViewById<TextView>(R.id.btn_back_customer_list_items).setOnClickListener {
+        view.findViewById<TextView>(R.id.txt_back).setOnClickListener {
             Context.finish()
         }
 
-        view.findViewById<Button>(R.id.btn_auction_house).setOnClickListener{
+        view.findViewById<TextView>(R.id.txt_sign_out).setOnClickListener {
+            FirebaseUtils.firebaseAuth.signOut()
+            val intent = Intent(context, LoginActivity::class.java)
+            startActivity(intent)
+        }
+
+        view.findViewById<Button>(R.id.btn_auction_item).setOnClickListener{
             val intent = Intent(Context, AuctionItemActivity::class.java)
             intent.putExtra("Day",Day)
             intent.putExtra("House ID", HouseId)
