@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/snow"
+    android:background="@color/white"
     tools:context=".Activities.HouseInformationActivity">
 
 
@@ -30,7 +30,6 @@
                     android:fontFamily="@font/metropolis_regular"
                     android:layout_marginLeft="15dp"
                     android:gravity="left"
-                    android:textColor="@color/darkblue"
                     android:textSize="20sp" />
                 <TextView
                     android:id="@+id/txt_sign_out"
@@ -42,7 +41,7 @@
                     android:fontFamily="@font/metropolis_regular"
                     android:gravity="right"
                     android:text="Sign Out"
-                    android:textColor="@color/darkblue"
+                    android:textColor="@color/black"
                     android:textSize="20sp" />
 
 
@@ -73,19 +72,19 @@
                         android:scaleType="fitXY"
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="15dp"
-                        app:srcCompat="@drawable/house_info_img"
+                        app:srcCompat="@drawable/img_house_info"
                         android:layout_width="320dp"
                         android:layout_height="275dp"/>
                     <TextView
                         android:id="@+id/name"
                         android:text="Auction House Information"
-                        android:textStyle="bold|normal"
-                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textSize="28sp"
                         android:elevation="15dp"
                         android:layout_below="@+id/img_house"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:textColor="@color/black"
+                        android:textColor="#A3162C"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 

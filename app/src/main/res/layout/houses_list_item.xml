@@ -24,8 +24,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
-                android:fontFamily="@font/metropolis_semibold"
-                android:text="House Name"
+                android:fontFamily="@font/fogf"
+                android:textStyle="bold"
+                android:text="Northen House"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@color/black"
                 android:textSize="23sp"
@@ -37,13 +38,17 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <ImageView
+                <com.mikhaellopez.circularimageview.CircularImageView
                     android:layout_width="75dp"
                     android:layout_height="75dp"
                     android:layout_marginStart="15dp"
-                    app:srcCompat="@drawable/item_pic"
-                    android:contentDescription="Auction House"
-                    tools:ignore="HardcodedText"/>
+                    app:srcCompat="@drawable/img_northen_house"
+                    app:civ_border_color="#3f51b5"
+                    app:civ_border_width="2dp"
+                    app:civ_shadow="true"
+                    app:civ_shadow_radius="1dp"
+                    app:civ_shadow_color="#3f51b5"/>
+
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -55,6 +60,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="27dp"
                         android:text="Rating:"
+                        android:fontFamily="@font/fogf"
+                        android:textStyle="bold"
                         android:layout_marginTop="5dp"
                         android:textColor="@color/black"
                         android:textSize="17sp"
@@ -64,6 +71,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:gravity="center"
+                        android:fontFamily="@font/fogf"
+                        android:textStyle="bold"
                         android:text="Closest Sale Day:"
                         android:textColor="@color/black"
                         android:textSize="17sp"
@@ -99,6 +108,8 @@
                         android:id="@+id/closest_sale_day"
                         android:layout_width="match_parent"
                         android:layout_height="27dp"
+                        android:fontFamily="@font/fogf"
+                        android:textStyle="bold"
                         android:layout_marginStart="10dp"
                         android:text="29/02/2023"
                         android:textColor="@color/firebrick"

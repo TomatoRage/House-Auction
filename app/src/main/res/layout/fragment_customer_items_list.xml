@@ -33,7 +33,7 @@
         android:backgroundTint="@color/white"
         android:fontFamily="@font/metropolis_regular"
         android:text="Sign Out"
-        android:textColor="@color/darkblue"
+        android:textColor="@color/black"
         android:textSize="19sp" />
 
     <TextView
