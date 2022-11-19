@@ -5,8 +5,9 @@ import android.graphics.BitmapFactory
 import android.util.Log
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.FirebaseUtils
+import java.io.Serializable
 
-class Item {
+class Item : Serializable,Comparable<Item> {
     lateinit var ownerId: String
     lateinit var Name: String
     lateinit var Description: String
@@ -64,6 +65,10 @@ class Item {
 
     companion object {
         private val TAG = "Item Object"
+    }
+
+    override fun compareTo(other: Item): Int {
+        TODO("Not yet implemented")
     }
 
 }

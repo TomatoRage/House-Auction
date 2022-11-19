@@ -11,6 +11,7 @@ import android.widget.*
 import com.example.auctionhouseapp.Activities.AuctionItemActivity
 import com.example.auctionhouseapp.Activities.ItemsList
 import com.example.auctionhouseapp.Activities.LoginActivity
+import com.example.auctionhouseapp.Activities.ViewItem
 import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.Objects.Item
 import com.example.auctionhouseapp.R
@@ -48,9 +49,15 @@ class CustomerItemsListFragment : Fragment() {
             intent.putExtra("Type", UserType.Customer.Type)
             startActivity(intent)
         }
+        ListView.adapter = CustomListAdapter(Context,Day.Items!!)
 
-        if(Day.Items != null)
-            ListView.adapter = CustomListAdapter(Context,Day.Items!!)
+        ListView.setOnItemClickListener { parent, view, position, id ->
+            val intent = Intent(Context, ViewItem::class.java)
+            intent.putExtra("Item",Day.Items[position])
+            intent.putExtra("House ID", HouseId)
+            intent.putExtra("Type", UserType.Customer.Type)
+            startActivity(intent)
+        }
 
         return view
     }
