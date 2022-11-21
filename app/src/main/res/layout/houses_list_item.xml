@@ -94,7 +94,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:numStars="5"
-                        android:rating="3"
+                        android:progressTint="@color/gold"
+                        android:rating="3.5"
+                        android:secondaryProgressTint="#FFFFFF"
                         android:clickable="false"
                         android:focusableInTouchMode="false"
                         android:isIndicator="true"
@@ -112,7 +114,7 @@
                         android:textStyle="bold"
                         android:layout_marginStart="10dp"
                         android:text="29/02/2023"
-                        android:textColor="@color/firebrick"
+                        android:textColor="@color/black"
                         android:textSize="17sp"
                         tools:ignore="HardcodedText" />
 

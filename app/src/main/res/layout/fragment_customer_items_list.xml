@@ -7,19 +7,6 @@
     tools:context=".Fragments.CustomerItemsListFragment">
 
 
-    <Button
-        android:id="@+id/btn_auction_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
-        android:background="@drawable/button_custom1"
-        android:elevation="10dp"
-        android:fontFamily="@font/metropolis_semibold"
-        android:text="Auction Item"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/txt_sign_out"
@@ -44,22 +31,39 @@
         android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginRight="7dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="200dp"
         android:layout_marginBottom="10dp"
-        android:layout_toLeftOf="@+id/btn_auction_item"
+        android:layout_toLeftOf="@+id/txt_sign_out"
         android:background="@drawable/back_arrow"
         android:fontFamily="@font/metropolis_regular"
         android:textColor="@color/darkblue"
         android:textSize="20sp" />
 
+
     <ListView
         android:id="@+id/auction_house_items"
-        tools:listitem="@layout/house_item_list_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/btn_auction_item"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="16dp" />/>
+        android:layout_below="@+id/txt_back"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="16dp"
+        tools:listitem="@layout/house_item_list_item" />
+
+    <Button
+        android:id="@+id/btn_auction_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/auction_house_items"
+        android:background="@drawable/button_custom1"
+        android:elevation="10dp"
+        android:fontFamily="@font/metropolis_semibold"
+        android:text="Auction Item"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        tools:ignore="HardcodedText" />
 
 </RelativeLayout>
 

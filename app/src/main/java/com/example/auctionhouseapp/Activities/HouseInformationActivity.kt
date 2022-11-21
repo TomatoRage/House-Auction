@@ -9,6 +9,7 @@ import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import com.example.auctionhouseapp.Objects.AuctionHouse
 import com.example.auctionhouseapp.R
+import com.example.auctionhouseapp.Utils.FirebaseUtils
 import java.text.SimpleDateFormat
 
 class HouseInformationActivity : AppCompatActivity() {
@@ -28,6 +29,13 @@ class HouseInformationActivity : AppCompatActivity() {
         }
 
         findViewById<TextView>(R.id.txt_back).setOnClickListener {
+            finish()
+        }
+
+        findViewById<TextView>(R.id.txt_sign_out).setOnClickListener {
+            FirebaseUtils.firebaseAuth.signOut()
+            val intent = Intent(applicationContext, LoginActivity::class.java)
+            startActivity(intent)
             finish()
         }
 

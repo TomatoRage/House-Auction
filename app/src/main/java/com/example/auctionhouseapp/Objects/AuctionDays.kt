@@ -31,7 +31,7 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
     var NumOfRequested:Int = -1
     var NumOfSoldItems:Int = -1
     var Status:AuctionDayStatus = AuctionDayStatus.Pending
-    var Items:ArrayList<Item>? = null
+    val Items:ArrayList<Item> = arrayListOf()
 
     constructor()
 
@@ -156,7 +156,6 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
 
     fun FetchItems(NumToFetch:Int,HouseID: String,ToPerform: () -> Unit){
 
-        Items = arrayListOf()
         FirebaseUtils.houseCollectionRef
             .document(HouseID)
             .collection(Constants.SALES_DAY_COLLECTION)

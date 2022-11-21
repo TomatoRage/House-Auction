@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.ViewItem">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/LayoutTop"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txt_back"
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_weight="0.4"
+                android:background="@drawable/back_arrow"
+                android:fontFamily="@font/metropolis_regular"
+                android:layout_marginLeft="15dp"
+                android:gravity="left"
+                android:textSize="20sp" />
+            <TextView
+                android:id="@+id/txt_sign_out"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:layout_marginRight="7dp"
+                android:fontFamily="@font/metropolis_regular"
+                android:gravity="right"
+                android:text="Sign Out"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+
+
+        </LinearLayout>
+
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="345dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="5dp"
+            app:cardMaxElevation="1.5dp"
+            app:cardElevation="1dp"
+            app:contentPadding="10dp"
+            app:contentPaddingBottom="0dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true"
+            android:id="@+id/cardView">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/img_item"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="15dp"
+                    android:background = "@drawable/round_outline"
+                    android:layout_width="310dp"
+                    android:layout_height="265dp"
+                    android:clipToOutline="true"
+                    android:scaleType="centerCrop"
+                    tools:srcCompat="@drawable/img_item_example"/>
+
+                <TextView
+                    android:id="@+id/item_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_item"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="5dp"
+                    android:elevation="15dp"
+                    android:text="Yamaha V-Max"
+                    android:textColor="#A3162C"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+
+
+        </androidx.cardview.widget.CardView>
+
+
+
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="Description:"
+                android:layout_marginTop="2dp"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/item_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="5dp"
+                android:text="Well done Yamaha, finally the new V-MAX are here. This Bike hase new R1-derived inline-four that’s boosted to 164 hp. The key upgrade with the SP edition is the new six-axis semi-active Öhlins SMART EC 2.0 electronic suspension."
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="Sales Day:"
+                android:layout_marginTop="3dp"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textStyle="bold|normal"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/item_sales_day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="5dp"
+                android:text="30/02/2023"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="Sales Start Time:"
+                android:layout_marginTop="5dp"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textStyle="bold|normal"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/item_sales_start_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginStart="5dp"
+                android:text="13:50"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText" />"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:text="Start Price::"
+                android:layout_marginTop="5dp"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textStyle="bold|normal"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/item_start_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginStart="5dp"
+                android:text="11000$"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText" />"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>
