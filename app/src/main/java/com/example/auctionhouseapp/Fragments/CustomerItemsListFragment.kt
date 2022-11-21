@@ -17,7 +17,7 @@ import com.example.auctionhouseapp.Objects.Item
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.UserType
 import com.example.auctionhouseapp.Utils.FirebaseUtils
-import org.w3c.dom.Text
+
 
 class CustomerItemsListFragment : Fragment() {
 
@@ -38,7 +38,7 @@ class CustomerItemsListFragment : Fragment() {
 
         view.findViewById<TextView>(R.id.txt_sign_out).setOnClickListener {
             FirebaseUtils.firebaseAuth.signOut()
-            val intent = Intent(context, LoginActivity::class.java)
+            val intent = Intent(Context, LoginActivity::class.java)
             startActivity(intent)
         }
 
@@ -49,10 +49,11 @@ class CustomerItemsListFragment : Fragment() {
             intent.putExtra("Type", UserType.Customer.Type)
             startActivity(intent)
         }
-        ListView.adapter = CustomListAdapter(Context,Day.Items!!)
+        ListView.adapter = CustomListAdapter(Context,Day.Items)
 
         ListView.setOnItemClickListener { parent, view, position, id ->
             val intent = Intent(Context, ViewItem::class.java)
+            intent.putExtra("Day",Day)
             intent.putExtra("Item",Day.Items[position])
             intent.putExtra("House ID", HouseId)
             intent.putExtra("Type", UserType.Customer.Type)

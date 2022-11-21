@@ -92,6 +92,24 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
         }
     }
 
+    fun updateStatus() {
+        val Time:Date = Timestamp(Date()).toDate()
+        if(StartDate.before(Time)){
+            if(NumOfSoldItems < NumOfItems) {
+                Status = AuctionDayStatus.Happening
+                return
+            }
+            if(NumOfSoldItems == NumOfItems){
+                Status = AuctionDayStatus.Occurred
+                return
+            }
+        }else{
+            Status = AuctionDayStatus.Pending
+            return
+        }
+
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun PrintDate():String{
         val formatter = SimpleDateFormat("dd/MM/yyyy").format(StartDate)

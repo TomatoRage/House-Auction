@@ -1,70 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".Fragments.CustomerItemsListFragment">
 
-
-
-    <TextView
-        android:id="@+id/txt_sign_out"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginBottom="10dp"
-        android:backgroundTint="@color/white"
-        android:fontFamily="@font/metropolis_regular"
-        android:text="Sign Out"
-        android:textColor="@color/black"
-        android:textSize="19sp" />
-
-    <TextView
-        android:id="@+id/txt_back"
-        android:layout_width="10dp"
-        android:layout_height="30dp"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="200dp"
-        android:layout_marginBottom="10dp"
-        android:layout_toLeftOf="@+id/txt_sign_out"
-        android:background="@drawable/back_arrow"
-        android:fontFamily="@font/metropolis_regular"
-        android:textColor="@color/darkblue"
-        android:textSize="20sp" />
-
-
-    <ListView
-        android:id="@+id/auction_house_items"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/txt_back"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="16dp"
-        tools:listitem="@layout/house_item_list_item" />
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btn_auction_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/auction_house_items"
-        android:background="@drawable/button_custom1"
-        android:elevation="10dp"
-        android:fontFamily="@font/metropolis_semibold"
-        android:text="Auction Item"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/txt_sign_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/white"
+            android:fontFamily="@font/metropolis_regular"
+            android:text="Sign Out"
+            android:textColor="@color/black"
+            android:textSize="19sp" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/txt_back"
+            android:layout_width="10dp"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="200dp"
+            android:layout_marginBottom="10dp"
+            android:layout_toLeftOf="@+id/txt_sign_out"
+            android:background="@drawable/back_arrow"
+            android:fontFamily="@font/metropolis_regular"
+            android:textColor="@color/darkblue"
+            android:textSize="20sp" />
+
+
+        <ListView
+            android:id="@+id/auction_house_items"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/btn_auction_item"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="16dp"
+            tools:listitem="@layout/house_item_list_item" />
+
+        <Button
+            android:id="@+id/btn_auction_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_back"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="9dp"
+            android:background="@drawable/button_custom1"
+            android:elevation="10dp"
+            android:fontFamily="@font/metropolis_semibold"
+            android:text="Auction Item"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            tools:ignore="HardcodedText" />
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>
 
 

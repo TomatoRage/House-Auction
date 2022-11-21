@@ -35,9 +35,6 @@ class ItemsList : AppCompatActivity() {
             commit()
         }
 
-        if(userType == UserType.AuctionHouse)
-            findViewById<FragmentContainerView>(R.id.fragmentContainerView4).isVisible=false
-
         Day.FetchItems(5,HouseID,::AfterDataFetch)
 
     }
@@ -53,18 +50,16 @@ class ItemsList : AppCompatActivity() {
             return
 
         if(userType == UserType.Customer){
-            val HouseList = CustomerItemsListFragment()
-            HouseList.Day = Day
-            HouseList.HouseId = HouseID
-            findViewById<FragmentContainerView>(R.id.fragmentContainerView3).isVisible=false
+            val CustomerList = CustomerItemsListFragment()
+            CustomerList.Day = Day
+            CustomerList.HouseId = HouseID
             supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fragmentContainerView4, HouseList)
+                replace(R.id.fragmentContainerView3, CustomerList)
                 commit()
             }
-        }else{
+        } else{
             val HouseList = HouseItemsList()
             HouseList.Day = Day
-            findViewById<FragmentContainerView>(R.id.fragmentContainerView4).isVisible=false
             supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fragmentContainerView3, HouseList)
                 commit()

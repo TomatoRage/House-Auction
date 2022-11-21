@@ -9,9 +9,13 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.core.view.isVisible
 import com.example.auctionhouseapp.AuctionDays
+import com.example.auctionhouseapp.Fragments.CustomerItemsListFragment
+import com.example.auctionhouseapp.Fragments.HouseItemsList
+import com.example.auctionhouseapp.Fragments.ItemInfoFragment
 import com.example.auctionhouseapp.Objects.AuctionHouse
 import com.example.auctionhouseapp.Objects.Item
 import com.example.auctionhouseapp.R
+import com.example.auctionhouseapp.UserType
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import java.text.SimpleDateFormat
 
@@ -19,13 +23,15 @@ class ViewItem : AppCompatActivity() {
     lateinit var HouseId:String
     lateinit var item: Item
     lateinit var day: AuctionDays
+    lateinit var userType:UserType
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_item)
 
-        HouseId = intent.getStringExtra("HouseId") as String
+        HouseId = intent.getStringExtra("House ID") as String
         day = intent.getStringExtra("Day",) as AuctionDays
         item = intent.getStringExtra("Item") as Item
+        userType = intent.getStringExtra("Type") as UserType
 
 
         findViewById<TextView>(R.id.txt_back).setOnClickListener {
@@ -38,21 +44,28 @@ class ViewItem : AppCompatActivity() {
             finish()
         }
 
-
+        setItemInfoOnScreen ()
     }
 
-    fun setHouseInfoOnScreen () {
+    fun setItemInfoOnScreen () {
+        if(supportFragmentManager.isDestroyed)
+            return
+
         findViewById<ImageView>(R.id.img_item).setImageBitmap(item.ImagesArray[0])
         findViewById<TextView>(R.id.item_description).text = item.Description
-        findViewById<TextView>(R.id.item_sales_day).setText(
-            SimpleDateFormat("dd/MM/yyyy")
-                .format(day.StartDate)
-        )
-        findViewById<TextView>(R.id.item_sales_start_time).setText(
-            SimpleDateFormat("HH:mm:ss")
-                .format(day.StartDate)
-        )
 
-        findViewById<TextView>(R.id.item_start_price).isVisible = false
+        if(userType == UserType.Customer){
+            val info = ItemInfoFragment()
+            info.item = item
+            info.day = day
+            info.userType = userType
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragmentContainerViewItemInfo, info)
+                commit()
+            }
+        }else{
+            /*TODO IN AUCTION HOUSE MODE*/
+        }
+
     }
 }
