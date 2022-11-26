@@ -3,6 +3,7 @@ package com.example.auctionhouseapp.Fragments
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +22,7 @@ import com.example.auctionhouseapp.Utils.FirebaseUtils
 
 class CustomerItemsListFragment : Fragment() {
 
-    var Day:AuctionDays = AuctionDays()
+    var day = AuctionDays()
     lateinit var HouseId:String
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,8 +30,24 @@ class CustomerItemsListFragment : Fragment() {
     ): View? {
 
         val view = inflater.inflate(R.layout.fragment_customer_items_list, container, false)
-        val Context = activity as ItemsList
         val ListView = view.findViewById<ListView>(R.id.auction_house_items)
+        val Context = activity as ItemsList
+
+        ListView.adapter = CustomListAdapter(Context,day.Items)
+        ListView.setOnItemClickListener { parent, view, position, id ->
+            val intent = Intent(Context, ViewItem::class.java)
+            //intent.putExtra("Day",day)
+            //Log.i("ItemsFrag", Day.Title)
+
+            intent.putExtra("Item",day.Items[position])
+            Log.i("ItemsFrag", day.Items[position].Name)
+            Context.resultLauncher.launch(intent)
+//            intent.putExtra("House ID", HouseId)
+//            Log.i("ItemsFrag",HouseId)
+//            val userType = UserType.Customer
+//            intent.putExtra("Type", userType)
+//           startActivity(intent)
+        }
 
         view.findViewById<TextView>(R.id.txt_back).setOnClickListener {
             Context.finish()
@@ -44,17 +61,7 @@ class CustomerItemsListFragment : Fragment() {
 
         view.findViewById<Button>(R.id.btn_auction_item).setOnClickListener{
             val intent = Intent(Context, AuctionItemActivity::class.java)
-            intent.putExtra("Day",Day)
-            intent.putExtra("House ID", HouseId)
-            intent.putExtra("Type", UserType.Customer.Type)
-            startActivity(intent)
-        }
-        ListView.adapter = CustomListAdapter(Context,Day.Items)
-
-        ListView.setOnItemClickListener { parent, view, position, id ->
-            val intent = Intent(Context, ViewItem::class.java)
-            intent.putExtra("Day",Day)
-            intent.putExtra("Item",Day.Items[position])
+            intent.putExtra("Day",day)
             intent.putExtra("House ID", HouseId)
             intent.putExtra("Type", UserType.Customer.Type)
             startActivity(intent)

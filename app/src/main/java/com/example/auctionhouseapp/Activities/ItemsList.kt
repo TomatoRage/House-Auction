@@ -1,8 +1,13 @@
 package com.example.auctionhouseapp.Activities
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import com.example.auctionhouseapp.R
 import android.os.Bundle
+import android.util.Log
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -20,6 +25,7 @@ class ItemsList : AppCompatActivity() {
     lateinit var Day:AuctionDays
     lateinit var HouseID:String
     val LoadingFragment = AuctionDaysSpinner()
+    lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
     @RequiresApi(33)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,17 +33,27 @@ class ItemsList : AppCompatActivity() {
         setContentView(R.layout.activity_items_list)
 
         userType = UserType.getByValue(intent.getIntExtra("Type",0))
-        Day = intent.getSerializableExtra("Day",) as AuctionDays
+        Day = intent.getSerializableExtra("Day") as AuctionDays
         HouseID = intent.getStringExtra("House ID")!!
 
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragmentContainerView3,LoadingFragment)
-            commit()
-        }
+//        supportFragmentManager.beginTransaction().apply {
+//            replace(R.id.fragmentContainerView3,LoadingFragment)
+//            commit()
+//        }
 
         Day.FetchItems(5,HouseID,::AfterDataFetch)
 
+        resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                supportFragmentManager.beginTransaction().apply {
+                    replace(R.id.fragmentContainerView3,LoadingFragment)
+                    commit()
+                }
+            }
+        }
+
     }
+
 
     override fun onDestroy() {
         super.onDestroy()
@@ -51,7 +67,7 @@ class ItemsList : AppCompatActivity() {
 
         if(userType == UserType.Customer){
             val CustomerList = CustomerItemsListFragment()
-            CustomerList.Day = Day
+            CustomerList.day = Day
             CustomerList.HouseId = HouseID
             supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fragmentContainerView3, CustomerList)

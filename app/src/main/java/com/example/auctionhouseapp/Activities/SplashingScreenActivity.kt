@@ -23,7 +23,7 @@ class SplashingScreenActivity : AppCompatActivity() {
 
             checkUser()
 
-        }, 1000)
+        }, 100)
 
     }
 

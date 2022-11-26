@@ -40,7 +40,7 @@ class CustomerDaysListFragment : Fragment() {
             val intent = Intent(Context, ItemsList::class.java)
             intent.putExtra("Day",House.Days[position])
             intent.putExtra("House ID", HouseId)
-            intent.putExtra("Type", UserType.Customer.Type)
+            intent.putExtra("Type", UserType.Customer)
             startActivity(intent)
         }
         return view
