@@ -29,9 +29,9 @@ class ViewItem : AppCompatActivity() {
         setContentView(R.layout.activity_view_item)
 
         HouseId = intent.getStringExtra("House ID") as String
-        day = intent.getStringExtra("Day",) as AuctionDays
-        item = intent.getStringExtra("Item") as Item
-        userType = intent.getStringExtra("Type") as UserType
+        day = intent.getSerializableExtra("Day",) as AuctionDays
+        item = intent.getSerializableExtra("Item") as Item
+        userType = UserType.getByValue(intent.getIntExtra("Type",0))
 
 
         findViewById<TextView>(R.id.txt_back).setOnClickListener {
