@@ -135,7 +135,7 @@
             android:background="@drawable/edit_text_bg"
             android:drawableRight="@null"
             android:fontFamily="@font/metropolis_regular"
-            android:inputType="phone"
+            android:inputType="number"
             android:maxLines="1"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
@@ -166,13 +166,13 @@
 
 
         <Button
-            android:id="@+id/btn_create_day_confirm"
+            android:id="@+id/btn_auction_item2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/btn_bg"
             android:elevation="10dp"
-            android:text="Create"
+            android:text="AUCTION ITEM"
             android:textColor="@color/white" />
 
 
