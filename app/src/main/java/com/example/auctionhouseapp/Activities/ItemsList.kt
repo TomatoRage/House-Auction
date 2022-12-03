@@ -36,10 +36,6 @@ class ItemsList : AppCompatActivity() {
         Day = intent.getSerializableExtra("Day") as AuctionDays
         HouseID = intent.getStringExtra("House ID")!!
 
-//        supportFragmentManager.beginTransaction().apply {
-//            replace(R.id.fragmentContainerView3,LoadingFragment)
-//            commit()
-//        }
 
         Day.FetchItems(5,HouseID,::AfterDataFetch)
 

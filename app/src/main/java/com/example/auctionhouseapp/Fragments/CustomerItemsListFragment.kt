@@ -18,6 +18,7 @@ import com.example.auctionhouseapp.Objects.Item
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.UserType
 import com.example.auctionhouseapp.Utils.FirebaseUtils
+import java.text.SimpleDateFormat
 
 
 class CustomerItemsListFragment : Fragment() {
@@ -36,17 +37,13 @@ class CustomerItemsListFragment : Fragment() {
         ListView.adapter = CustomListAdapter(Context,day.Items)
         ListView.setOnItemClickListener { parent, view, position, id ->
             val intent = Intent(Context, ViewItem::class.java)
-            //intent.putExtra("Day",day)
-            //Log.i("ItemsFrag", Day.Title)
-
             intent.putExtra("Item",day.Items[position])
-            Log.i("ItemsFrag", day.Items[position].Name)
-            Context.resultLauncher.launch(intent)
-//            intent.putExtra("House ID", HouseId)
-//            Log.i("ItemsFrag",HouseId)
-//            val userType = UserType.Customer
-//            intent.putExtra("Type", userType)
-//           startActivity(intent)
+            intent.putExtra("SalesDate", day.PrintStartTime())
+            intent.putExtra("StartTime", day.PrintStartTime())
+            intent.putExtra("House ID", HouseId)
+            val userType = UserType.Customer
+            intent.putExtra("Type", userType)
+            startActivity(intent)
         }
 
         view.findViewById<TextView>(R.id.txt_back).setOnClickListener {
@@ -61,9 +58,9 @@ class CustomerItemsListFragment : Fragment() {
 
         view.findViewById<Button>(R.id.btn_auction_item).setOnClickListener{
             val intent = Intent(Context, AuctionItemActivity::class.java)
-            intent.putExtra("Day",day)
+            intent.putExtra("Day ID",day.DocumentID)
             intent.putExtra("House ID", HouseId)
-            intent.putExtra("Type", UserType.Customer.Type)
+            //intent.putExtra("Type", UserType.Customer.Type)
             startActivity(intent)
         }
 

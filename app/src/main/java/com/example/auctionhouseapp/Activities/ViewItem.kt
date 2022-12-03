@@ -24,14 +24,17 @@ class ViewItem : AppCompatActivity() {
     lateinit var item: Item
     lateinit var day: AuctionDays
     lateinit var userType:UserType
+    lateinit var SalesDate:String
+    lateinit var StartTime:String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_item)
 
-        day = intent.getSerializableExtra("Day",) as AuctionDays
         item = intent.getSerializableExtra("Item") as Item
         HouseId = intent.getStringExtra("House ID") as String
         userType = UserType.getByValue(intent.getIntExtra("Type",0))
+        SalesDate = intent.getStringExtra("SalesDate")!!
+        StartTime = intent.getStringExtra("StartTime")!!
 
 
         findViewById<TextView>(R.id.txt_back).setOnClickListener {
@@ -56,8 +59,9 @@ class ViewItem : AppCompatActivity() {
 
         if(userType == UserType.Customer){
             val info = ItemInfoFragment()
-            info.item = item
-            info.day = day
+            info.SalesDate = SalesDate
+            info.StartTime = StartTime
+            info.StartPrice = item.startingPrice
             info.userType = userType
             supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fragmentContainerViewItemInfo, info)

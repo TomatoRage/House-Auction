@@ -24,8 +24,9 @@ import java.text.SimpleDateFormat
 
 
 class ItemInfoFragment : Fragment() {
-    var item: Item = Item()
-    var day: AuctionDays = AuctionDays()
+    lateinit var SalesDate:String
+    lateinit var StartTime:String
+    var StartPrice = 0
     lateinit var userType: UserType
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,18 +34,12 @@ class ItemInfoFragment : Fragment() {
     ): View? {
 
         val view = inflater.inflate(R.layout.fragment_item_info, container, false)
-        view.findViewById<TextView>(R.id.item_sales_day).setText(
-            SimpleDateFormat("dd/MM/yyyy")
-                .format(day.StartDate)
-        )
-        view.findViewById<TextView>(R.id.item_sales_start_time).setText(
-            SimpleDateFormat("HH:mm:ss")
-                .format(day.StartDate)
-        )
+        view.findViewById<TextView>(R.id.item_sales_day).setText(SalesDate)
+        view.findViewById<TextView>(R.id.item_sales_start_time).setText(StartTime)
         if (userType == UserType.Customer) {
             view.findViewById<TextView>(R.id.item_start_price).isVisible = false
         } else {
-            view.findViewById<TextView>(R.id.item_start_price).setText(item.startingPrice)
+            view.findViewById<TextView>(R.id.item_start_price).setText(StartPrice)
         }
         return view
     }

@@ -1,6 +1,7 @@
 package com.example.auctionhouseapp.Activities
 
 import android.content.Intent
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -23,18 +24,15 @@ class AuctionItemActivity : AppCompatActivity() {
     private lateinit var edit_item_description:EditText
     private lateinit var edit_starting_price:EditText
     private lateinit var image_switcher:ImageSwitcher
-
+    private lateinit var houseId:String
+    private lateinit var dayId:String
+    lateinit var ImagesArray:ArrayList<Bitmap>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auction_item)
+        houseId = intent.getStringExtra("House ID")!!
+        dayId = intent.getStringExtra("Day ID")!!
 
-        /*TODO fitch item from firebase*/
-        /**
-         *
-         *
-         *
-         *
-         */
         edit_item_name = findViewById<EditText>(R.id.edit_txt_name)
         edit_item_description = findViewById<EditText>(R.id.edit_txt_description)
         edit_starting_price = findViewById<EditText>(R.id.edit_txt_starting_price)
@@ -57,7 +55,7 @@ class AuctionItemActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btn_pick_item).setOnClickListener{
-            /*TODO UPLOAD IMAGES FUN*/
+            /*TODO UPLOAD IMAGES AS BITMAP, ADD IMAGE TO ARRAY, SAVE IN FIRESTORE*/
         }
 
         textAutoCheck()
@@ -171,27 +169,34 @@ class AuctionItemActivity : AppCompatActivity() {
             return
         }
         if ( edit_starting_price.text.toString().toInt() < 0) {
-            toast("Invalid Item's starting price")
+            toast("Invalid Item's starting price!")
             return
         }
-
-
+        if (StoreData() < 0) {
+            toast("Must upload image!")
+            return
+        }
     }
 
-    fun StoreData(inputDate: Date){
-    /*TODO ALL LINE IN COMMENT*/
+    fun StoreData():Int {
         val item = Item()
-
         item.ownerId = FirebaseUtils.firebaseUser?.uid.toString()
         item.Name = edit_item_name.text.toString()
         item.Description = edit_item_description.text.toString()
-        //item.docID = ??
-        //item.ImagesArray = ??
+        if (ImagesArray.isEmpty()) {
+            return -1
+        }
+        item.ImagesArray = ImagesArray
         item.startingPrice = edit_starting_price.text.toString().toInt()
         item.lastBid = -1
         item.lastBidderId = null
+        item.StoreData(houseId, dayId,::OnSuccPerform)
+        return 0
+    }
 
-       // item.StoreData(FirebaseUtils.firebaseAuth.currentUser!!.uid,::OnSuccPerform)
-
+    fun OnSuccPerform() {
+        val intent = Intent(applicationContext, ItemsList::class.java)
+        setResult(RESULT_OK,intent)
+        finish()
     }
 }

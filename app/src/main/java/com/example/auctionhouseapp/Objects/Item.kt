@@ -3,15 +3,19 @@ package com.example.auctionhouseapp.Objects
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
+import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.FirebaseUtils
+import com.google.firebase.Timestamp
 import java.io.Serializable
+import java.util.*
+import kotlin.collections.ArrayList
 
 class Item : Serializable,Comparable<Item> {
     lateinit var ownerId: String
     lateinit var Name: String
     lateinit var Description: String
-    lateinit var docID:String
+    //lateinit var docID:String
     lateinit var ImagesArray:ArrayList<Bitmap>
     private lateinit var imagesIDs:ArrayList<String>
     var startingPrice: Int = 0
@@ -61,6 +65,38 @@ class Item : Serializable,Comparable<Item> {
                     Log.d(TAG, "Items Image failed with", exception)
                 }
         }
+    }
+
+    fun StoreData(HouseID:String, DayID:String,ToPerform:()->Unit){
+
+        val Today = Timestamp(Date())
+        /**Store Day Data**/
+        FirebaseUtils.userCollectionRef
+            .document(HouseID)
+            .collection(Constants.SALES_DAY_COLLECTION)
+            .document(DayID)
+            .collection(Constants.ITEMS_COLLECTION)
+            .document()
+            .set(
+                mapOf(
+                    Constants.ITEM_DESCRIPTION to Description,
+                    Constants.ITEM_LAST_BID_AMOUNT to lastBid,
+                    Constants.ITEM_LAST_BID_TIME to Today.toDate(),
+                    Constants.ITEM_LAST_BIDDER to lastBidderId,
+                    Constants.ITEM_NAME to Name,
+                    Constants.ITEM_OWNER_ID to ownerId,
+                    Constants.ITEM_NUM_IN_QUEUE to 0,
+                    Constants.ITEM_START_PRICE to startingPrice,
+                    /*uploadomg images must be to firestore!! ***********************************************************??????????????????????????????????*/
+                    Constants.ITEM_PHOTOS_LIST to ImagesArray,
+                )
+            )
+            .addOnSuccessListener {
+                ToPerform()
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "item data read failed with", exception)
+            }
     }
 
     companion object {
