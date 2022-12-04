@@ -1,7 +1,9 @@
 package com.example.auctionhouseapp.Activities
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -10,12 +12,18 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageSwitcher
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.Objects.Item
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.Extensions.toast
 import com.example.auctionhouseapp.Utils.FirebaseUtils
+import com.example.auctionhouseapp.Utils.FirebaseUtils.firebaseStore
+import com.example.auctionhouseapp.Utils.FirebaseUtils.storageReference
+import com.example.auctionhouseapp.databinding.ActivityAuctionItemBinding
+import java.net.URI
+import java.text.SimpleDateFormat
 import java.util.*
 
 class AuctionItemActivity : AppCompatActivity() {
@@ -27,6 +35,8 @@ class AuctionItemActivity : AppCompatActivity() {
     private lateinit var houseId:String
     private lateinit var dayId:String
     lateinit var ImagesArray:ArrayList<Bitmap>
+    lateinit var binding : ActivityAuctionItemBinding
+    lateinit var imageUri: Uri
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auction_item)
@@ -54,11 +64,53 @@ class AuctionItemActivity : AppCompatActivity() {
             finish()
         }
 
-        findViewById<Button>(R.id.btn_pick_item).setOnClickListener{
+        binding.btnPickItem.setOnClickListener{
             /*TODO UPLOAD IMAGES AS BITMAP, ADD IMAGE TO ARRAY, SAVE IN FIRESTORE*/
+            selectImage()
+
         }
 
         textAutoCheck()
+    }
+
+    fun selectImage() {
+        val intent = Intent()
+        intent.type = "Items/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+
+        startActivityForResult(intent,100)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            imageUri = data?.data!!
+            binding.imgSwitcher1.setImageURI(imageUri)
+        }
+    }
+
+    private fun uploadImage() {
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setMessage("Uploading File ...")
+        progressDialog.setCancelable(false)
+        progressDialog.show()
+
+        val formatter = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault())
+        val now = Date()
+        val fileName = formatter.format(now)
+        val storageRef = firebaseStore.getReference("Items/$fileName")
+
+        storageRef.putFile(imageUri).
+                addOnSuccessListener {
+
+                    binding.imgSwitcher1.setImageURI(null)
+                    Toast.makeText(this, "Successfully Uploaded", Toast.LENGTH_SHORT).show()
+                    if(progressDialog.isShowing) progressDialog.dismiss()
+                }.addOnFailureListener {
+            if (progressDialog.isShowing) progressDialog.dismiss()
+            Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     private fun textAutoCheck() {
@@ -172,6 +224,7 @@ class AuctionItemActivity : AppCompatActivity() {
             toast("Invalid Item's starting price!")
             return
         }
+
         if (StoreData() < 0) {
             toast("Must upload image!")
             return
