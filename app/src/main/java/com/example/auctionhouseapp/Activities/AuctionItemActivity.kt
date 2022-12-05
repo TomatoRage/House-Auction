@@ -89,7 +89,7 @@ class AuctionItemActivity : AppCompatActivity() {
         }
     }
 
-    private fun uploadImage() {
+    private fun uploadImage():String {
         val progressDialog = ProgressDialog(this)
         progressDialog.setMessage("Uploading File ...")
         progressDialog.setCancelable(false)
@@ -107,10 +107,10 @@ class AuctionItemActivity : AppCompatActivity() {
                     Toast.makeText(this, "Successfully Uploaded", Toast.LENGTH_SHORT).show()
                     if(progressDialog.isShowing) progressDialog.dismiss()
                 }.addOnFailureListener {
-            if (progressDialog.isShowing) progressDialog.dismiss()
-            Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
-        }
-
+                    if (progressDialog.isShowing) progressDialog.dismiss()
+                    Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
+                }
+        return fileName
     }
 
     private fun textAutoCheck() {
@@ -243,6 +243,8 @@ class AuctionItemActivity : AppCompatActivity() {
         item.startingPrice = edit_starting_price.text.toString().toInt()
         item.lastBid = -1
         item.lastBidderId = null
+        val imageName = uploadImage()
+        // why to save bitmap instead of string that exists in firestore!!
         item.StoreData(houseId, dayId,::OnSuccPerform)
         return 0
     }
