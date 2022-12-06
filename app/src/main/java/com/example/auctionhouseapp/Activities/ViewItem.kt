@@ -1,6 +1,7 @@
 package com.example.auctionhouseapp.Activities
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -54,7 +55,7 @@ class ViewItem : AppCompatActivity() {
         if(supportFragmentManager.isDestroyed)
             return
 
-        findViewById<ImageView>(R.id.img_item).setImageBitmap(item.ImagesArray[0])
+        findViewById<ImageView>(R.id.img_item).setImageBitmap(BitmapFactory.decodeByteArray(item.ImagesArray[0],0,item.ImagesArray[0].size))
         findViewById<TextView>(R.id.item_description).text = item.Description
 
         if(userType == UserType.Customer){

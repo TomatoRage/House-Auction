@@ -6,6 +6,7 @@ import android.util.Log
 import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.FirebaseUtils
+import java.io.ByteArrayOutputStream
 import com.google.firebase.Timestamp
 import java.io.Serializable
 import java.util.*
@@ -15,8 +16,8 @@ class Item : Serializable,Comparable<Item> {
     lateinit var ownerId: String
     lateinit var Name: String
     lateinit var Description: String
-    //lateinit var docID:String
-    lateinit var ImagesArray:ArrayList<Bitmap>
+    lateinit var docID:String
+    lateinit var ImagesArray:ArrayList<ByteArray>
     private lateinit var imagesIDs:ArrayList<String>
     var startingPrice: Int = 0
     var lastBidderId: String? = null
@@ -38,27 +39,35 @@ class Item : Serializable,Comparable<Item> {
         Description = Data[Constants.ITEM_DESCRIPTION] as String
         startingPrice = (Data[Constants.ITEM_START_PRICE] as Long).toInt()
         imagesIDs = Data[Constants.ITEM_PHOTOS_LIST] as ArrayList<String>
-        lastBidderId = Data[Constants.ITEM_LAST_BIDDER] as String?
-        lastBid = (Data[Constants.ITEM_LAST_BID_AMOUNT] as Long).toInt()
+        if(Data[Constants.ITEM_LAST_BIDDER] != null) {
+            lastBidderId = Data[Constants.ITEM_LAST_BIDDER] as String?
+            lastBid = (Data[Constants.ITEM_LAST_BID_AMOUNT] as Long).toInt()
+        }
         return
     }
 
-    fun FetchImages(ToPerform:() -> Unit){
+    fun FetchImages(NumOfImages:Int,ToPerform:() -> Unit){
 
         var NumOfImagesRead:Int = 0
         val MaxImageSize:Long = 1080*1080 * 1000
+        var NumToFetch:Int = NumOfImages-1
         ImagesArray = arrayListOf()
 
-        for(i in 0..imagesIDs.size-1){
+        if(NumOfImages == -1 || imagesIDs.size-1 < NumToFetch)
+            NumToFetch = imagesIDs.size-1
+
+        for(i in 0..NumToFetch){
 
             FirebaseUtils.firebaseStore.reference
                 .child(Constants.STORAGE_ITEM+imagesIDs[i])
                 .getBytes(MaxImageSize)
                 .addOnSuccessListener { Bytes ->
                     val Bitmap = BitmapFactory.decodeByteArray(Bytes,0,Bytes.size)
-                    ImagesArray.add(Bitmap)
+                    var Stream = ByteArrayOutputStream();
+                    Bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG,100,Stream)
+                    ImagesArray.add(Stream.toByteArray())
                     NumOfImagesRead +=1
-                    if(NumOfImagesRead == imagesIDs.size)
+                    if(NumOfImagesRead == NumToFetch+1)
                         ToPerform()
                 }
                 .addOnFailureListener { exception ->

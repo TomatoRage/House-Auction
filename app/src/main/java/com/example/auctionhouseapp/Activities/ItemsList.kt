@@ -21,6 +21,7 @@ import com.example.auctionhouseapp.UserType
 
 class ItemsList : AppCompatActivity() {
 
+    var isRequestedList = false
     lateinit var userType:UserType
     lateinit var Day:AuctionDays
     lateinit var HouseID:String
@@ -36,8 +37,12 @@ class ItemsList : AppCompatActivity() {
         Day = intent.getSerializableExtra("Day") as AuctionDays
         HouseID = intent.getStringExtra("House ID")!!
 
-
-        Day.FetchItems(5,HouseID,::AfterDataFetch)
+        if(userType == UserType.AuctionHouse)
+            isRequestedList = intent.getBooleanExtra("ListType",false)
+        if(!isRequestedList)
+            Day.FetchItems(5, HouseID, ::AfterDataFetch)
+        else
+            Day.FetchRequested(5,HouseID,::AfterDataFetch)
 
         resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -72,6 +77,7 @@ class ItemsList : AppCompatActivity() {
         } else{
             val HouseList = HouseItemsList()
             HouseList.Day = Day
+            HouseList.isRequestedList = isRequestedList
             supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fragmentContainerView3, HouseList)
                 commit()

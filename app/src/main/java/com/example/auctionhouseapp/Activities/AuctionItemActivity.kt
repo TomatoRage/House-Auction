@@ -34,7 +34,7 @@ class AuctionItemActivity : AppCompatActivity() {
     private lateinit var image_switcher:ImageSwitcher
     private lateinit var houseId:String
     private lateinit var dayId:String
-    lateinit var ImagesArray:ArrayList<Bitmap>
+    lateinit var ImagesArray:ArrayList<ByteArray>
     lateinit var binding : ActivityAuctionItemBinding
     lateinit var imageUri: Uri
     override fun onCreate(savedInstanceState: Bundle?) {

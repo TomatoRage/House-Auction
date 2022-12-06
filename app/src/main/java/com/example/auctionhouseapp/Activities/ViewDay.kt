@@ -50,10 +50,16 @@ class ViewDay : AppCompatActivity() {
             intent.putExtra("Type",UserType.AuctionHouse.Type)
             intent.putExtra("Day",Day)
             intent.putExtra("House ID",FirebaseUtils.firebaseUser!!.uid)
+            intent.putExtra("ListType",false)
             startActivity(intent)
         }
         findViewById<Button>(R.id.btn_requested_items).setOnClickListener {
-            //TODO: Fill in functionality
+            val intent = Intent(applicationContext, ItemsList::class.java)
+            intent.putExtra("Type",UserType.AuctionHouse.Type)
+            intent.putExtra("Day",Day)
+            intent.putExtra("House ID",FirebaseUtils.firebaseUser!!.uid)
+            intent.putExtra("ListType",true)
+            startActivity(intent)
         }
         findViewById<Button>(R.id.btn_delete_day).setOnClickListener {
             DeleteDay()

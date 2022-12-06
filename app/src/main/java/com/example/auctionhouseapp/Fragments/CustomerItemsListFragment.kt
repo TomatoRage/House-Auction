@@ -2,6 +2,7 @@ package com.example.auctionhouseapp.Fragments
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -60,7 +61,7 @@ class CustomerItemsListFragment : Fragment() {
             val intent = Intent(Context, AuctionItemActivity::class.java)
             intent.putExtra("Day ID",day.DocumentID)
             intent.putExtra("House ID", HouseId)
-            //intent.putExtra("Type", UserType.Customer.Type)
+            intent.putExtra("Type", UserType.Customer.Type)
             startActivity(intent)
         }
 
@@ -95,7 +96,7 @@ class CustomerItemsListFragment : Fragment() {
 
             View.findViewById<TextView>(R.id.textview_house_item_name).setText(Items[position].Name)
             View.findViewById<TextView>(R.id.textView_description).setText(Items[position].Description)
-            View.findViewById<ImageView>(R.id.imageView_house_item).setImageBitmap(Items[position].ImagesArray[0])
+            View.findViewById<ImageView>(R.id.imageView_house_item).setImageBitmap(BitmapFactory.decodeByteArray(Items[position].ImagesArray[0],0,Items[position].ImagesArray[0].size))
             View.findViewById<ImageView>(R.id.imageView_house_item).setBackgroundResource(R.drawable.round_outline)
             View.findViewById<ImageView>(R.id.imageView_house_item).clipToOutline = true
 

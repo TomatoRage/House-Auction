@@ -7,6 +7,7 @@ import com.example.auctionhouseapp.Objects.Item
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.Timestamp
+import com.google.firebase.ktx.Firebase
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
@@ -32,6 +33,7 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
     var NumOfSoldItems:Int = -1
     var Status:AuctionDayStatus = AuctionDayStatus.Pending
     val Items:ArrayList<Item> = arrayListOf()
+    val RequestedItems:ArrayList<Item> = arrayListOf()
 
     constructor()
 
@@ -186,12 +188,33 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
 
                     val ToAdd = Item(doc.data)
                     ToAdd.docID = doc.id
-                    ToAdd.FetchImages(ToPerform)
+                    ToAdd.FetchImages(1,ToPerform)
                     Items!!.add(ToAdd)
                 }
             }
             .addOnFailureListener { exception ->
                 Log.d(TAG, "Items data read failed with", exception)
+            }
+    }
+
+    fun FetchRequested(NumToFetch: Int,HouseID: String,ToPerform: () -> Unit){
+        FirebaseUtils.houseCollectionRef
+            .document(HouseID)
+            .collection(Constants.SALES_DAY_COLLECTION)
+            .document(DocumentID)
+            .collection(Constants.REQUESTED_ITEMS_COLLECTION)
+            .limit(NumToFetch.toLong())
+            .get()
+            .addOnSuccessListener { documents ->
+                for(doc in documents){
+                    val ToAdd = Item(doc.data)
+                    ToAdd.docID = doc.id
+                    ToAdd.FetchImages(1,ToPerform)
+                    RequestedItems!!.add(ToAdd)
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "Requested Items data read failed with", exception)
             }
     }
 
