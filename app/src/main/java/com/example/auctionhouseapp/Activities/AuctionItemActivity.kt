@@ -3,16 +3,14 @@ package com.example.auctionhouseapp.Activities
 import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageSwitcher
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.content.ContextCompat
 import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.Objects.Item
@@ -25,30 +23,36 @@ import com.example.auctionhouseapp.databinding.ActivityAuctionItemBinding
 import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class AuctionItemActivity : AppCompatActivity() {
 
     private lateinit var edit_item_name:EditText
     private lateinit var edit_item_description:EditText
     private lateinit var edit_starting_price:EditText
-    private lateinit var image_switcher:ImageSwitcher
+    private lateinit var imageSwitcher:ImageSwitcher
     private lateinit var houseId:String
     private lateinit var dayId:String
-    lateinit var ImagesArray:ArrayList<ByteArray>
+    private var position = 0
+    lateinit var ImagesUri:ArrayList<Uri>
     lateinit var binding : ActivityAuctionItemBinding
-    lateinit var imageUri: Uri
+    lateinit var NextBtn: ImageButton
+    lateinit var PrevBtn: ImageButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_auction_item)
+        binding = ActivityAuctionItemBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        imageSwitcher = findViewById<ImageSwitcher>(R.id.img_switcher1)
+        imageSwitcher.setFactory { ImageView(applicationContext) }
         houseId = intent.getStringExtra("House ID")!!
         dayId = intent.getStringExtra("Day ID")!!
 
         edit_item_name = findViewById<EditText>(R.id.edit_txt_name)
         edit_item_description = findViewById<EditText>(R.id.edit_txt_description)
         edit_starting_price = findViewById<EditText>(R.id.edit_txt_starting_price)
-        image_switcher = findViewById<ImageSwitcher>(R.id.img_switcher1)
-
-
+        NextBtn = findViewById<ImageButton>(R.id.btn_next_img)
+        PrevBtn = findViewById<ImageButton>(R.id.btn_prev_img)
+        ImagesUri = ArrayList()
         findViewById<Button>(R.id.btn_auction_item2).setOnClickListener{
             checkInput()
         }
@@ -71,46 +75,82 @@ class AuctionItemActivity : AppCompatActivity() {
         }
 
         textAutoCheck()
+
+        NextBtn.setOnClickListener {
+            if (position < ImagesUri.size - 1) {
+                position++
+                val imageUri = ImagesUri.get(position)
+                imageSwitcher.setImageURI(imageUri)
+
+            } else {
+                toast("No More Images...")
+            }
+        }
+
+        PrevBtn.setOnClickListener {
+            if (position > 0) {
+                position--
+                val imageUri = ImagesUri.get(position)
+                imageSwitcher.setImageURI(imageUri)
+            } else {
+                toast("No More Images...")
+            }
+        }
     }
 
     fun selectImage() {
         val intent = Intent()
         intent.type = "Items/*"
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true)
         intent.action = Intent.ACTION_GET_CONTENT
 
-        startActivityForResult(intent,100)
+        startActivityForResult(Intent.createChooser(intent,"Select Images.."),100)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 100 && resultCode == RESULT_OK) {
-            imageUri = data?.data!!
-            binding.imgSwitcher1.setImageURI(imageUri)
+            if (data!!.clipData != null) {
+                val count = data.clipData!!.itemCount
+                for (i in 0 until count) {
+                    val imageUri = data.clipData!!.getItemAt(i).uri
+                    //add image to list
+                    ImagesUri!!.add(imageUri)
+                    position = 0
+                }
+                binding.imgSwitcher1.setImageURI(ImagesUri[0])
+            } else {
+                val imageUri = data?.data!!
+                binding.imgSwitcher1.setImageURI(imageUri)
+                position = 0
+            }
         }
     }
 
-    private fun uploadImage():String {
+    private fun uploadImages() {
         val progressDialog = ProgressDialog(this)
         progressDialog.setMessage("Uploading File ...")
         progressDialog.setCancelable(false)
         progressDialog.show()
+        for (i in 0 until ImagesUri.size) {
+//            val formatter = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault())
+//            val now = Date()
+//            val fileName = formatter.format(now)
+            val fileName = ImagesUri.get(i).toString()
+            val imageUri = ImagesUri.get(i)
+            val storageRef = firebaseStore.getReference("Items/$fileName")
 
-        val formatter = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault())
-        val now = Date()
-        val fileName = formatter.format(now)
-        val storageRef = firebaseStore.getReference("Items/$fileName")
+            storageRef.putFile(imageUri).
+            addOnSuccessListener {
 
-        storageRef.putFile(imageUri).
-                addOnSuccessListener {
-
-                    binding.imgSwitcher1.setImageURI(null)
-                    Toast.makeText(this, "Successfully Uploaded", Toast.LENGTH_SHORT).show()
-                    if(progressDialog.isShowing) progressDialog.dismiss()
-                }.addOnFailureListener {
-                    if (progressDialog.isShowing) progressDialog.dismiss()
-                    Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
-                }
-        return fileName
+                binding.imgSwitcher1.setImageURI(null)
+                Toast.makeText(this, "Successfully Uploaded", Toast.LENGTH_SHORT).show()
+                if(progressDialog.isShowing) progressDialog.dismiss()
+            }.addOnFailureListener {
+                if (progressDialog.isShowing) progressDialog.dismiss()
+                Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun textAutoCheck() {
@@ -236,15 +276,18 @@ class AuctionItemActivity : AppCompatActivity() {
         item.ownerId = FirebaseUtils.firebaseUser?.uid.toString()
         item.Name = edit_item_name.text.toString()
         item.Description = edit_item_description.text.toString()
-        if (ImagesArray.isEmpty()) {
+        if (ImagesUri.isEmpty()) {
             return -1
         }
-        item.ImagesArray = ImagesArray
         item.startingPrice = edit_starting_price.text.toString().toInt()
         item.lastBid = -1
         item.lastBidderId = null
-        val imageName = uploadImage()
-        // why to save bitmap instead of string that exists in firestore!!
+        uploadImages()
+
+        for (i in 0 until ImagesUri.size) {
+            item.imagesIDs.add(ImagesUri.get(i).toString())
+        }
+
         item.StoreData(houseId, dayId,::OnSuccPerform)
         return 0
     }
@@ -254,4 +297,5 @@ class AuctionItemActivity : AppCompatActivity() {
         setResult(RESULT_OK,intent)
         finish()
     }
+
 }

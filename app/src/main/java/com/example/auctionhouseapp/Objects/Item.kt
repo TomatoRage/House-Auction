@@ -18,7 +18,7 @@ class Item : Serializable,Comparable<Item> {
     lateinit var Description: String
     lateinit var docID:String
     lateinit var ImagesArray:ArrayList<ByteArray>
-    private lateinit var imagesIDs:ArrayList<String>
+    lateinit var imagesIDs:ArrayList<String>
     var startingPrice: Int = 0
     var lastBidderId: String? = null
     var lastBid:Int = 0
@@ -63,7 +63,7 @@ class Item : Serializable,Comparable<Item> {
                 .getBytes(MaxImageSize)
                 .addOnSuccessListener { Bytes ->
                     val Bitmap = BitmapFactory.decodeByteArray(Bytes,0,Bytes.size)
-                    var Stream = ByteArrayOutputStream();
+                    var Stream = ByteArrayOutputStream()
                     Bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG,100,Stream)
                     ImagesArray.add(Stream.toByteArray())
                     NumOfImagesRead +=1
@@ -96,8 +96,7 @@ class Item : Serializable,Comparable<Item> {
                     Constants.ITEM_OWNER_ID to ownerId,
                     Constants.ITEM_NUM_IN_QUEUE to 0,
                     Constants.ITEM_START_PRICE to startingPrice,
-                    /*uploadomg images must be to firestore!! ***********************************************************??????????????????????????????????*/
-                    Constants.ITEM_PHOTOS_LIST to ImagesArray,
+                    Constants.ITEM_PHOTOS_LIST to imagesIDs,
                 )
             )
             .addOnSuccessListener {

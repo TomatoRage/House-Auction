@@ -44,6 +44,10 @@ class ItemsList : AppCompatActivity() {
         else
             Day.FetchRequested(5,HouseID,::AfterDataFetch)
 
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragmentContainerView3,LoadingFragment)
+            commit()
+        }
         resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 supportFragmentManager.beginTransaction().apply {

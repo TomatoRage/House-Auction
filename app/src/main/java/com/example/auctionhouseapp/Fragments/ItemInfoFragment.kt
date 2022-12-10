@@ -38,6 +38,7 @@ class ItemInfoFragment : Fragment() {
         view.findViewById<TextView>(R.id.item_sales_start_time).setText(StartTime)
         if (userType == UserType.Customer) {
             view.findViewById<TextView>(R.id.item_start_price).isVisible = false
+            view.findViewById<TextView>(R.id.txt_start_price).isVisible = false
         } else {
             view.findViewById<TextView>(R.id.item_start_price).setText(StartPrice)
         }

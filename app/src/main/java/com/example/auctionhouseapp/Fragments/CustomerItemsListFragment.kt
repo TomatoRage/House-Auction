@@ -61,7 +61,7 @@ class CustomerItemsListFragment : Fragment() {
             val intent = Intent(Context, AuctionItemActivity::class.java)
             intent.putExtra("Day ID",day.DocumentID)
             intent.putExtra("House ID", HouseId)
-            intent.putExtra("Type", UserType.Customer.Type)
+            //intent.putExtra("Type", UserType.Customer.Type)
             startActivity(intent)
         }
 

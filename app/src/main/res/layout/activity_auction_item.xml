@@ -41,7 +41,7 @@
             android:layout_weight="0.4"
             android:background="@drawable/back_arrow"
             android:fontFamily="@font/metropolis_regular"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="1dp"
             android:gravity="left"
             android:textSize="20sp" />
         <TextView
@@ -64,6 +64,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
+        android:gravity = "center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/txt_auction_item">
@@ -130,7 +131,6 @@
             android:id="@+id/edit_txt_starting_price"
             android:layout_width="180dp"
             android:layout_height="50dp"
-            android:layout_marginStart="90dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/edit_text_bg"
             android:drawableRight="@null"
@@ -147,22 +147,51 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:layout_marginStart="110dp"
             android:background="@drawable/btn_bg"
             android:elevation="10dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:text="Pick Images"
             android:textColor="@color/white" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity = "center"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/btn_pick_item">
+
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:id="@+id/btn_prev_img"
+            android:src="@drawable/arrow_prev"/>
 
         <ImageSwitcher
             android:id="@+id/img_switcher1"
             android:layout_marginTop="10dp"
             android:layout_width="210dp"
-            android:layout_marginStart="75dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:layout_height="160dp"/>
+            android:layout_height="160dp"
+            android:background = "@drawable/add"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_next_img"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/arrow"/>
+
+
+    </LinearLayout>
+
 
 
         <Button
