@@ -30,7 +30,8 @@ class HouseItemsList : Fragment() {
             view.findViewById<TextView>(R.id.textview_list_title).setText("Listed Items")
         else
             view.findViewById<TextView>(R.id.textview_list_title).setText("Requested Items")
-        view.findViewById<Button>(R.id.btn_house_items_list_bck).setOnClickListener {
+        view.findViewById<Button>(R.id.btn_house_items_list_bck).setOnClickListener { it ->
+            parentFragmentManager.beginTransaction().remove(this).commitAllowingStateLoss();
             Context.finish()
         }
         if(!isRequestedList)
@@ -69,7 +70,7 @@ class HouseItemsList : Fragment() {
 
             View.findViewById<TextView>(R.id.textview_house_item_name).setText(Items[position].Name)
             View.findViewById<TextView>(R.id.textView_description).setText(Items[position].Description)
-            View.findViewById<ImageView>(R.id.imageView_house_item).setImageBitmap(BitmapFactory.decodeByteArray(Items[position].ImagesArray[0],0,Items[position].ImagesArray[0].size))
+             View.findViewById<ImageView>(R.id.imageView_house_item).setImageBitmap(BitmapFactory.decodeByteArray(Items[position].ImagesArray[0],0,Items[position].ImagesArray[0].size))
             View.findViewById<ImageView>(R.id.imageView_house_item).setBackgroundResource(R.drawable.round_outline)
             View.findViewById<ImageView>(R.id.imageView_house_item).clipToOutline = true
 

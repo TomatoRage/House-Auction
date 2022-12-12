@@ -33,6 +33,11 @@ class ItemsList : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_items_list)
 
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragmentContainerView3, LoadingFragment)
+            commit()
+        }
+
         userType = UserType.getByValue(intent.getIntExtra("Type",0))
         Day = intent.getSerializableExtra("Day") as AuctionDays
         HouseID = intent.getStringExtra("House ID")!!

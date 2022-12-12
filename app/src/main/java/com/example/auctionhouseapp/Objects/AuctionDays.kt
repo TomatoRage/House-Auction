@@ -188,8 +188,8 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
 
                     val ToAdd = Item(doc.data)
                     ToAdd.docID = doc.id
-                    ToAdd.FetchImages(1,ToPerform)
-                    Items!!.add(ToAdd)
+                    ToAdd.FetchImages(1,ToPerform,documents.size()-1,documents.indexOf(doc))
+                    Items.add(ToAdd)
                 }
             }
             .addOnFailureListener { exception ->
@@ -209,7 +209,7 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
                 for(doc in documents){
                     val ToAdd = Item(doc.data)
                     ToAdd.docID = doc.id
-                    ToAdd.FetchImages(1,ToPerform)
+                    ToAdd.FetchImages(1,ToPerform,documents.size()-1,documents.indexOf(doc))
                     RequestedItems!!.add(ToAdd)
                 }
             }
@@ -218,6 +218,9 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
             }
     }
 
+    private fun PerformForItemImageFetch(){
+
+    }
     companion object {
         private val TAG = "Auction Day"
     }

@@ -46,7 +46,7 @@ class Item : Serializable,Comparable<Item> {
         return
     }
 
-    fun FetchImages(NumOfImages:Int,ToPerform:() -> Unit){
+    fun FetchImages(NumOfImages:Int,ToPerform:() -> Unit,TotalItemsToFetch:Int = -1,ItemNum:Int = -1){
 
         var NumOfImagesRead:Int = 0
         val MaxImageSize:Long = 1080*1080 * 1000
@@ -67,7 +67,7 @@ class Item : Serializable,Comparable<Item> {
                     Bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG,100,Stream)
                     ImagesArray.add(Stream.toByteArray())
                     NumOfImagesRead +=1
-                    if(NumOfImagesRead == NumToFetch+1)
+                    if(NumOfImagesRead == NumToFetch+1 && TotalItemsToFetch == ItemNum)
                         ToPerform()
                 }
                 .addOnFailureListener { exception ->
