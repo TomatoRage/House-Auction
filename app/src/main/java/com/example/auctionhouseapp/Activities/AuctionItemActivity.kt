@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.*
@@ -99,12 +100,15 @@ class AuctionItemActivity : AppCompatActivity() {
     }
 
     fun selectImage() {
-        val intent = Intent()
-        intent.type = "Items/*"
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true)
+//        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        var intent = Intent()
+        intent.type = "image/*"
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         intent.action = Intent.ACTION_GET_CONTENT
 
+        //intent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(Intent.createChooser(intent,"Select Images.."),100)
+        //startActivityForResult(intent,100)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -3,6 +3,7 @@ package com.example.auctionhouseapp.Activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -11,6 +12,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.Constants
@@ -19,6 +21,9 @@ import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.example.auctionhouseapp.Utils.FirebaseUtils.firebaseAuth
 import com.example.auctionhouseapp.Utils.FirebaseUtils.firebaseUser
 import com.example.auctionhouseapp.AddOns.loadingDialog
+import com.example.auctionhouseapp.AuctionDays
+import com.example.auctionhouseapp.Objects.Item
+import com.example.auctionhouseapp.Utils.FirebaseUtils.userCollectionRef
 
 
 class LoginActivity : AppCompatActivity() {
@@ -28,6 +33,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var signInBtn: Button
     lateinit var emailEt: EditText
     lateinit var passEt: EditText
+    var userType = -1
 
     lateinit var loadingDialog: loadingDialog
 
@@ -61,7 +67,6 @@ class LoginActivity : AppCompatActivity() {
 
         signInBtn.setOnClickListener {
             checkInput()
-
 
         }
 
@@ -165,7 +170,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun signInUser() {
 
-        loadingDialog.startLoadingDialog()
+        //loadingDialog.startLoadingDialog()a
         signInEmail = emailEt.text.toString().trim()
         signInPassword = passEt.text.toString().trim()
 
@@ -173,43 +178,59 @@ class LoginActivity : AppCompatActivity() {
             .addOnCompleteListener { signIn ->
                 if (signIn.isSuccessful) {
 
-                    loadingDialog.dismissDialog()
-                    checkUser()
+                    //loadingDialog.dismissDialog()
+                    checkUser(::goToNextActivity)
 
                 } else {
                     toast("sign in failed")
-                    loadingDialog.dismissDialog()
                 }
             }
     }
 
-    private fun checkUser() {
+
+
+    fun checkUser(ToPerform: () -> Unit) {
         firebaseUser?.let {
-            FirebaseUtils.userCollectionRef
+            userCollectionRef
                 .document(it.uid)
-                .get().addOnSuccessListener{ doc ->
-                    if(doc != null){
-                        val userType:Int =  (doc.data!![Constants.USER_TYPE] as Long).toInt()
-                        if (userType == 0) {
-                            val intent = Intent(applicationContext, CustomerActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            val intent = Intent(applicationContext, HouseActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        }
-                    } else {
-                        Log.d(TAG,"DOCUMENT NOT FOUND")
+                .get()
+                .addOnSuccessListener { doc ->
+                    if (doc != null) {
+                        userType = (doc.data?.get(Constants.USER_TYPE) as Long).toInt()
+                        if(userType!= -1)
+                            ToPerform()
                     }
+
+                }
+                .addOnFailureListener { exception ->
+                    Log.d("LoginActivity", "Requested Items data read failed with", exception)
                 }
         }
     }
 
-    companion object {
-        private val TAG = "LoginActivity"
+    fun goToNextActivity() {
+        val builder = AlertDialog.Builder(this)
+        val dialogView = layoutInflater. inflate (R.layout.fragment_auction_days_spinner,null)
+        builder.setView (dialogView)
+        builder.setCancelable (false)
+        val dialog = builder.create()
+        dialog.show()
+        Handler().postDelayed({
+            if (userType == 0) {
+                val intent = Intent(applicationContext, CustomerActivity::class.java)
+                startActivity(intent)
+                finish()
+            } else if (userType == 1) {
+                val intent = Intent(applicationContext, HouseActivity::class.java)
+                startActivity(intent)
+                finish()
+            } else {
+                toast("Error While Reading User Type!")
+            }
+        }, 500)
+
+
+
     }
-
-
 
 }

@@ -8,56 +8,60 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.Constants
+import com.example.auctionhouseapp.Utils.Extensions.toast
 import com.example.auctionhouseapp.Utils.FirebaseUtils.firebaseUser
 import com.example.auctionhouseapp.Utils.FirebaseUtils.userCollectionRef
 
 
 class SplashingScreenActivity : AppCompatActivity() {
+    var userType = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
-
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 
         Handler().postDelayed({
 
-            checkUser()
+            checkUser(::goToNextActivity)
 
-        }, 100)
+        }, 300)
 
     }
 
-    private fun checkUser(){
-
-        if(firebaseUser != null){
-            firebaseUser.let {
-                userCollectionRef
-                    .document(it.uid)
-                    .get().addOnSuccessListener{ doc ->
-                        if(doc != null){
-                            val userType:Int =  (doc.data!![Constants.USER_TYPE] as Long).toInt()
-                            if (userType == 0) {
-                                val intent = Intent(applicationContext, CustomerActivity::class.java)
-                                startActivity(intent)
-                                finish()
-                            } else {
-                                val intent = Intent(applicationContext, HouseActivity::class.java)
-                                startActivity(intent)
-                                finish()
-                            }
-                        } else {
-                            Log.d("SplashingActivity", "DOCUMENT NOT FOUND")
-                        }
+    fun checkUser(ToPerform: () -> Unit) {
+        if(firebaseUser != null) {
+            userCollectionRef
+                .document(firebaseUser.uid)
+                .get()
+                .addOnSuccessListener { doc ->
+                    if (doc != null) {
+                        userType = (doc.data?.get(Constants.USER_TYPE) as Long).toInt()
+                        if (userType != -1)
+                            ToPerform()
                     }
-                    .addOnFailureListener { exception ->
-                        Log.d("SplashingActivity", "USER FAILURE",exception)
-                    }
-            }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d("LoginActivity", "Requested Items data read failed with", exception)
+                }
         }
         if(firebaseUser == null){
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
+        }
+    }
+
+    fun goToNextActivity() {
+        if (userType == 0) {
+            val intent = Intent(applicationContext, CustomerActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else if (userType == 1) {
+            val intent = Intent(applicationContext, HouseActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            toast("Error While Reading User Type!")
         }
     }
 

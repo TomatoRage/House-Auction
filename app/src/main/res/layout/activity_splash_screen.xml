@@ -1,33 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@color/darkred"
     tools:context=".Activities.SplashingScreenActivity">
 
     <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="500dp"
+        android:layout_height="100dp"
+        android:src="@drawable/white_lines"/>
+
+    <ImageView
         android:id="@+id/imageView"
-        android:layout_width="200dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="200dp"
-        android:src="@drawable/auction_house_logo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <TextView
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/metropolis_semibold"
-        android:text="Auction House App"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/primary"
-        android:textSize="30sp"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        android:layout_centerInParent="true"
+        android:src="@drawable/splash_img"
+        android:layout_marginTop="1dp"
+        android:layout_below="@id/imageView3"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="500dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/white_lines"
+        android:layout_below="@id/imageView"/>
+
+
+</RelativeLayout>
