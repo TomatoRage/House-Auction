@@ -38,6 +38,7 @@ object Constants{
     const val DAY_NUM_OF_ITEMS:String               = "Listed Items" // No' Of Accepted Items
     const val DAY_NUM_OF_REQUESTED:String           = "Requested Items" // No' Of Requested Items
     const val DAY_NUM_OF_SOLD:String                = "Sold Items" // No' of sold items so far
+    const val DAY_DELETED_ITEMS:String              = "Deleted Items" // Array of Deleted Already Accepted Items
 
     //Items' Data
     const val ITEM_NAME:String                      = "Name" // Item Name
@@ -48,7 +49,6 @@ object Constants{
     const val ITEM_LAST_BID_AMOUNT:String           = "Last Bid" // Last Amount Of Money Bidded
     const val ITEM_LAST_BIDDER:String               = "Last Bidder ID " // UserID Of The Last Bidder
     const val ITEM_NUM_IN_QUEUE:String              = "Pos In Queue" // Holds The No' Of Items Before Current Item
-    const val ITEM_IS_ACCEPTED:String               = "Is Accepted" // Identifier between accepted & not accepted Items
     const val ITEM_LAST_BID_TIME:String             = "Last Bid Time" // UserID Of The Last Bidder
 
 }

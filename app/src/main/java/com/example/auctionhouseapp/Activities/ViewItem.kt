@@ -3,6 +3,7 @@ package com.example.auctionhouseapp.Activities
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
+import android.media.tv.AitInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
@@ -28,6 +29,7 @@ class ViewItem : AppCompatActivity() {
     lateinit var imageSwitcher: ImageSwitcher
     lateinit var NextBtn: ImageButton
     lateinit var PrevBtn: ImageButton
+    var ItemType:Int = -1
     private var position = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,10 +42,12 @@ class ViewItem : AppCompatActivity() {
         userType = UserType.getByValue(intent.getIntExtra("Type",0))
         SalesDate = intent.getStringExtra("SalesDate")!!
         StartTime = intent.getStringExtra("StartTime")!!
+        ItemType = intent.getIntExtra("ItemViewType",0)
         NextBtn = findViewById<ImageButton>(R.id.btn_next_img)
         PrevBtn = findViewById<ImageButton>(R.id.btn_prev_img)
 
         item.FetchImages(-1,::setItemInfoOnScreen)
+
         findViewById<TextView>(R.id.txt_back).setOnClickListener {
             finish()
         }
@@ -75,17 +79,8 @@ class ViewItem : AppCompatActivity() {
                 toast("No More Images...")
             }
         }
-    }
 
-    fun setItemInfoOnScreen () {
-        if(supportFragmentManager.isDestroyed)
-            return
-
-        val bitmap = BitmapDrawable(BitmapFactory.decodeByteArray(item.ImagesArray[0],0,item.ImagesArray[0].size))
-        imageSwitcher.setImageDrawable(bitmap)
-        findViewById<TextView>(R.id.item_description).text = item.Description
-
-        if(userType == UserType.Customer) {
+        if(userType == UserType.Customer && ItemType == 0) {
             val info = ItemInfoFragment()
             info.SalesDate = SalesDate
             info.StartTime = StartTime
@@ -96,8 +91,26 @@ class ViewItem : AppCompatActivity() {
                 commit()
             }
         }else{
-            /*TODO IN AUCTION HOUSE MODE*/
+            val info = ItemInfoFragment()
+            info.SalesDate = SalesDate
+            info.StartTime = StartTime
+            info.StartPrice = item.startingPrice
+            info.userType = userType
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragmentContainerViewItemInfo, info)
+                commit()
+            }
         }
+    }
+
+    fun setItemInfoOnScreen () {
+        if(supportFragmentManager.isDestroyed)
+            return
+
+        val bitmap = BitmapDrawable(BitmapFactory.decodeByteArray(item.ImagesArray[0],0,item.ImagesArray[0].size))
+        imageSwitcher.setImageDrawable(bitmap)
+        findViewById<TextView>(R.id.item_description).text = item.Description
+
 
     }
 }

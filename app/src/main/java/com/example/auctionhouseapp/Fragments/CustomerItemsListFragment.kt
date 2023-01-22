@@ -44,6 +44,7 @@ class CustomerItemsListFragment : Fragment() {
             intent.putExtra("House ID", HouseId)
             val userType = UserType.Customer
             intent.putExtra("Type", userType)
+            intent.putExtra("ItemViewType", 0)
             startActivity(intent)
         }
 

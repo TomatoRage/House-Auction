@@ -19,6 +19,7 @@ class Item : Serializable,Comparable<Item> {
     lateinit var docID:String
     lateinit var ImagesArray:ArrayList<ByteArray>
     lateinit var imagesIDs:ArrayList<String>
+    var NumberInQueue:Int = -1
     var startingPrice: Int = 0
     var lastBidderId: String? = null
     var lastBid:Int = 0
@@ -40,6 +41,7 @@ class Item : Serializable,Comparable<Item> {
         startingPrice = (Data[Constants.ITEM_START_PRICE] as Long).toInt()
         imagesIDs = Data[Constants.ITEM_PHOTOS_LIST] as ArrayList<String>
         if(Data[Constants.ITEM_LAST_BIDDER] != null) {
+            NumberInQueue = (Data[Constants.ITEM_NUM_IN_QUEUE] as Long).toInt()
             lastBidderId = Data[Constants.ITEM_LAST_BIDDER] as String?
             lastBid = (Data[Constants.ITEM_LAST_BID_AMOUNT] as Long).toInt()
         }

@@ -1,6 +1,7 @@
 package com.example.auctionhouseapp.Fragments
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,9 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.auctionhouseapp.Activities.ItemsList
+import com.example.auctionhouseapp.Activities.ViewItem
 import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.Objects.Item
 import com.example.auctionhouseapp.R
+import com.example.auctionhouseapp.UserType
+import com.example.auctionhouseapp.Utils.FirebaseUtils
 
 class HouseItemsList : Fragment() {
 
@@ -34,10 +38,29 @@ class HouseItemsList : Fragment() {
             parentFragmentManager.beginTransaction().remove(this).commitAllowingStateLoss();
             Context.finish()
         }
-        if(!isRequestedList)
-            ListView.adapter = CustomListAdapter(Context,Day.Items)
-        else
-            ListView.adapter = CustomListAdapter(Context,Day.RequestedItems)
+
+        var ListType:Int = -1
+
+        if(!isRequestedList) {
+            ListView.adapter = CustomListAdapter(Context, Day.Items)
+            ListType = 1
+        }
+        else {
+            ListView.adapter = CustomListAdapter(Context, Day.RequestedItems)
+            ListType = 2
+        }
+
+
+        ListView.setOnItemClickListener { parent, view, position, id ->
+            val intent = Intent(Context, ViewItem::class.java)
+            intent.putExtra("Item",Day.Items[position])
+            intent.putExtra("SalesDate", Day.PrintStartTime())
+            intent.putExtra("StartTime", Day.PrintStartTime())
+            intent.putExtra("Type", UserType.AuctionHouse.Type)
+            intent.putExtra("House ID", FirebaseUtils.firebaseUser!!.uid)
+            intent.putExtra("ItemViewType", ListType)
+            startActivity(intent)
+        }
 
         return view
     }

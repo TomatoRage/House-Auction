@@ -34,6 +34,7 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
     var Status:AuctionDayStatus = AuctionDayStatus.Pending
     val Items:ArrayList<Item> = arrayListOf()
     val RequestedItems:ArrayList<Item> = arrayListOf()
+    var DeletedItems:ArrayList<Long> = arrayListOf()
 
     constructor()
 
@@ -76,6 +77,7 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
         NumOfItems = (Data[Constants.DAY_NUM_OF_ITEMS] as Long).toInt()
         NumOfRequested = (Data[Constants.DAY_NUM_OF_REQUESTED] as Long).toInt()
         NumOfSoldItems = (Data[Constants.DAY_NUM_OF_SOLD] as Long).toInt()
+        DeletedItems = Data[Constants.DAY_DELETED_ITEMS] as ArrayList<Long>
 
         val Time:Date = Timestamp(Date()).toDate()
 
@@ -141,7 +143,8 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
                     Constants.DAY_EARNINGS to Earnings,
                     Constants.DAY_NUM_OF_ITEMS to NumOfItems,
                     Constants.DAY_NUM_OF_REQUESTED to NumOfRequested,
-                    Constants.DAY_NUM_OF_SOLD to NumOfSoldItems
+                    Constants.DAY_NUM_OF_SOLD to NumOfSoldItems,
+                    Constants.DAY_DELETED_ITEMS to DeletedItems
                 )
             )
             .addOnSuccessListener {
@@ -210,7 +213,7 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
                     val ToAdd = Item(doc.data)
                     ToAdd.docID = doc.id
                     ToAdd.FetchImages(1,ToPerform,documents.size()-1,documents.indexOf(doc))
-                    RequestedItems!!.add(ToAdd)
+                    RequestedItems.add(ToAdd)
                 }
             }
             .addOnFailureListener { exception ->
