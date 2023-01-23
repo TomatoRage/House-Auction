@@ -19,7 +19,7 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.Constants
-import com.example.auctionhouseapp.Utils.FirebaseUtils.firebaseUser
+import com.example.auctionhouseapp.Utils.FirebaseUtils.houseCollectionRef
 
 
 class SignUpActivity : AppCompatActivity() {
@@ -320,7 +320,7 @@ class SignUpActivity : AppCompatActivity() {
         Log.i("-E- odaie",emailV + "*" +passV)
 
         /*create a user*/
-        firebaseAuth.createUserWithEmailAndPassword(emailV,passV)
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(emailV,passV)
 
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -333,7 +333,7 @@ class SignUpActivity : AppCompatActivity() {
                     userHashMap[Constants.USER_TYPE] = userType
                     userHashMap[Constants.USER_PHONE] = phone
                     userHashMap[Constants.USER_ADDR] = address
-                    userHashMap[Constants.USERID] = firebaseAuth.uid.toString()
+                    userHashMap[Constants.USERID] = FirebaseAuth.getInstance().uid.toString()
                     storeUserData(userHashMap)
 
                     if (userType == 0) {
@@ -357,10 +357,20 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun storeUserData(user: HashMap<String, Any>) {
         try {
-            firebaseUser?.let { Log.d("tage" , it.uid) }
-            firebaseUser?.let {
+            FirebaseAuth.getInstance().currentUser?.let { Log.d("tage" , it.uid) }
+            FirebaseAuth.getInstance().currentUser?.let {
                 userCollectionRef.document(it.uid).set(user)
                     .addOnSuccessListener {
+                        if (userType == 1) {
+                            houseCollectionRef
+                                .document(FirebaseAuth.getInstance().currentUser!!.uid)
+                                .set(
+                                    mapOf(
+                                        Constants.HOUSE_RATING_SUM to 3,
+                                        Constants.HOUSE_NUM_RATERS to 1,
+                                    )
+                                )
+                        }
                         toast("Data Saved")
                         progressDialog.dismiss()
                     }

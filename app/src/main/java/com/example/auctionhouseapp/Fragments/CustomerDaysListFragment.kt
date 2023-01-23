@@ -19,7 +19,6 @@ import com.example.auctionhouseapp.AuctionDayStatus
 import com.example.auctionhouseapp.Objects.AuctionHouse
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.UserType
-import com.example.auctionhouseapp.Utils.FirebaseUtils
 
 class CustomerDaysListFragment : Fragment() {
 
@@ -40,7 +39,7 @@ class CustomerDaysListFragment : Fragment() {
             val intent = Intent(Context, ItemsList::class.java)
             intent.putExtra("Day",House.Days[position])
             intent.putExtra("House ID", HouseId)
-            intent.putExtra("Type", UserType.Customer)
+            intent.putExtra("Type", 0)
             startActivity(intent)
         }
         return view

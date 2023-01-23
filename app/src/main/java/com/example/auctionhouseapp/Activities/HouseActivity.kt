@@ -12,7 +12,7 @@ import com.example.auctionhouseapp.*
 import com.example.auctionhouseapp.Fragments.AuctionDaysListFragment
 import com.example.auctionhouseapp.Fragments.AuctionDaysSpinner
 import com.example.auctionhouseapp.Objects.AuctionHouse
-import com.example.auctionhouseapp.Utils.FirebaseUtils
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -55,11 +55,14 @@ class HouseActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btn_sign_out).setOnClickListener {
-            FirebaseUtils.firebaseAuth.signOut()
+            FirebaseAuth.getInstance().signOut()
             val intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
+
+
+
     }
 
     fun PerformAfterData() {

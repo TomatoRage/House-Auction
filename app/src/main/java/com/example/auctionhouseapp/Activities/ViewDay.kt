@@ -17,6 +17,7 @@ import com.example.auctionhouseapp.UserType
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
 import java.util.*
 
 class ViewDay : AppCompatActivity() {
@@ -49,7 +50,7 @@ class ViewDay : AppCompatActivity() {
             val intent = Intent(applicationContext, ItemsList::class.java)
             intent.putExtra("Type",UserType.AuctionHouse.Type)
             intent.putExtra("Day",Day)
-            intent.putExtra("House ID",FirebaseUtils.firebaseUser!!.uid)
+            intent.putExtra("House ID",FirebaseAuth.getInstance().currentUser!!.uid)
             intent.putExtra("ListType",false)
             startActivity(intent)
         }
@@ -57,7 +58,7 @@ class ViewDay : AppCompatActivity() {
             val intent = Intent(applicationContext, ItemsList::class.java)
             intent.putExtra("Type",UserType.AuctionHouse.Type)
             intent.putExtra("Day",Day)
-            intent.putExtra("House ID",FirebaseUtils.firebaseUser!!.uid)
+            intent.putExtra("House ID",FirebaseAuth.getInstance().currentUser!!.uid)
             intent.putExtra("ListType",true)
             startActivity(intent)
         }
@@ -81,13 +82,13 @@ class ViewDay : AppCompatActivity() {
         builder.setPositiveButton("Confirm",DialogInterface.OnClickListener{dialog,id ->
             /** Delete Document **/
             FirebaseUtils.houseCollectionRef
-                .document(FirebaseUtils.firebaseUser!!.uid)
+                .document(FirebaseAuth.getInstance().currentUser!!.uid)
                 .collection(Constants.SALES_DAY_COLLECTION)
                 .document(Day.DocumentID).delete()
                 .addOnSuccessListener {
                     /** Get Next Sales Date from days collection**/
                     FirebaseUtils.houseCollectionRef
-                        .document(FirebaseUtils.firebaseAuth.currentUser!!.uid)
+                        .document(FirebaseAuth.getInstance().currentUser!!.uid)
                         .collection(Constants.SALES_DAY_COLLECTION)
                         .whereGreaterThan(Constants.DAY_START_DATE,Today).limit(1)
                         .get()
@@ -97,7 +98,7 @@ class ViewDay : AppCompatActivity() {
 
                             /**Store the next sales day in house document**/
                             FirebaseUtils.houseCollectionRef
-                                .document(FirebaseUtils.firebaseUser.uid)
+                                .document(FirebaseAuth.getInstance().currentUser!!.uid)
                                 .update(Constants.HOUSE_NEXT_SALES_DATE, NextDate)
                                 .addOnSuccessListener {
                                     dialog.cancel()

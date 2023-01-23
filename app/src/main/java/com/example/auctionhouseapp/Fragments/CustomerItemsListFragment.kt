@@ -3,6 +3,7 @@ package com.example.auctionhouseapp.Fragments
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,6 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import com.example.auctionhouseapp.Activities.AuctionItemActivity
 import com.example.auctionhouseapp.Activities.ItemsList
 import com.example.auctionhouseapp.Activities.LoginActivity
@@ -18,14 +21,17 @@ import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.Objects.Item
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.UserType
-import com.example.auctionhouseapp.Utils.FirebaseUtils
-import java.text.SimpleDateFormat
+import com.google.firebase.auth.FirebaseAuth
+
 
 
 class CustomerItemsListFragment : Fragment() {
 
     var day = AuctionDays()
     lateinit var HouseId:String
+    private lateinit var text_empty_items_list : TextView
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,17 +40,24 @@ class CustomerItemsListFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_customer_items_list, container, false)
         val ListView = view.findViewById<ListView>(R.id.auction_house_items)
         val Context = activity as ItemsList
+        text_empty_items_list =  view.findViewById<TextView>(R.id.textView_empty_items_list)
+        text_empty_items_list.isVisible = false
+        if(day.Items.isEmpty())
+            text_empty_items_list.isVisible = true
 
         ListView.adapter = CustomListAdapter(Context,day.Items)
         ListView.setOnItemClickListener { parent, view, position, id ->
-            val intent = Intent(Context, ViewItem::class.java)
-            intent.putExtra("Item",day.Items[position])
-            intent.putExtra("SalesDate", day.PrintStartTime())
-            intent.putExtra("StartTime", day.PrintStartTime())
-            intent.putExtra("House ID", HouseId)
-            val userType = UserType.Customer
-            intent.putExtra("Type", userType)
-            startActivity(intent)
+            if(!day.Items.isEmpty()) {
+                val intent = Intent(Context, ViewItem::class.java)
+                intent.putExtra("Item", day.Items[position])
+                intent.putExtra("SalesDate", day.PrintDate())
+                intent.putExtra("StartTime", day.PrintStartTime())
+                intent.putExtra("HouseID", HouseId)
+                intent.putExtra("DayID", day.DocumentID)
+                val userType = UserType.Customer
+                intent.putExtra("Type", userType)
+                startActivity(intent)
+            }
         }
 
         view.findViewById<TextView>(R.id.txt_back).setOnClickListener {
@@ -52,7 +65,7 @@ class CustomerItemsListFragment : Fragment() {
         }
 
         view.findViewById<TextView>(R.id.txt_sign_out).setOnClickListener {
-            FirebaseUtils.firebaseAuth.signOut()
+            FirebaseAuth.getInstance().signOut()
             val intent = Intent(Context, LoginActivity::class.java)
             startActivity(intent)
         }

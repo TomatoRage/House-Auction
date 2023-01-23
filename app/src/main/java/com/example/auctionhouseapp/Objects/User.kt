@@ -41,17 +41,17 @@ open class User {
 
     fun SetName(Name:String) { this.Name = Name}
 
-    fun GetEmail():String{ return Email }
+    fun GetEmail():String { return Email }
 
     fun SetEmail(Email:String) { this.Email = Email}
 
-    fun GetType():UserType{ return Type }
+    fun GetType():UserType { return Type }
 
     fun SetType(Type:UserType) { this.Type = Type}
 
     fun SetType(Type:Int) { this.Type = UserType.getByValue(Type) }
 
-    fun GetPhoneNumber():String{ return PhoneNumber }
+    fun GetPhoneNumber():String { return PhoneNumber }
 
     fun SetPhoneNumber(Number:String) { this.PhoneNumber = Number}
 

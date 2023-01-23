@@ -2,6 +2,7 @@ package com.example.auctionhouseapp.Activities
 
 import android.app.ProgressDialog
 import android.content.Intent
+import android.content.Intent.ACTION_GET_CONTENT
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
@@ -17,13 +18,10 @@ import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.Objects.Item
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.Extensions.toast
-import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.example.auctionhouseapp.Utils.FirebaseUtils.firebaseStore
 import com.example.auctionhouseapp.Utils.FirebaseUtils.storageReference
 import com.example.auctionhouseapp.databinding.ActivityAuctionItemBinding
-import java.net.URI
-import java.text.SimpleDateFormat
-import java.util.*
+import com.google.firebase.auth.FirebaseAuth
 import kotlin.collections.ArrayList
 
 class AuctionItemActivity : AppCompatActivity() {
@@ -36,6 +34,7 @@ class AuctionItemActivity : AppCompatActivity() {
     private lateinit var dayId:String
     private var position = 0
     lateinit var ImagesUri:ArrayList<Uri>
+    lateinit var ImagesIDs:ArrayList<String>
     lateinit var binding : ActivityAuctionItemBinding
     lateinit var NextBtn: ImageButton
     lateinit var PrevBtn: ImageButton
@@ -54,12 +53,13 @@ class AuctionItemActivity : AppCompatActivity() {
         NextBtn = findViewById<ImageButton>(R.id.btn_next_img)
         PrevBtn = findViewById<ImageButton>(R.id.btn_prev_img)
         ImagesUri = ArrayList()
-        findViewById<Button>(R.id.btn_auction_item2).setOnClickListener{
+        ImagesIDs = ArrayList()
+        findViewById<Button>(R.id._btn_auction_item).setOnClickListener{
             checkInput()
         }
 
         findViewById<TextView>(R.id.txt_sign_out).setOnClickListener {
-            FirebaseUtils.firebaseAuth.signOut()
+            FirebaseAuth.getInstance().signOut()
             val intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
             finish()
@@ -100,15 +100,21 @@ class AuctionItemActivity : AppCompatActivity() {
     }
 
     fun selectImage() {
-//        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        var intent = Intent()
-        intent.type = "image/*"
+//        var intent = Intent()
+//        intent.type = "image/*"
+//        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+//        intent.action = Intent.ACTION_GET_CONTENT
+//        startActivityForResult(Intent.createChooser(intent,"Select Images.."),100)
+//        var intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+//        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+//        intent.addCategory(Intent.CATEGORY_OPENABLE)
+//        intent.type = "image/*"
+//        startActivityForResult(intent, 100)
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-        intent.action = Intent.ACTION_GET_CONTENT
-
-        //intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(Intent.createChooser(intent,"Select Images.."),100)
-        //startActivityForResult(intent,100)
+        intent.putExtra(Intent.ACTION_GET_CONTENT, true)
+        intent.type = "image/*"
+        startActivityForResult(intent, 100)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -140,7 +146,9 @@ class AuctionItemActivity : AppCompatActivity() {
 //            val formatter = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault())
 //            val now = Date()
 //            val fileName = formatter.format(now)
-            val fileName = ImagesUri.get(i).toString()
+            var fileName = ImagesUri.get(i).toString()
+            fileName = fileName.split("/").last()
+            ImagesIDs.add(fileName)
             val imageUri = ImagesUri.get(i)
             val storageRef = firebaseStore.getReference("Items/$fileName")
 
@@ -273,11 +281,12 @@ class AuctionItemActivity : AppCompatActivity() {
             toast("Must upload image!")
             return
         }
+        finish()
     }
 
     fun StoreData():Int {
         val item = Item()
-        item.ownerId = FirebaseUtils.firebaseUser?.uid.toString()
+        item.ownerId = FirebaseAuth.getInstance().currentUser?.uid.toString()
         item.Name = edit_item_name.text.toString()
         item.Description = edit_item_description.text.toString()
         if (ImagesUri.isEmpty()) {
@@ -287,11 +296,7 @@ class AuctionItemActivity : AppCompatActivity() {
         item.lastBid = -1
         item.lastBidderId = null
         uploadImages()
-
-        for (i in 0 until ImagesUri.size) {
-            item.imagesIDs.add(ImagesUri.get(i).toString())
-        }
-
+        item.imagesIDs = ImagesIDs
         item.StoreData(houseId, dayId,::OnSuccPerform)
         return 0
     }

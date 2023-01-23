@@ -80,7 +80,38 @@ class Item : Serializable,Comparable<Item> {
 
         val Today = Timestamp(Date())
         /**Store Day Data**/
-        FirebaseUtils.userCollectionRef
+        FirebaseUtils.houseCollectionRef
+            .document(HouseID)
+            .collection(Constants.SALES_DAY_COLLECTION)
+            .document(DayID)
+            .collection(Constants.REQUESTED_ITEMS_COLLECTION)
+            .document()
+            .set(
+                mapOf(
+                    Constants.ITEM_DESCRIPTION to Description,
+                    Constants.ITEM_LAST_BID_AMOUNT to lastBid,
+                    Constants.ITEM_LAST_BID_TIME to Today.toDate(),
+                    Constants.ITEM_LAST_BIDDER to lastBidderId,
+                    Constants.ITEM_NAME to Name,
+                    Constants.ITEM_OWNER_ID to ownerId,
+                    Constants.ITEM_NUM_IN_QUEUE to 0,
+                    Constants.ITEM_START_PRICE to startingPrice,
+                    Constants.ITEM_PHOTOS_LIST to imagesIDs,
+                )
+            )
+            .addOnSuccessListener {
+                ToPerform()
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "item data read failed with", exception)
+            }
+    }
+
+    fun StoreDataIntoItemsList(HouseID:String, DayID:String,ToPerform:()->Unit){
+
+        val Today = Timestamp(Date())
+        /**Store Day Data**/
+        FirebaseUtils.houseCollectionRef
             .document(HouseID)
             .collection(Constants.SALES_DAY_COLLECTION)
             .document(DayID)
@@ -105,6 +136,44 @@ class Item : Serializable,Comparable<Item> {
             .addOnFailureListener { exception ->
                 Log.d(TAG, "item data read failed with", exception)
             }
+    }
+
+    fun DeleteFromItemsList(HouseID:String, DayID:String,ToPerform:()->Unit){
+
+        /**Store Day Data**/
+        FirebaseUtils.houseCollectionRef
+            .document(HouseID)
+            .collection(Constants.SALES_DAY_COLLECTION)
+            .document(DayID)
+            .collection(Constants.ITEMS_COLLECTION)
+            .document(docID).delete()
+            .addOnSuccessListener {
+                ToPerform()
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "failed to delete item from Items List", exception)
+            }
+    }
+
+    fun DeleteFromRequestedList(HouseID:String, DayID:String,ToPerform:()->Unit){
+
+        /**Store Day Data**/
+        FirebaseUtils.houseCollectionRef
+            .document(HouseID)
+            .collection(Constants.SALES_DAY_COLLECTION)
+            .document(DayID)
+            .collection(Constants.REQUESTED_ITEMS_COLLECTION)
+            .document(docID).delete()
+            .addOnSuccessListener {
+                ToPerform()
+            }
+            .addOnFailureListener { exception ->
+                Log.d(TAG, "failed to delete item from Items List", exception)
+            }
+    }
+
+    fun clearImagesArray() {
+        this.ImagesArray.clear()
     }
 
     companion object {

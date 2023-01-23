@@ -51,7 +51,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="345dp"
+            android:layout_height="290dp"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="5dp"
             app:cardMaxElevation="1.5dp"
@@ -102,6 +102,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="5dp"
                     android:elevation="15dp"
+                    android:visibility="gone"
                     android:text="Yamaha V-Max"
                     android:textColor="#A3162C"
                     android:textSize="28sp"
@@ -123,9 +124,11 @@
 
             <TextView
                 android:text="Description:"
+                android:id="@+id/txt_item_description"
                 android:layout_marginTop="2dp"
                 android:textSize="18sp"
                 android:gravity="center"
+                android:visibility="gone"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
@@ -137,6 +140,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:visibility="gone"
                 android:layout_marginStart="5dp"
                 android:text="Well done Yamaha, finally the new V-MAX are here. This Bike hase new R1-derived inline-four that’s boosted to 164 hp. The key upgrade with the SP edition is the new six-axis semi-active Öhlins SMART EC 2.0 electronic suspension."
                 android:textColor="@color/black"
@@ -149,7 +153,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/txt_auction_houses"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="16dp" />
 
     </LinearLayout>

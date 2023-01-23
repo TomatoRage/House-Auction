@@ -17,12 +17,8 @@ import androidx.core.content.ContextCompat
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.Extensions.toast
-import com.example.auctionhouseapp.Utils.FirebaseUtils
-import com.example.auctionhouseapp.Utils.FirebaseUtils.firebaseAuth
-import com.example.auctionhouseapp.Utils.FirebaseUtils.firebaseUser
+import com.google.firebase.auth.FirebaseAuth
 import com.example.auctionhouseapp.AddOns.loadingDialog
-import com.example.auctionhouseapp.AuctionDays
-import com.example.auctionhouseapp.Objects.Item
 import com.example.auctionhouseapp.Utils.FirebaseUtils.userCollectionRef
 
 
@@ -39,8 +35,6 @@ class LoginActivity : AppCompatActivity() {
 
     lateinit var emailError:TextView
     lateinit var passwordError:TextView
-
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -173,8 +167,10 @@ class LoginActivity : AppCompatActivity() {
         //loadingDialog.startLoadingDialog()a
         signInEmail = emailEt.text.toString().trim()
         signInPassword = passEt.text.toString().trim()
-
-        firebaseAuth.signInWithEmailAndPassword(signInEmail, signInPassword)
+        if(FirebaseAuth.getInstance().currentUser != null) {
+            FirebaseAuth.getInstance().signOut()
+        }
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(signInEmail, signInPassword)
             .addOnCompleteListener { signIn ->
                 if (signIn.isSuccessful) {
 
@@ -190,7 +186,7 @@ class LoginActivity : AppCompatActivity() {
 
 
     fun checkUser(ToPerform: () -> Unit) {
-        firebaseUser?.let {
+        FirebaseAuth.getInstance().currentUser?.let {
             userCollectionRef
                 .document(it.uid)
                 .get()
@@ -217,7 +213,7 @@ class LoginActivity : AppCompatActivity() {
         dialog.show()
         Handler().postDelayed({
             if (userType == 0) {
-                val intent = Intent(applicationContext, CustomerActivity::class.java)
+                val intent = Intent(applicationContext, CustomerMainActivity::class.java)
                 startActivity(intent)
                 finish()
             } else if (userType == 1) {

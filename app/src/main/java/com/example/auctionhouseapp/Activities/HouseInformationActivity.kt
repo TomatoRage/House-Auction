@@ -9,7 +9,7 @@ import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import com.example.auctionhouseapp.Objects.AuctionHouse
 import com.example.auctionhouseapp.R
-import com.example.auctionhouseapp.Utils.FirebaseUtils
+import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 
 class HouseInformationActivity : AppCompatActivity() {
@@ -33,7 +33,7 @@ class HouseInformationActivity : AppCompatActivity() {
         }
 
         findViewById<TextView>(R.id.txt_sign_out).setOnClickListener {
-            FirebaseUtils.firebaseAuth.signOut()
+            FirebaseAuth.getInstance().signOut()
             val intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
             finish()

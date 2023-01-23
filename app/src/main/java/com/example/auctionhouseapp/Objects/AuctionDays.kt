@@ -184,18 +184,21 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
             .limit(NumToFetch.toLong())
             .get()
             .addOnSuccessListener { documents ->
+                var isEmpty = false
                 for(doc in documents){
-
+                    isEmpty = true
                     val ToAdd = Item(doc.data)
                     ToAdd.docID = doc.id
                     ToAdd.FetchImages(1,ToPerform,documents.size()-1,documents.indexOf(doc))
                     Items.add(ToAdd)
                 }
+                if (!isEmpty) {ToPerform()}
             }
             .addOnFailureListener { exception ->
                 Log.d(TAG, "Items data read failed with", exception)
             }
     }
+
 
     fun FetchRequested(NumToFetch: Int,HouseID: String,ToPerform: () -> Unit){
         FirebaseUtils.houseCollectionRef
@@ -206,12 +209,15 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
             .limit(NumToFetch.toLong())
             .get()
             .addOnSuccessListener { documents ->
+                var isEmpty = false
                 for(doc in documents){
+                    isEmpty = true
                     val ToAdd = Item(doc.data)
                     ToAdd.docID = doc.id
                     ToAdd.FetchImages(1,ToPerform,documents.size()-1,documents.indexOf(doc))
-                    RequestedItems!!.add(ToAdd)
+                    RequestedItems.add(ToAdd)
                 }
+                if (!isEmpty) {ToPerform()}
             }
             .addOnFailureListener { exception ->
                 Log.d(TAG, "Requested Items data read failed with", exception)
