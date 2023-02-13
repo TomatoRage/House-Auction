@@ -41,10 +41,8 @@ class ViewDay : AppCompatActivity() {
             findViewById<TextView>(R.id.textView_status).setText("Status: Occurred")
         if(Day.Status == AuctionDayStatus.Happening)
             findViewById<TextView>(R.id.textView_status).setText("Status: Happening")
-        findViewById<TextView>(R.id.textview_total_earnings).setText("Earnings: " + Day.Earnings.toString()+"₪")
         findViewById<TextView>(R.id.textView_participants).setText("Participants: " + Day.ParticipantsNum.toString())
-        findViewById<TextView>(R.id.textView_requested_items).setText("Requested: " + Day.NumOfRequested.toString())
-        findViewById<TextView>(R.id.textview_num_of_items).setText("Items: " + Day.NumOfItems.toString())
+        findViewById<TextView>(R.id.textview_num_of_items).setText("Items: " + Day.ListedItems.size.toString())
 
         findViewById<Button>(R.id.btn_listed_items).setOnClickListener {
             val intent = Intent(applicationContext, ItemsList::class.java)

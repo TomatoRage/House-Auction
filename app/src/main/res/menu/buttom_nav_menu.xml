@@ -8,11 +8,6 @@
         android:title="Profile" />
 
     <item
-        android:id="@+id/customerItemsFragment"
-        android:icon="@drawable/customer_items_vec"
-        android:title="My Items" />
-
-    <item
         android:id="@+id/auctionHousesListFragment"
         android:icon="@drawable/auction_houses_vec"
         android:title="Auction Houses" />

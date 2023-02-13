@@ -1,6 +1,5 @@
 package com.example.auctionhouseapp.Activities
 
-import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
@@ -10,10 +9,7 @@ import android.widget.ImageButton
 import android.widget.ImageSwitcher
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
-import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.Fragments.AuctionDaysSpinner
 import com.example.auctionhouseapp.Fragments.ItemInfoFragment
 import com.example.auctionhouseapp.Objects.Item
@@ -97,7 +93,7 @@ class ViewItem : AppCompatActivity() {
         }
     }
 
-    fun setItemInfoOnScreen () {
+    fun setItemInfoOnScreen (perf: () -> Unit={}) {
         if(supportFragmentManager.isDestroyed)
             return
 

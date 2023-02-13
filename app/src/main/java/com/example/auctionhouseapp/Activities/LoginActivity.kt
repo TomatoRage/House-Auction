@@ -16,10 +16,16 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.Constants
+import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.example.auctionhouseapp.Utils.Extensions.toast
 import com.google.firebase.auth.FirebaseAuth
-import com.example.auctionhouseapp.AddOns.loadingDialog
-import com.example.auctionhouseapp.Utils.FirebaseUtils.userCollectionRef
+import com.example.auctionhouseapp.adapter.AddOns.loadingDialog
+import com.example.auctionhouseapp.Utils.FirebaseUtils.customerCollectionRef
+import com.example.auctionhouseapp.Utils.FirebaseUtils.houseCollectionRef
+import com.example.auctionhouseapp.Utils.FirebaseUtils.usersCollectionRef
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 
 
 class LoginActivity : AppCompatActivity() {
@@ -29,13 +35,9 @@ class LoginActivity : AppCompatActivity() {
     lateinit var signInBtn: Button
     lateinit var emailEt: EditText
     lateinit var passEt: EditText
-    var userType = -1
-
     lateinit var loadingDialog: loadingDialog
-
     lateinit var emailError:TextView
     lateinit var passwordError:TextView
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -173,9 +175,8 @@ class LoginActivity : AppCompatActivity() {
         FirebaseAuth.getInstance().signInWithEmailAndPassword(signInEmail, signInPassword)
             .addOnCompleteListener { signIn ->
                 if (signIn.isSuccessful) {
-
                     //loadingDialog.dismissDialog()
-                    checkUser(::goToNextActivity)
+                    checkUser(::getUserName)
 
                 } else {
                     toast("sign in failed")
@@ -184,27 +185,27 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-
-    fun checkUser(ToPerform: () -> Unit) {
+    fun fetchUserType(ToPerform: (type: Int) -> Unit) {
         FirebaseAuth.getInstance().currentUser?.let {
-            userCollectionRef
+            usersCollectionRef
                 .document(it.uid)
                 .get()
                 .addOnSuccessListener { doc ->
                     if (doc != null) {
-                        userType = (doc.data?.get(Constants.USER_TYPE) as Long).toInt()
-                        if(userType!= -1)
-                            ToPerform()
+                        val userType = (doc.data?.get("Type") as Long).toInt()
+                        if (userType != -1)
+                            ToPerform(userType)
                     }
-
                 }
-                .addOnFailureListener { exception ->
-                    Log.d("LoginActivity", "Requested Items data read failed with", exception)
+                .addOnFailureListener {exception ->
+                    Log.d("LoginActivity", "-E- while fetching user type", exception)
+
                 }
         }
+
     }
 
-    fun goToNextActivity() {
+    fun checkUser(ToPerform: (type:Int) -> Unit) {
         val builder = AlertDialog.Builder(this)
         val dialogView = layoutInflater. inflate (R.layout.fragment_auction_days_spinner,null)
         builder.setView (dialogView)
@@ -212,21 +213,53 @@ class LoginActivity : AppCompatActivity() {
         val dialog = builder.create()
         dialog.show()
         Handler().postDelayed({
-            if (userType == 0) {
-                val intent = Intent(applicationContext, CustomerMainActivity::class.java)
-                startActivity(intent)
-                finish()
-            } else if (userType == 1) {
-                val intent = Intent(applicationContext, HouseActivity::class.java)
-                startActivity(intent)
-                finish()
-            } else {
-                toast("Error While Reading User Type!")
-            }
+            fetchUserType(ToPerform)
         }, 500)
+    }
 
+    fun fetchUserName(collectionName:String,ToPerform: (type:Int,name:String) -> Unit,type: Int) {
+        FirebaseAuth.getInstance().currentUser?.let {
+            FirebaseFirestore.getInstance().collection(collectionName)
+                .document(it.uid)
+                .get()
+                .addOnSuccessListener { doc ->
+                    if (doc != null) {
+                        val name = (doc.data?.get("Full Name") as String)
+                        ToPerform(type,name)
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d("LoginActivity", "-E- while fetching user type", exception)
+                }
+        }
+    }
 
+    fun getUserName(userType: Int) {
+        if (userType == 0) {
+            fetchUserName(Constants.CUSTOMERS_COLLECTION,::goToNextActivity,0)
+        } else if (userType == 1) {
+            fetchUserName(Constants.HOUSES_COLLECTION,::goToNextActivity,1)
+        } else {
+            toast("Error While Reading User Type!")
+        }
+    }
 
+    fun goToNextActivity(type: Int, name: String) {
+        if(type == 0) {
+            val intent = Intent(applicationContext,CustomerMainActivity::class.java)
+            intent.putExtra("User Name", name)
+            intent.putExtra("User Email", emailEt.text.toString())
+            startActivity(intent)
+            finish()
+        } else if (type == 1) {
+            val intent = Intent(applicationContext,HouseActivity::class.java)
+            intent.putExtra("User Name", name)
+            intent.putExtra("User Email", emailEt.text.toString())
+            startActivity(intent)
+            finish()
+        } else {
+            throw Exception("-E- Failed to go to next activity")
+        }
     }
 
 }

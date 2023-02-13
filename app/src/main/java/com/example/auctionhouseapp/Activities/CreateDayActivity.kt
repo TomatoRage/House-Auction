@@ -405,9 +405,6 @@ class CreateDayActivity : AppCompatActivity() {
         Day.Commission = (Commission.text.toString().toDouble())/100
         Day.LockBefore = Lock.text.toString().toInt()
         Day.ParticipantsNum = 0
-        Day.Earnings = 0
-        Day.NumOfItems = 0
-        Day.NumOfRequested = 0
         Day.NumOfSoldItems = 0
 
         Day.StoreData(FirebaseAuth.getInstance().currentUser!!.uid,::OnSuccPerform)
@@ -418,6 +415,7 @@ class CreateDayActivity : AppCompatActivity() {
         UpdateNextSalesDay()
         val intent = Intent(applicationContext, HouseActivity::class.java)
         setResult(RESULT_OK,intent)
+        startActivity(intent)
         finish()
     }
 }

@@ -7,152 +7,142 @@
     android:background="@color/background"
     tools:context=".Activities.AuctionItemActivity">
 
-
-    <TextView
-        android:id="@+id/txt_auction_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="12dp"
-        android:fontFamily="@font/metropolis_bold"
-        android:text="Auction Item"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:textColor="@color/mainText"
-        android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/LayoutTop" />
-
     <LinearLayout
-        android:id="@+id/LayoutTop"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="5dp"
+        android:id="@+id/topBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal">
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/txt_back"
-            android:layout_width="1dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_weight="0.4"
-            android:background="@drawable/back_arrow"
-            android:fontFamily="@font/metropolis_regular"
-            android:layout_marginLeft="1dp"
-            android:gravity="left"
-            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/ic_back"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_back"
+            app:tint="@color/mainText"
+            />
+
+        <androidx.legacy.widget.Space
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+
         <TextView
             android:id="@+id/txt_sign_out"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1"
-            android:layout_marginRight="7dp"
-            android:fontFamily="@font/metropolis_regular"
-            android:gravity="right"
-            android:text="Sign Out"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:textSize="15sp"
+            android:text = "Sign Out"
+            app:tint="@color/mainText"
+            />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:gravity = "center"
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/topBarLayout">
+
+<TextView
+    android:id="@+id/txt_auction_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="10dp"
+    android:fontFamily="@font/metropolis_regular"
+    android:text="Auction New Item"
+    android:textColor="@color/mainText"
+    android:textSize="25sp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="30dp"
+    android:layout_marginRight="10dp"
+    android:fontFamily="@font/metropolis_regular"
+    android:text="Item Details"
+    android:textColor="@color/mainText"
+    android:textSize="15sp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+
+<EditText
+    android:id="@+id/edit_item_name"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:textSize="15sp"
+    android:paddingLeft="20dp"
+    android:drawableEnd="@null"
+    android:paddingRight="20dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="10dp"
+    android:textColor="@color/mainText"
+    android:background="@drawable/edit_text_bg"
+    android:fontFamily="@font/metropolis_regular"
+    android:hint="Item Name"
+    android:inputType="textPersonName"
+    android:maxLines="1" />
+
+<EditText
+    android:id="@+id/edit_item_description"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:textSize="15sp"
+    android:paddingLeft="20dp"
+    android:drawableRight="@null"
+    android:paddingRight="20dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="10dp"
+    android:textColor="@color/mainText"
+    android:background="@drawable/edit_text_bg"
+    android:fontFamily="@font/metropolis_regular"
+    android:hint="Item Description"
+    android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
+    android:maxLines="4" />
+
+    <EditText
+        android:id="@+id/edit_txt_starting_price"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/txt_auction_item">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/metropolis_bold"
-            android:text="Name:"
-            android:textSize="16sp" />
-
-        <EditText
-            android:id="@+id/edit_txt_name"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edit_text_bg"
-            android:drawableRight="@null"
-            android:fontFamily="@font/metropolis_regular"
-            android:inputType="textPersonName"
-            android:maxLength="15"
-            android:maxLines="1"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:textColor="@color/mainText"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/metropolis_bold"
-            android:text="Description:"
-            android:textSize="16sp" />
-
-        <EditText
-            android:id="@+id/edit_txt_description"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edit_text_bg"
-            android:drawableRight="@null"
-            android:fontFamily="@font/metropolis_regular"
-            android:maxLines="4"
-            android:maxLength="100"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:textColor="@color/mainText"
-            android:textSize="15sp" />
+        android:layout_height="50dp"
+        android:textSize="15sp"
+        android:paddingLeft="20dp"
+        android:drawableEnd="@null"
+        android:paddingRight="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/mainText"
+        android:background="@drawable/edit_text_bg"
+        android:fontFamily="@font/metropolis_regular"
+        android:hint="Item Price (Coins)"
+        android:inputType="phone"
+        android:maxLines="1" />
 
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/metropolis_bold"
-            android:text="Starting Price:"
-            android:textSize="16sp" />
+    <ImageSwitcher
+        android:id="@+id/img_switcher1"
+        android:layout_width="match_parent"
+        android:layout_height="210dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/round_outline" />
 
-        <EditText
-
-            android:id="@+id/edit_txt_starting_price"
-            android:layout_width="180dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edit_text_bg"
-            android:drawableRight="@null"
-            android:fontFamily="@font/metropolis_regular"
-            android:inputType="number"
-            android:maxLines="1"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:textColor="@color/mainText"
-            android:textSize="15sp" />
-
-        <Button
-            android:id="@+id/btn_pick_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/btn_bg"
-            android:elevation="10dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:text="Pick Images"
-            android:textColor="@color/white" />
     <LinearLayout
         android:orientation="horizontal"
         android:layout_marginLeft="1dp"
@@ -164,49 +154,49 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_pick_item">
 
 
+
         <ImageButton
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:id="@+id/btn_prev_img"
             android:src="@drawable/arrow_prev"/>
 
-        <ImageSwitcher
-            android:id="@+id/img_switcher1"
-            android:layout_marginTop="10dp"
-            android:layout_width="260dp"
-            android:paddingLeft="1dp"
-            android:paddingRight="1dp"
-            android:layout_height="260dp"
-            android:background = "@drawable/round_outline"/>
 
         <ImageButton
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:id="@+id/btn_next_img"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:src="@drawable/arrow"/>
-
-
     </LinearLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnPickItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="20dp"
 
+        android:src="@drawable/ic_baseline_add_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <Button
-            android:id="@+id/_btn_auction_item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/btn_bg"
-            android:elevation="10dp"
-            android:text="AUCTION ITEM"
-            android:textColor="@color/white" />
+    <Button
+        android:id="@+id/_btn_auction_item"
+        android:layout_width="210dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/btn_bg"
+        android:elevation="10dp"
+        android:layout_gravity="center"
+        android:text="AUCTION ITEM"
+        app:backgroundTint="@color/sale"
+        android:textColor="@color/white" />
 
-
-
-    </LinearLayout>
-
+</LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

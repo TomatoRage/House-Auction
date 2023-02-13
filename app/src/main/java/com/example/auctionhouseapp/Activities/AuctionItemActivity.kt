@@ -15,8 +15,10 @@ import android.text.TextWatcher
 import android.widget.*
 import androidx.core.content.ContextCompat
 import com.example.auctionhouseapp.AuctionDays
+import com.example.auctionhouseapp.Objects.AuctionHouse
 import com.example.auctionhouseapp.Objects.Item
 import com.example.auctionhouseapp.R
+import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.Extensions.toast
 import com.example.auctionhouseapp.Utils.FirebaseUtils.firebaseStore
 import com.example.auctionhouseapp.Utils.FirebaseUtils.storageReference
@@ -30,7 +32,7 @@ class AuctionItemActivity : AppCompatActivity() {
     private lateinit var edit_item_description:EditText
     private lateinit var edit_starting_price:EditText
     private lateinit var imageSwitcher:ImageSwitcher
-    private lateinit var houseId:String
+    private var house = AuctionHouse()
     private lateinit var dayId:String
     private var position = 0
     lateinit var ImagesUri:ArrayList<Uri>
@@ -44,11 +46,11 @@ class AuctionItemActivity : AppCompatActivity() {
         setContentView(binding.root)
         imageSwitcher = findViewById<ImageSwitcher>(R.id.img_switcher1)
         imageSwitcher.setFactory { ImageView(applicationContext) }
-        houseId = intent.getStringExtra("House ID")!!
+        house.SetID(intent.getStringExtra("House ID")!!)
         dayId = intent.getStringExtra("Day ID")!!
 
-        edit_item_name = findViewById<EditText>(R.id.edit_txt_name)
-        edit_item_description = findViewById<EditText>(R.id.edit_txt_description)
+        edit_item_name = findViewById<EditText>(R.id.edit_item_name)
+        edit_item_description = findViewById<EditText>(R.id.edit_item_description)
         edit_starting_price = findViewById<EditText>(R.id.edit_txt_starting_price)
         NextBtn = findViewById<ImageButton>(R.id.btn_next_img)
         PrevBtn = findViewById<ImageButton>(R.id.btn_prev_img)
@@ -65,7 +67,7 @@ class AuctionItemActivity : AppCompatActivity() {
             finish()
         }
 
-        findViewById<TextView>(R.id.txt_back).setOnClickListener {
+        findViewById<ImageView>(R.id.ic_back).setOnClickListener {
             finish()
         }
 
@@ -276,34 +278,31 @@ class AuctionItemActivity : AppCompatActivity() {
             toast("Invalid Item's starting price!")
             return
         }
-
-        if (StoreData() < 0) {
-            toast("Must upload image!")
-            return
-        }
-        finish()
+        StoreItem()
     }
 
-    fun StoreData():Int {
+    fun StoreItem() {
+        house.FetchHousePrimaryData(house.GetUID(),::StoreData)
+    }
+    fun StoreData() {
         val item = Item()
         item.ownerId = FirebaseAuth.getInstance().currentUser?.uid.toString()
         item.Name = edit_item_name.text.toString()
         item.Description = edit_item_description.text.toString()
-        if (ImagesUri.isEmpty()) {
-            return -1
-        }
         item.startingPrice = edit_starting_price.text.toString().toInt()
         item.lastBid = -1
         item.lastBidderId = null
+        item.status = "Pending"
         uploadImages()
         item.imagesIDs = ImagesIDs
-        item.StoreData(houseId, dayId,::OnSuccPerform)
-        return 0
+        item.auctionHouseName = house.GetName()
+        val customerUID = FirebaseAuth.getInstance().currentUser?.uid.toString()
+        item.StoreData(Constants.REQUESTED_ITEMS, house.GetUID(), dayId, customerUID, ::OnSuccPerform)
     }
 
     fun OnSuccPerform() {
-        val intent = Intent(applicationContext, ItemsList::class.java)
-        setResult(RESULT_OK,intent)
+        //val intent = Intent(applicationContext, ItemsList::class.java)
+        //setResult(RESULT_OK,intent)
         finish()
     }
 

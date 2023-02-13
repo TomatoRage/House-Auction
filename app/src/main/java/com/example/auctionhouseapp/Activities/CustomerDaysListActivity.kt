@@ -15,15 +15,14 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class CustomerDaysListActivity : AppCompatActivity() {
-    val House: AuctionHouse = AuctionHouse()
+    lateinit var House: AuctionHouse
     val LoadingFragment = AuctionDaysSpinner()
     val List = CustomerDaysListFragment()
-    lateinit var HouseId: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_days_list)
-        HouseId = intent.getStringExtra("HouseId") as String
-        House.FetchHouseData(HouseId, ::setHouseDaysOnScreen)
+        House = intent.getSerializableExtra("House") as AuctionHouse
+        House.FetchHouseDays(House.GetUID(), ::setHouseDaysOnScreen)
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentContainerViewAuctionDays,LoadingFragment)
             commit()
@@ -42,7 +41,6 @@ class CustomerDaysListActivity : AppCompatActivity() {
     }
     fun setHouseDaysOnScreen() {
         List.House = House
-        List.HouseId = HouseId
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentContainerViewAuctionDays,List)
             commit()

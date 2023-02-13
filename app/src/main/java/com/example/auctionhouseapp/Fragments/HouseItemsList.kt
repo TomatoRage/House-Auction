@@ -42,19 +42,18 @@ class HouseItemsList : Fragment() {
             Context.finish()
         }
         if(!isRequestedList)
-            ListView.adapter = CustomListAdapter(Context,Day.Items)
+            ListView.adapter = CustomListAdapter(Context,Day.ListedItems)
         else
             ListView.adapter = CustomListAdapter(Context,Day.RequestedItems)
 
         ListView.setOnItemClickListener { parent, view, position, id ->
             val intent = Intent(Context, ViewItem::class.java)
             if(!isRequestedList) {
-                var item = Day.Items[position]
+                var item = Day.ListedItems[position]
                 item.clearImagesArray()
                 intent.putExtra("Item", item)
                 intent.putExtra("ListType",false)
-            }
-            else {
+            } else {
                 var item = Day.RequestedItems[position]
                 item.clearImagesArray()
                 intent.putExtra("Item", item)

@@ -38,8 +38,8 @@ class AuctionHousesListFragment : Fragment() {
         ListView.adapter = CustomListAdapter2(Context,HousesList)
         ListView.setOnItemClickListener { parent, view, position, id ->
             val intent = Intent(Context, HouseInformationActivity::class.java)
-            intent.putExtra("HouseId",HousesList[position].GetUID())
-            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            val House = HousesList[position]
+            intent.putExtra("House",House)
             startActivity(intent)
         }
         return view

@@ -28,8 +28,9 @@ class HouseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auctionhouse)
 
+        //House.FetchHouseData(Firebase.auth.currentUser!!.uid,::PerformAfterData)
+        House.Days.clear()
         House.FetchHouseData(Firebase.auth.currentUser!!.uid,::PerformAfterData)
-
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentContainerView,LoadingFragment)
             commit()
@@ -41,9 +42,6 @@ class HouseActivity : AppCompatActivity() {
                     replace(R.id.fragmentContainerView,LoadingFragment)
                     commit()
                 }
-                House.Days.clear()
-                House.FetchHouseData(Firebase.auth.currentUser!!.uid,::PerformAfterData)
-
             }
         }
 

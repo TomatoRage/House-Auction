@@ -1,24 +1,26 @@
 package com.example.auctionhouseapp.Objects
 
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
-import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import java.io.ByteArrayOutputStream
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FieldValue
 import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.reflect.KFunction1
 
-class Item : Serializable,Comparable<Item> {
+class Item : Serializable {
     lateinit var ownerId: String
+    lateinit var ID: String
     lateinit var Name: String
+    lateinit var auctionHouseName:String
     lateinit var Description: String
-    lateinit var docID:String
     lateinit var ImagesArray:ArrayList<ByteArray>
     lateinit var imagesIDs:ArrayList<String>
+    lateinit var status:String
     var startingPrice: Int = 0
     var lastBidderId: String? = null
     var lastBid:Int = 0
@@ -26,6 +28,9 @@ class Item : Serializable,Comparable<Item> {
 
     constructor()
 
+    constructor(itemId:String) {
+        ID = itemId
+    }
     constructor(Data: MutableMap<String, Any>?) {
         SetData(Data)
     }
@@ -36,28 +41,30 @@ class Item : Serializable,Comparable<Item> {
             return
         ownerId = Data[Constants.ITEM_OWNER_ID] as String
         Name = Data[Constants.ITEM_NAME] as String
+        auctionHouseName = Data[Constants.ITEM_AUCTION_HOUSE] as String
         Description = Data[Constants.ITEM_DESCRIPTION] as String
         startingPrice = (Data[Constants.ITEM_START_PRICE] as Long).toInt()
         imagesIDs = Data[Constants.ITEM_PHOTOS_LIST] as ArrayList<String>
+        status = Data[Constants.ITEM_STATUS] as String
         if(Data[Constants.ITEM_LAST_BIDDER] != null) {
             lastBidderId = Data[Constants.ITEM_LAST_BIDDER] as String?
             lastBid = (Data[Constants.ITEM_LAST_BID_AMOUNT] as Long).toInt()
         }
+        ID = Data[Constants.ITEM_ID] as String
         return
     }
 
-    fun FetchImages(NumOfImages:Int,ToPerform:() -> Unit,TotalItemsToFetch:Int = -1,ItemNum:Int = -1){
+    fun FetchImages(NumOfImages:Int, ToPerform1: KFunction1<() -> Unit, Unit>, ToPerform2: () -> Unit={}) {
 
         var NumOfImagesRead:Int = 0
         val MaxImageSize:Long = 1080*1080 * 1000
-        var NumToFetch:Int = NumOfImages-1
+        var NumToFetch:Int = NumOfImages
         ImagesArray = arrayListOf()
 
-        if(NumOfImages == -1 || imagesIDs.size-1 < NumToFetch)
-            NumToFetch = imagesIDs.size-1
+        if(NumOfImages == -1)
+            NumToFetch = imagesIDs.size
 
-        for(i in 0..NumToFetch){
-
+        for(i in 0 until NumToFetch){
             FirebaseUtils.firebaseStore.reference
                 .child(Constants.STORAGE_ITEM+imagesIDs[i])
                 .getBytes(MaxImageSize)
@@ -67,108 +74,135 @@ class Item : Serializable,Comparable<Item> {
                     Bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG,100,Stream)
                     ImagesArray.add(Stream.toByteArray())
                     NumOfImagesRead +=1
-                    if(NumOfImagesRead == NumToFetch+1 && TotalItemsToFetch == ItemNum)
-                        ToPerform()
+                    if(NumOfImagesRead == NumToFetch)
+                        ToPerform1(ToPerform2)
                 }
                 .addOnFailureListener { exception ->
-                    Log.d(TAG, "Items Image failed with", exception)
+                    Log.d("Item.kt", "Items Image failed with", exception)
                 }
         }
     }
 
-    fun StoreData(HouseID:String, DayID:String,ToPerform:()->Unit){
+    fun StoreData(items_list_type:String,HouseID:String, DayID:String, customerID:String, ToPerform:()->Unit={}){
 
         val Today = Timestamp(Date())
         /**Store Day Data**/
-        FirebaseUtils.houseCollectionRef
-            .document(HouseID)
-            .collection(Constants.SALES_DAY_COLLECTION)
-            .document(DayID)
-            .collection(Constants.REQUESTED_ITEMS_COLLECTION)
-            .document()
-            .set(
-                mapOf(
-                    Constants.ITEM_DESCRIPTION to Description,
-                    Constants.ITEM_LAST_BID_AMOUNT to lastBid,
-                    Constants.ITEM_LAST_BID_TIME to Today.toDate(),
-                    Constants.ITEM_LAST_BIDDER to lastBidderId,
-                    Constants.ITEM_NAME to Name,
-                    Constants.ITEM_OWNER_ID to ownerId,
-                    Constants.ITEM_NUM_IN_QUEUE to 0,
-                    Constants.ITEM_START_PRICE to startingPrice,
-                    Constants.ITEM_PHOTOS_LIST to imagesIDs,
-                )
+        val item_id = FirebaseUtils.itemsCollectionRef.document()
+            .id
+        FirebaseUtils.itemsCollectionRef.document(item_id)
+        .set(
+            mapOf(
+                Constants.ITEM_DESCRIPTION to Description,
+                Constants.ITEM_LAST_BID_AMOUNT to lastBid,
+                Constants.ITEM_LAST_BID_TIME to Today.toDate(),
+                Constants.ITEM_LAST_BIDDER to lastBidderId,
+                Constants.ITEM_NAME to Name,
+                Constants.ITEM_OWNER_ID to ownerId,
+                Constants.ITEM_ID to item_id,
+                Constants.ITEM_NUM_IN_QUEUE to 0,
+                Constants.ITEM_START_PRICE to startingPrice,
+                Constants.ITEM_PHOTOS_LIST to imagesIDs,
+                Constants.ITEM_STATUS to status,
+                Constants.ITEM_AUCTION_HOUSE to auctionHouseName,
+
             )
-            .addOnSuccessListener {
-                ToPerform()
-            }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "item data read failed with", exception)
-            }
+        )
+        .addOnSuccessListener {
+            FirebaseUtils.houseCollectionRef
+                .document(HouseID)
+                .collection(Constants.SALES_DAY_COLLECTION)
+                .document(DayID)
+                .update(items_list_type,FieldValue.arrayUnion(item_id)).addOnCompleteListener {task->
+                    if (task.isSuccessful) {
+                        StoreDataInCustomer(Constants.AUCTIONED_ITEMS, item_id, customerID, ToPerform)
+
+                        Log.d("Items.kt" ,"successful item insertion to $items_list_type")
+                    } else {
+                        Log.d("Items.kt", "failed inserting item to $items_list_type")
+                    }
+                }
+
+        }
+        .addOnFailureListener { exception ->
+            Log.d("Item.kt", "item data read failed with", exception)
+        }
     }
 
-    fun StoreDataIntoItemsList(HouseID:String, DayID:String,ToPerform:()->Unit){
 
-        val Today = Timestamp(Date())
-        /**Store Day Data**/
+    fun StoreDataInCustomer(items_list_type:String, item_id:String ,customerID:String, ToPerform:()->Unit={}) {
+            FirebaseUtils.customerCollectionRef
+                .document(customerID)
+                .update(items_list_type,FieldValue.arrayUnion(item_id)).addOnCompleteListener {task->
+                    if (task.isSuccessful) {
+                        ToPerform()
+                        Log.d("Items.kt" ,"successful item insertion to $items_list_type")
+                    } else {
+                        Log.d("Items.kt", "failed inserting item to $items_list_type")
+                    }
+                }
+        }
+
+
+    fun RemoveFromRequestedItems(HouseID:String, DayID:String,ToPerform:()->Unit={}) {
         FirebaseUtils.houseCollectionRef
             .document(HouseID)
             .collection(Constants.SALES_DAY_COLLECTION)
             .document(DayID)
-            .collection(Constants.ITEMS_COLLECTION)
-            .document()
-            .set(
-                mapOf(
-                    Constants.ITEM_DESCRIPTION to Description,
-                    Constants.ITEM_LAST_BID_AMOUNT to lastBid,
-                    Constants.ITEM_LAST_BID_TIME to Today.toDate(),
-                    Constants.ITEM_LAST_BIDDER to lastBidderId,
-                    Constants.ITEM_NAME to Name,
-                    Constants.ITEM_OWNER_ID to ownerId,
-                    Constants.ITEM_NUM_IN_QUEUE to 0,
-                    Constants.ITEM_START_PRICE to startingPrice,
-                    Constants.ITEM_PHOTOS_LIST to imagesIDs,
-                )
-            )
-            .addOnSuccessListener {
-                ToPerform()
-            }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "item data read failed with", exception)
+            .update(Constants.REQUESTED_ITEMS,(FieldValue.arrayRemove(ID)))
+            .addOnCompleteListener {task->
+                if (task.isSuccessful) {
+                    ToPerform()
+                    Log.d("Items.kt" ,"successful item remove to ${Constants.REQUESTED_ITEMS}")
+                } else {
+                    Log.d("Items.kt", "failed remove item to ${Constants.REQUESTED_ITEMS}")
+                }
             }
     }
 
-    fun DeleteFromItemsList(HouseID:String, DayID:String,ToPerform:()->Unit){
-
-        /**Store Day Data**/
+    fun AddToListItems(HouseID:String, DayID:String,ToPerform:()->Unit={}) {
+        val idd = ID
         FirebaseUtils.houseCollectionRef
             .document(HouseID)
             .collection(Constants.SALES_DAY_COLLECTION)
             .document(DayID)
-            .collection(Constants.ITEMS_COLLECTION)
-            .document(docID).delete()
-            .addOnSuccessListener {
-                ToPerform()
-            }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "failed to delete item from Items List", exception)
+            .update("Listed Items",(FieldValue.arrayUnion(ID)))
+            .addOnCompleteListener {task->
+                if (task.isSuccessful) {
+                    ToPerform()
+                    Log.d("Items.kt" ,"successful item remove to ${Constants.LISTED_ITEMS}")
+                } else {
+                    Log.d("Items.kt", "failed remove item to ${Constants.LISTED_ITEMS}")
+                }
             }
     }
 
-    fun DeleteFromRequestedList(HouseID:String, DayID:String,ToPerform:()->Unit){
+    fun RemoveFromHouseList(items_list_type:String,HouseID:String, DayID:String,ToPerform:()->Unit={}){
 
-        /**Store Day Data**/
         FirebaseUtils.houseCollectionRef
             .document(HouseID)
             .collection(Constants.SALES_DAY_COLLECTION)
             .document(DayID)
-            .collection(Constants.REQUESTED_ITEMS_COLLECTION)
-            .document(docID).delete()
-            .addOnSuccessListener {
-                ToPerform()
+            .update(items_list_type,FieldValue.arrayRemove(ID)).addOnCompleteListener {task->
+                if (task.isSuccessful) {
+                    ToPerform()
+                    Log.d("Items.kt" ,"successful item remove to $items_list_type")
+                } else {
+                    Log.d("Items.kt", "failed remove item to $items_list_type")
+                }
             }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "failed to delete item from Items List", exception)
+    }
+
+    fun RemoveFromCustomerList(items_list_type:String, customerID:String, ToPerform:()->Unit={}){
+
+        FirebaseUtils.customerCollectionRef
+            .document(customerID)
+            .update(items_list_type,FieldValue.arrayRemove(ID)).addOnCompleteListener {task->
+                if (task.isSuccessful) {
+                    ToPerform()
+                    Log.d("Items.kt" ,"successful item remove to $items_list_type")
+                } else {
+                    Log.d("Items.kt", "failed remove item to $items_list_type")
+                }
             }
     }
 
@@ -178,10 +212,6 @@ class Item : Serializable,Comparable<Item> {
 
     companion object {
         private val TAG = "Item Object"
-    }
-
-    override fun compareTo(other: Item): Int {
-        TODO("Not yet implemented")
     }
 
 }

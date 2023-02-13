@@ -6,6 +6,35 @@
     android:layout_height="match_parent"
     tools:context=".Activities.CustomerMainActivity">
 
+    <!--    Top Bar-->
+    <LinearLayout
+        android:id="@+id/topBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.legacy.widget.Space
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/txt_sign_out"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:textSize="15sp"
+            android:gravity = "center"
+            android:text = "Sign Out"
+            app:tint="@color/mainText"
+            />
+
+    </LinearLayout>
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/customerMainContainer"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -16,7 +45,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/topBarLayout"
         app:layout_constraintVertical_bias="0.5"
         app:navGraph="@navigation/customer_nav" />
 
@@ -25,7 +54,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:menu="@menu/buttom_nav_menu"
-        android:background="@color/lightgoldenrodyellow"
+        android:background="@color/background"
         app:itemIconTint="@drawable/bottom_nav_colors"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

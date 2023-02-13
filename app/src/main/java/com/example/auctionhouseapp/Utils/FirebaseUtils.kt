@@ -10,7 +10,9 @@ object FirebaseUtils {
     //val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     //val firebaseUser: FirebaseUser? = firebaseAuth.currentUser
     val firebaseDataBase: FirebaseDatabase = FirebaseDatabase.getInstance()
-    val userCollectionRef = FirebaseFirestore.getInstance().collection(Constants.USER_COLLECTION)
+    val usersCollectionRef = FirebaseFirestore.getInstance().collection(Constants.USERS_COLLECTION)
+    val itemsCollectionRef = FirebaseFirestore.getInstance().collection(Constants.ITEMS_COLLECTION)
+    val customerCollectionRef = FirebaseFirestore.getInstance().collection(Constants.CUSTOMERS_COLLECTION)
     val houseCollectionRef = FirebaseFirestore.getInstance().collection(Constants.HOUSES_COLLECTION)
     val firebaseStore = FirebaseStorage.getInstance()
     val storageReference = FirebaseStorage.getInstance().reference

@@ -8,18 +8,22 @@ import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
+import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AuctionHouse: User {
+class AuctionHouse: User , Serializable {
 
     var Rating:Double = -1.0
     var TotalRaters:Int = -1
     var NextSalesDay:Date? = null
     val Days:ArrayList<AuctionDays> = arrayListOf()
+    var isReadHousePrimaryData:Boolean = false
+    var isReadHouseDays:Boolean = false
+
 
     constructor(Data:MutableMap<String,Any>?){
-        SetData(Data)
+        SetUserData(Data)
         SetType(UserType.AuctionHouse)
     }
 
@@ -27,45 +31,25 @@ class AuctionHouse: User {
         SetType(UserType.AuctionHouse)
     }
 
-    fun FetchHouseData(UserID:String, ToPerform:()->Unit){
-
-        var ReadFirstData = false
-        var ReadSecondData = false
-
-            FirebaseUtils.userCollectionRef.document(UserID).get()
-            .addOnSuccessListener { doc ->
-                if(doc != null){
-                    SetData(doc.data)
-                    if(ReadFirstData && ReadSecondData) {
-                        Days.sort()
-                        ToPerform()
-                    }else if(ReadFirstData)
-                        ReadSecondData = true
-                    else
-                        ReadFirstData = true
-                }
-
-            }.addOnFailureListener { execption ->
-                Log.d(TAG, "user data read failed with", execption)
-            }
-
+    fun FetchHousePrimaryData(UserID:String, ToPerform:()->Unit, isFetchAll:Boolean = false) {
         FirebaseUtils.houseCollectionRef.document(UserID).get()
             .addOnSuccessListener {   doc ->
                 if(doc != null){
-                    SetupHoduseData(doc.data)
-                    if(ReadFirstData && ReadSecondData){
-                        Days.sort()
+                    SetupHouseData(doc.data)
+                    isReadHousePrimaryData = true
+                    if (isFetchAll) {
+                       if (isReadHouseDays)
+                           ToPerform()
+                    } else {
                         ToPerform()
-                    } else if(ReadFirstData)
-                        ReadSecondData = true
-                    else
-                        ReadFirstData = true
+                    }
                 }
-
             }.addOnFailureListener { exception ->
                 Log.d(TAG, "user data read failed with", exception)
             }
+    }
 
+    fun FetchHouseDays(UserID:String, ToPerform:()->Unit, isFetchAll:Boolean = false) {
         FirebaseUtils.houseCollectionRef.document(UserID)
             .collection(Constants.SALES_DAY_COLLECTION)
             .orderBy(Constants.DAY_START_DATE,Query.Direction.DESCENDING).get()
@@ -75,27 +59,34 @@ class AuctionHouse: User {
                     Day.DocumentID = doc.id
                     this.Days.add(Day)
                 }
-                if(ReadFirstData && ReadSecondData) {
-                    Days.sort()
+                isReadHouseDays = true
+                if (isFetchAll) {
+                    if (isReadHousePrimaryData)
+                        ToPerform()
+                } else {
                     ToPerform()
-                }else if(ReadFirstData)
-                    ReadSecondData = true
-                else
-                    ReadFirstData = true
+                }
+
             }
             .addOnFailureListener { exception ->
                 Log.d(TAG, "day data read failed with", exception)
             }
+
     }
 
-    private fun SetupHoduseData(Data:MutableMap<String,Any>?){
+    fun FetchHouseData(UserID:String, ToPerform:()->Unit){
+        FetchHousePrimaryData(UserID,ToPerform,true)
+        FetchHouseDays(UserID,ToPerform,true)
+    }
+
+    private fun SetupHouseData(Data:MutableMap<String,Any>?){
         if(Data == null)
             return
+        SetUserData(Data)
         TotalRaters = (Data[Constants.HOUSE_NUM_RATERS] as Long).toInt()
         Rating = (Data[Constants.HOUSE_RATING_SUM] as Long).toDouble()/TotalRaters
         NextSalesDay = (Data[Constants.HOUSE_NEXT_SALES_DATE] as Timestamp?)?.toDate()
     }
-
 
     companion object {
         private val TAG = "Auction House"

@@ -45,37 +45,36 @@ class ItemsList : AppCompatActivity() {
         if(userType == UserType.AuctionHouse) {
             isRequestedList = intent.getBooleanExtra("ListType",false)
             if (isRequestedList)
-                Day.FetchRequested(5, HouseID, ::AfterDataFetch)
+                Day.FetchRequestedItems(HouseID, ::AfterDataFetch)
             else
-                Day.FetchItems(5, HouseID, ::AfterDataFetch)
+                Day.FetchListedItems(HouseID, ::AfterDataFetch)
 
 
         } else {
-            Day.FetchItems(5, HouseID, ::AfterDataFetch)
+            Day.FetchListedItems(HouseID, ::AfterDataFetch)
         }
-
-
 
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentContainerView3,LoadingFragment)
             commit()
         }
-        resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                supportFragmentManager.beginTransaction().apply {
-                    replace(R.id.fragmentContainerView3,LoadingFragment)
-                    commit()
-                }
-            }
-        }
+//        resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+//            if (result.resultCode == Activity.RESULT_OK) {
+//                supportFragmentManager.beginTransaction().apply {
+//                    replace(R.id.fragmentContainerView3,LoadingFragment)
+//                    commit()
+//                }
+//            }
+//        }
 
     }
 
 
     override fun onDestroy() {
         super.onDestroy()
-
     }
+
+
 
     fun AfterDataFetch(){
 

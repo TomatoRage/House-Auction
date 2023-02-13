@@ -79,8 +79,7 @@ class AuctionDaysListFragment : Fragment() {
             View.findViewById<TextView>(R.id.textview_date).setText(House.Days[position].PrintDate())
             View.findViewById<TextView>(R.id.textview_time).setText(House.Days[position].PrintStartTime())
             View.findViewById<TextView>(R.id.textview_commission).setText((House.Days[position].Commission*100).toInt().toString() + "%")
-            View.findViewById<TextView>(R.id.textview_numofitems).setText("No' of Listed Items: " + House.Days[position].NumOfItems.toString())
-            View.findViewById<TextView>(R.id.textview_earnings).setText("Total Earnings: " + House.Days[position].Earnings.toString())
+            View.findViewById<TextView>(R.id.textview_numofitems).setText("No' of Listed Items: " + House.Days[position].ListedItems.size.toString())
             View.findViewById<TextView>(R.id.textview_numofpeople).setText("No' of Participants: " + House.Days[position].ParticipantsNum.toString())
             if(House.Days[position].Status == AuctionDayStatus.Pending) {
                 View.findViewById<View>(R.id.indication_light).backgroundTintList = ColorStateList.valueOf(Color.RED)

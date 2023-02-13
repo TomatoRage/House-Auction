@@ -8,10 +8,7 @@
         android:id="@+id/customerProfile"
         android:name="com.example.auctionhouseapp.Fragments.CustomerProfile"
         android:label="CustomerProfile" />
-    <fragment
-        android:id="@+id/customerItemsFragment"
-        android:name="com.example.auctionhouseapp.Fragments.CustomerItemsFragment"
-        android:label="CustomerItemsFragment" />
+
     <fragment
         android:id="@+id/auctionHousesListFragment"
         android:name="com.example.auctionhouseapp.Fragments.AuctionHousesListFragment"

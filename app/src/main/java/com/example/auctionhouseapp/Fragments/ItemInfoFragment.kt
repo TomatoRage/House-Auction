@@ -10,12 +10,13 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.example.auctionhouseapp.Activities.CustomerDaysListActivity
+import com.example.auctionhouseapp.Activities.HouseActivity
 import com.example.auctionhouseapp.Utils.Extensions.toast
 import com.example.auctionhouseapp.Activities.ViewDay
 import com.example.auctionhouseapp.Objects.Item
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.UserType
-
+import com.example.auctionhouseapp.Utils.Constants
 
 
 class ItemInfoFragment : Fragment() {
@@ -39,17 +40,23 @@ class ItemInfoFragment : Fragment() {
         if (userType == UserType.Customer) {
             view.findViewById<TextView>(R.id.item_start_price).isVisible = false
             view.findViewById<TextView>(R.id.txt_start_price).isVisible = false
-        } else {
+        }
+
+
+        else {
             view.findViewById<TextView>(R.id.item_start_price).setText(item.startingPrice.toString())
             if (isRequestedList) {
                 view.findViewById<TextView>(R.id.btn_accept_item).isVisible = true
                 view.findViewById<TextView>(R.id.btn_reject_item).isVisible = true
                 view.findViewById<TextView>(R.id.btn_accept_item).setOnClickListener {
-                    item.StoreDataIntoItemsList(HouseId,DayId,::deleteItemFromReqItemsList)
+                    //remvoe from req and add to listed
+                    item.AddToListItems(HouseId ,DayId)
+                    item.RemoveFromRequestedItems(HouseId ,DayId,::backToPrevActivity)
+
                     Toast.makeText(context, "Item Accepted!", Toast.LENGTH_SHORT).show()
                 }
                 view.findViewById<TextView>(R.id.btn_reject_item).setOnClickListener {
-                    item.DeleteFromRequestedList(HouseId,DayId,::backToPrevActivity)
+                    item.RemoveFromHouseList(Constants.REQUESTED_ITEMS,HouseId,DayId,::backToPrevActivity)
                     Toast.makeText(context, "Item Rejected!", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -57,14 +64,8 @@ class ItemInfoFragment : Fragment() {
         return view
     }
 
-    fun deleteItemFromReqItemsList() {
-        item.DeleteFromRequestedList(HouseId,DayId,::backToPrevActivity)
-
-    }
-
     fun backToPrevActivity() {
-        val intent = Intent(context, ViewDay::class.java)
-        intent.putExtra("Day",DayId)
+        val intent = Intent(context, HouseActivity::class.java)
         startActivity(intent)
     }
 }
