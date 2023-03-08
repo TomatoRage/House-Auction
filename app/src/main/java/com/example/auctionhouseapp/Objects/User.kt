@@ -1,6 +1,7 @@
 package com.example.auctionhouseapp
 
 import com.example.auctionhouseapp.Utils.Constants
+import java.io.Serializable
 
 enum class UserType(val Type:Int){
     Customer(0),AuctionHouse(1);
@@ -9,7 +10,7 @@ enum class UserType(val Type:Int){
     }
 }
 
-open class User {
+open class User : Serializable {
 
     protected lateinit var Name:String
     protected lateinit var Email:String
@@ -17,15 +18,16 @@ open class User {
     protected lateinit var PhoneNumber:String
     protected lateinit var Location:String
     protected lateinit var UserID:String
+    protected var UserCash = 0
 
 
     constructor(Data: MutableMap<String,Any>?){
-        SetData(Data)
+        SetUserData(Data)
     }
 
     constructor()
 
-    fun SetData(Data: MutableMap<String,Any>?){
+    fun SetUserData(Data: MutableMap<String,Any>?){
         if(Data == null)
             return
         Name = Data[Constants.USER_NAME] as String
@@ -34,6 +36,7 @@ open class User {
         PhoneNumber = Data[Constants.USER_PHONE] as String
         Location = Data[Constants.USER_ADDR] as String
         UserID = Data[Constants.USERID] as String
+        UserCash = (Data[Constants.USER_CASH] as Long).toInt()
 
     }
 
@@ -41,17 +44,17 @@ open class User {
 
     fun SetName(Name:String) { this.Name = Name}
 
-    fun GetEmail():String{ return Email }
+    fun GetEmail():String { return Email }
 
     fun SetEmail(Email:String) { this.Email = Email}
 
-    fun GetType():UserType{ return Type }
+    fun GetType():UserType { return Type }
 
     fun SetType(Type:UserType) { this.Type = Type}
 
     fun SetType(Type:Int) { this.Type = UserType.getByValue(Type) }
 
-    fun GetPhoneNumber():String{ return PhoneNumber }
+    fun GetPhoneNumber():String { return PhoneNumber }
 
     fun SetPhoneNumber(Number:String) { this.PhoneNumber = Number}
 
@@ -59,7 +62,13 @@ open class User {
 
     fun SetAddress(Address:String) { this.Location = Address }
 
-    fun GetUID():String? { return UserID }
+    fun GetUID():String { return UserID }
 
     fun SetID(ID:String) { this.UserID = ID}
+
+    fun getCash():Int {return this.UserCash}
+
+    fun SetCash(Cash:Int) {this.UserCash = Cash}
+
+
 }

@@ -6,18 +6,18 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.auctionhouseapp.R
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentContainerView
 import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.Fragments.AuctionDaysSpinner
 import com.example.auctionhouseapp.Fragments.AuctionHousesListFragment
 import com.example.auctionhouseapp.Fragments.CustomerItemsListFragment
 import com.example.auctionhouseapp.Fragments.HouseItemsList
 import com.example.auctionhouseapp.UserType
+import com.example.auctionhouseapp.Utils.Extensions.toast
 
 class ItemsList : AppCompatActivity() {
 
@@ -42,33 +42,39 @@ class ItemsList : AppCompatActivity() {
         Day = intent.getSerializableExtra("Day") as AuctionDays
         HouseID = intent.getStringExtra("House ID")!!
 
-        if(userType == UserType.AuctionHouse)
+        if(userType == UserType.AuctionHouse) {
             isRequestedList = intent.getBooleanExtra("ListType",false)
-        if(!isRequestedList)
-            Day.FetchItems(5, HouseID, ::AfterDataFetch)
-        else
-            Day.FetchRequested(5,HouseID,::AfterDataFetch)
+            if (isRequestedList)
+                Day.FetchRequestedItems(HouseID, ::AfterDataFetch)
+            else
+                Day.FetchListedItems(HouseID, ::AfterDataFetch)
+
+
+        } else {
+            Day.FetchListedItems(HouseID, ::AfterDataFetch)
+        }
 
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentContainerView3,LoadingFragment)
             commit()
         }
-        resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                supportFragmentManager.beginTransaction().apply {
-                    replace(R.id.fragmentContainerView3,LoadingFragment)
-                    commit()
-                }
-            }
-        }
+//        resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+//            if (result.resultCode == Activity.RESULT_OK) {
+//                supportFragmentManager.beginTransaction().apply {
+//                    replace(R.id.fragmentContainerView3,LoadingFragment)
+//                    commit()
+//                }
+//            }
+//        }
 
     }
 
 
     override fun onDestroy() {
         super.onDestroy()
-
     }
+
+
 
     fun AfterDataFetch(){
 

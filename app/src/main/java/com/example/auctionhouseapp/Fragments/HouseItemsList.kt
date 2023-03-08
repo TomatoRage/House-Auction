@@ -3,25 +3,28 @@ package com.example.auctionhouseapp.Fragments
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.RequiresApi
 import com.example.auctionhouseapp.Activities.ItemsList
 import com.example.auctionhouseapp.Activities.ViewItem
 import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.Objects.Item
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.UserType
-import com.example.auctionhouseapp.Utils.FirebaseUtils
+import com.google.firebase.auth.FirebaseAuth
 
 class HouseItemsList : Fragment() {
 
     var Day:AuctionDays = AuctionDays()
     var isRequestedList:Boolean = false
-
+    val HouseId = FirebaseAuth.getInstance().currentUser?.uid
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,29 +41,33 @@ class HouseItemsList : Fragment() {
             parentFragmentManager.beginTransaction().remove(this).commitAllowingStateLoss();
             Context.finish()
         }
-
-        var ListType:Int = -1
-
-        if(!isRequestedList) {
-            ListView.adapter = CustomListAdapter(Context, Day.Items)
-            ListType = 1
-        }
-        else {
-            ListView.adapter = CustomListAdapter(Context, Day.RequestedItems)
-            ListType = 2
-        }
-
+        if(!isRequestedList)
+            ListView.adapter = CustomListAdapter(Context,Day.ListedItems)
+        else
+            ListView.adapter = CustomListAdapter(Context,Day.RequestedItems)
 
         ListView.setOnItemClickListener { parent, view, position, id ->
             val intent = Intent(Context, ViewItem::class.java)
-            intent.putExtra("Item",Day.Items[position])
-            intent.putExtra("SalesDate", Day.PrintStartTime())
+            if(!isRequestedList) {
+                var item = Day.ListedItems[position]
+                item.clearImagesArray()
+                intent.putExtra("Item", item)
+                intent.putExtra("ListType",false)
+            } else {
+                var item = Day.RequestedItems[position]
+                item.clearImagesArray()
+                intent.putExtra("Item", item)
+                intent.putExtra("ListType",true)
+            }
+            intent.putExtra("HouseID",HouseId)
+            intent.putExtra("DayID", Day.DocumentID)
+            intent.putExtra("SalesDate", Day.PrintDate())
             intent.putExtra("StartTime", Day.PrintStartTime())
-            intent.putExtra("Type", UserType.AuctionHouse.Type)
-            intent.putExtra("House ID", FirebaseUtils.firebaseUser!!.uid)
-            intent.putExtra("ItemViewType", ListType)
+            val userType = UserType.AuctionHouse
+            intent.putExtra("Type", 1)
             startActivity(intent)
         }
+
 
         return view
     }

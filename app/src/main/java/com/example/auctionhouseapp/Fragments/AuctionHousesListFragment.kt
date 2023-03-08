@@ -15,6 +15,7 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.example.auctionhouseapp.Activities.CustomerActivity
+import com.example.auctionhouseapp.Activities.CustomerMainActivity
 import com.example.auctionhouseapp.Activities.HouseInformationActivity
 import com.example.auctionhouseapp.Objects.AuctionHouse
 import com.example.auctionhouseapp.R
@@ -33,13 +34,13 @@ class AuctionHousesListFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_auction_houses_list, container, false)
         val ListView = view.findViewById<ListView>(R.id.auction_houses_list)
-        val Context = activity as CustomerActivity
+        val Context = activity as CustomerMainActivity
         ListView.adapter = CustomListAdapter2(Context,HousesList)
         ListView.setOnItemClickListener { parent, view, position, id ->
             val intent = Intent(Context, HouseInformationActivity::class.java)
-            intent.putExtra("HouseId",HousesList[position].GetUID())
-            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            Context.resultLauncher.launch(intent)
+            val House = HousesList[position]
+            intent.putExtra("House",House)
+            startActivity(intent)
         }
         return view
     }
@@ -70,7 +71,7 @@ class AuctionHousesListFragment : Fragment() {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val layoutInflater = LayoutInflater.from(mContext)
             val View = layoutInflater.inflate(R.layout.houses_list_item,parent,false)
-
+            View.findViewById<TextView>(R.id.house_title).setText(mHousesList[position].GetName())
             View.findViewById<RatingBar>(R.id.house_rating).rating = mHousesList[position].Rating.toFloat()
             View.findViewById<TextView>(R.id.closest_sale_day).setText(SimpleDateFormat("dd/MM/yyyy")
                 .format(mHousesList[position].NextSalesDay))

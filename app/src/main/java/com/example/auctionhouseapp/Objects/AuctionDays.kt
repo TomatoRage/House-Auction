@@ -7,7 +7,6 @@ import com.example.auctionhouseapp.Objects.Item
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.Timestamp
-import com.google.firebase.ktx.Firebase
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,16 +24,15 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
     lateinit var StartDate:Date
     lateinit var DocumentID:String
     var Commission:Double = 0.0
-    var LockBefore:Int = -1
-    var ParticipantsNum:Int = -1
-    var Earnings:Int = -1
-    var NumOfItems:Int = -1
-    var NumOfRequested:Int = -1
-    var NumOfSoldItems:Int = -1
+    var LockBefore:Int = 0
+    var ParticipantsNum:Int = 0
+    var NumOfSoldItems:Int = 0
     var Status:AuctionDayStatus = AuctionDayStatus.Pending
-    val Items:ArrayList<Item> = arrayListOf()
-    val RequestedItems:ArrayList<Item> = arrayListOf()
-    var DeletedItems:ArrayList<Long> = arrayListOf()
+    var ListedItems:ArrayList<Item> = arrayListOf()
+    var RequestedItems:ArrayList<Item> = arrayListOf()
+
+    var RequestedImagesFetched = 0
+    var ListedImagesFetched = 0
 
     constructor()
 
@@ -73,20 +71,23 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
         Commission = Data[Constants.DAY_COMMISSION] as Double
         LockBefore = (Data[Constants.DAY_LOCK_TIME] as Long).toInt()
         ParticipantsNum = (Data[Constants.DAY_NUM_OF_PARTICIPANTS] as Long).toInt()
-        Earnings = (Data[Constants.DAY_EARNINGS] as Long).toInt()
-        NumOfItems = (Data[Constants.DAY_NUM_OF_ITEMS] as Long).toInt()
-        NumOfRequested = (Data[Constants.DAY_NUM_OF_REQUESTED] as Long).toInt()
-        NumOfSoldItems = (Data[Constants.DAY_NUM_OF_SOLD] as Long).toInt()
-        DeletedItems = Data[Constants.DAY_DELETED_ITEMS] as ArrayList<Long>
+        for(itemId in Data[Constants.REQUESTED_ITEMS] as ArrayList<String>) {
+            val item = Item(itemId)
+            RequestedItems.add(item)
+        }
+        for(itemId in Data[Constants.LISTED_ITEMS] as ArrayList<String>) {
+            val item = Item(itemId)
+            ListedItems.add(item)
+        }
 
         val Time:Date = Timestamp(Date()).toDate()
 
         if(StartDate.before(Time)){
-            if(NumOfSoldItems < NumOfItems) {
+            if(NumOfSoldItems < ListedItems.size) {
                 Status = AuctionDayStatus.Happening
                 return
             }
-            if(NumOfSoldItems == NumOfItems){
+            if(NumOfSoldItems == ListedItems.size){
                 Status = AuctionDayStatus.Occurred
                 return
             }
@@ -99,11 +100,11 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
     fun updateStatus() {
         val Time:Date = Timestamp(Date()).toDate()
         if(StartDate.before(Time)){
-            if(NumOfSoldItems < NumOfItems) {
+            if(NumOfSoldItems < ListedItems.size) {
                 Status = AuctionDayStatus.Happening
                 return
             }
-            if(NumOfSoldItems == NumOfItems){
+            if(NumOfSoldItems == ListedItems.size){
                 Status = AuctionDayStatus.Occurred
                 return
             }
@@ -140,11 +141,9 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
                     Constants.DAY_COMMISSION to Commission,
                     Constants.DAY_LOCK_TIME to LockBefore,
                     Constants.DAY_NUM_OF_PARTICIPANTS to ParticipantsNum,
-                    Constants.DAY_EARNINGS to Earnings,
-                    Constants.DAY_NUM_OF_ITEMS to NumOfItems,
-                    Constants.DAY_NUM_OF_REQUESTED to NumOfRequested,
                     Constants.DAY_NUM_OF_SOLD to NumOfSoldItems,
-                    Constants.DAY_DELETED_ITEMS to DeletedItems
+                    Constants.LISTED_ITEMS to ListedItems,
+                    Constants.REQUESTED_ITEMS to RequestedItems
                 )
             )
             .addOnSuccessListener {
@@ -176,54 +175,92 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
                 Log.d(TAG, "day data read failed with", exception)
             }
     }
-
-    fun FetchItems(NumToFetch:Int,HouseID: String,ToPerform: () -> Unit){
-
-        FirebaseUtils.houseCollectionRef
-            .document(HouseID)
-            .collection(Constants.SALES_DAY_COLLECTION)
-            .document(DocumentID)
-            .collection(Constants.ITEMS_COLLECTION)
-            .limit(NumToFetch.toLong())
-            .get()
-            .addOnSuccessListener { documents ->
-                for(doc in documents){
-
-                    val ToAdd = Item(doc.data)
-                    ToAdd.docID = doc.id
-                    ToAdd.FetchImages(1,ToPerform,documents.size()-1,documents.indexOf(doc))
-                    Items.add(ToAdd)
+//Listed Items Functions:
+    fun FetchListedItems(HouseID: String,ToPerform: () -> Unit) {
+        val oldListedItems: ArrayList<Item> = ArrayList(ListedItems)
+        val numOfListedItems = ListedItems.size
+       ListedItems.clear()
+        for (item in oldListedItems) {
+            FirebaseUtils.itemsCollectionRef
+                .document(item.ID)
+                .get()
+                .addOnSuccessListener { doc ->
+                    val itemToAdd = Item(doc.data)
+                    ListedItems.add(itemToAdd)
+                    checkAllistedItemsFetched(ToPerform,numOfListedItems)
                 }
-            }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "Items data read failed with", exception)
-            }
-    }
-
-    fun FetchRequested(NumToFetch: Int,HouseID: String,ToPerform: () -> Unit){
-        FirebaseUtils.houseCollectionRef
-            .document(HouseID)
-            .collection(Constants.SALES_DAY_COLLECTION)
-            .document(DocumentID)
-            .collection(Constants.REQUESTED_ITEMS_COLLECTION)
-            .limit(NumToFetch.toLong())
-            .get()
-            .addOnSuccessListener { documents ->
-                for(doc in documents){
-                    val ToAdd = Item(doc.data)
-                    ToAdd.docID = doc.id
-                    ToAdd.FetchImages(1,ToPerform,documents.size()-1,documents.indexOf(doc))
-                    RequestedItems.add(ToAdd)
+                .addOnFailureListener { exception ->
+                    Log.d(TAG, "Items data read failed with", exception)
                 }
-            }
-            .addOnFailureListener { exception ->
-                Log.d(TAG, "Requested Items data read failed with", exception)
-            }
+        }
+        if (oldListedItems.isEmpty()) ToPerform()
     }
 
-    private fun PerformForItemImageFetch(){
 
+
+    fun checkAllistedItemsFetched(ToPerform: () -> Unit, size:Int) {
+        if (ListedItems.size == size) {
+            FetchListedImages(ToPerform)
+        }
     }
+
+    fun FetchListedImages(ToPerform: () -> Unit) {
+        for (item in ListedItems) {
+            item.FetchImages(1, ::checkAllListedImagesFetched, ToPerform)
+        }
+    }
+
+    fun checkAllListedImagesFetched(ToPerform: () -> Unit) {
+        ListedImagesFetched++
+        if (ListedImagesFetched == ListedItems.size) {
+            ToPerform()
+        }
+    }
+
+//Requested Items Functions:
+    fun FetchRequestedItems(HouseID: String,ToPerform: () -> Unit) {
+        val oldRequestedItems: ArrayList<Item> = ArrayList(RequestedItems)
+        val numOfRequestedItems = RequestedItems.size
+        RequestedItems.clear()
+        for (item in oldRequestedItems) {
+            FirebaseUtils.itemsCollectionRef
+                .document(item.ID)
+                .get()
+                .addOnSuccessListener { doc ->
+                    val itemToAdd = Item(doc.data)
+                    RequestedItems.add(itemToAdd)
+                     checkAllRequestedItemsFetched(ToPerform,numOfRequestedItems)
+                }
+                .addOnFailureListener { exception ->
+                    Log.d(TAG, "Items data read failed with", exception)
+                }
+        }
+        if (oldRequestedItems.isEmpty()) ToPerform()
+    }
+
+
+
+    fun checkAllRequestedItemsFetched(ToPerform: () -> Unit, size:Int) {
+        if (RequestedItems.size == size) {
+            FetchRequestedImages(ToPerform)
+        }
+    }
+
+    fun FetchRequestedImages(ToPerform: () -> Unit) {
+        for (item in RequestedItems) {
+            item.FetchImages(1, ::checkAllRequestedImagesFetched, ToPerform)
+        }
+    }
+
+    fun checkAllRequestedImagesFetched(ToPerform: () -> Unit) {
+        RequestedImagesFetched++
+        if (RequestedImagesFetched == RequestedItems.size) {
+            ToPerform()
+        }
+    }
+
+
+
     companion object {
         private val TAG = "Auction Day"
     }

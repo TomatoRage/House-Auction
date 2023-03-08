@@ -19,12 +19,10 @@ import com.example.auctionhouseapp.AuctionDayStatus
 import com.example.auctionhouseapp.Objects.AuctionHouse
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.UserType
-import com.example.auctionhouseapp.Utils.FirebaseUtils
 
 class CustomerDaysListFragment : Fragment() {
 
     var House = AuctionHouse()
-    lateinit var HouseId:String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,8 +37,8 @@ class CustomerDaysListFragment : Fragment() {
         ListView.setOnItemClickListener { parent, view, position, id ->
             val intent = Intent(Context, ItemsList::class.java)
             intent.putExtra("Day",House.Days[position])
-            intent.putExtra("House ID", HouseId)
-            intent.putExtra("Type", UserType.Customer)
+            intent.putExtra("House ID", House.GetUID())
+            intent.putExtra("Type", 0)
             startActivity(intent)
         }
         return view
@@ -83,7 +81,7 @@ class CustomerDaysListFragment : Fragment() {
             //View.findViewById<TextView>(R.id.textview_commission).setText((House.Days[position].Commission*100).toInt().toString() + "%")
             View.findViewById<TextView>(R.id.textView_sales_commission).isVisible = false
             View.findViewById<TextView>(R.id.textview_commission).isVisible = false
-            View.findViewById<TextView>(R.id.textview_numofitems).setText("No' of Listed Items: " + House.Days[position].NumOfItems.toString())
+            View.findViewById<TextView>(R.id.textview_numofitems).setText("No' of Listed Items: " + House.Days[position].ListedItems.size.toString())
             View.findViewById<TextView>(R.id.textview_earnings).isVisible = false
             //View.findViewById<TextView>(R.id.textview_earnings).setText("Total Earnings: " + House.Days[position].Earnings.toString())
             View.findViewById<TextView>(R.id.textview_numofpeople).setText("No' of Participants: " + House.Days[position].ParticipantsNum.toString())
@@ -106,8 +104,6 @@ class CustomerDaysListFragment : Fragment() {
                 View.findViewById<TextView>(R.id.textview_status).setText("Occurred")
                 View.findViewById<TextView>(R.id.textview_status).setTextColor(Color.GREEN)
             }
-
-
             return View
         }
     }

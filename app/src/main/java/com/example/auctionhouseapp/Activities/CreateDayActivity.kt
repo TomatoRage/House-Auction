@@ -6,14 +6,20 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.example.auctionhouseapp.AuctionDays
+import com.example.auctionhouseapp.Objects.AuctionHouse
 import com.example.auctionhouseapp.R
+import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.Extensions.toast
 import com.example.auctionhouseapp.Utils.FirebaseUtils
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.Query
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
 
@@ -365,6 +371,31 @@ class CreateDayActivity : AppCompatActivity() {
         StoreData(inputedDate.time)
     }
 
+
+    fun UpdateNextSalesDay() {
+        FirebaseUtils.houseCollectionRef.document(FirebaseAuth.getInstance().currentUser!!.uid)
+            .collection(Constants.SALES_DAY_COLLECTION)
+            .orderBy(Constants.DAY_START_DATE, Query.Direction.ASCENDING).limit(1).get()
+            .addOnSuccessListener { documents ->
+                for(doc in documents) {
+                    val Day = AuctionDays(doc.data)
+                    FirebaseUtils.houseCollectionRef.document(FirebaseAuth.getInstance().currentUser!!.uid).update(
+                        mapOf(
+                            Constants.HOUSE_NEXT_SALES_DATE to Day.StartDate,
+                        )
+                    ).addOnSuccessListener {
+                        val NextSalesDate = SimpleDateFormat("dd/MM/yyyy").format(Day.StartDate).toString()
+                        toast("Next Sales Date is: $NextSalesDate")
+                    }.addOnFailureListener {
+                        toast("Failed to update Next Sales Day!")
+                    }
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.d("CreateDayActivity ", "Failed to update Next Sales Day!!", exception)
+            }
+    }
+
     fun StoreData(inputDate:Date){
 
         val Day = AuctionDays()
@@ -374,19 +405,17 @@ class CreateDayActivity : AppCompatActivity() {
         Day.Commission = (Commission.text.toString().toDouble())/100
         Day.LockBefore = Lock.text.toString().toInt()
         Day.ParticipantsNum = 0
-        Day.Earnings = 0
-        Day.NumOfItems = 0
-        Day.NumOfRequested = 0
         Day.NumOfSoldItems = 0
 
-        Day.StoreData(FirebaseUtils.firebaseAuth.currentUser!!.uid,::OnSuccPerform)
+        Day.StoreData(FirebaseAuth.getInstance().currentUser!!.uid,::OnSuccPerform)
 
     }
 
     fun OnSuccPerform() {
-
+        UpdateNextSalesDay()
         val intent = Intent(applicationContext, HouseActivity::class.java)
         setResult(RESULT_OK,intent)
+        startActivity(intent)
         finish()
     }
 }

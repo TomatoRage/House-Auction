@@ -19,7 +19,10 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.Constants
-import com.example.auctionhouseapp.Utils.FirebaseUtils.firebaseUser
+import com.example.auctionhouseapp.Utils.FirebaseUtils
+import com.example.auctionhouseapp.Utils.FirebaseUtils.houseCollectionRef
+import com.example.auctionhouseapp.Utils.FirebaseUtils.usersCollectionRef
+import com.google.firebase.firestore.CollectionReference
 
 
 class SignUpActivity : AppCompatActivity() {
@@ -33,7 +36,8 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var addressEt: EditText
     private var userType = -1
 
-    private val userCollectionRef = Firebase.firestore.collection("Users")
+    private val customerCollectionRef = Firebase.firestore.collection("Customers")
+    private val houseCollectionRef = Firebase.firestore.collection("Houses")
     val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
     lateinit var progressDialog:ProgressDialog
@@ -78,7 +82,6 @@ class SignUpActivity : AppCompatActivity() {
 
         signUpBtn.setOnClickListener {
             checkInput()
-
         }
     }
 
@@ -317,10 +320,9 @@ class SignUpActivity : AppCompatActivity() {
         val fullname : String = fullName.text.toString()
         val address : String = addressEt.text.toString()
         val phone : String = phoneNoEt.text.toString()
-        Log.i("-E- odaie",emailV + "*" +passV)
 
         /*create a user*/
-        firebaseAuth.createUserWithEmailAndPassword(emailV,passV)
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(emailV,passV)
 
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -333,14 +335,18 @@ class SignUpActivity : AppCompatActivity() {
                     userHashMap[Constants.USER_TYPE] = userType
                     userHashMap[Constants.USER_PHONE] = phone
                     userHashMap[Constants.USER_ADDR] = address
-                    userHashMap[Constants.USERID] = firebaseAuth.uid.toString()
-                    storeUserData(userHashMap)
+                    userHashMap[Constants.USERID] = FirebaseAuth.getInstance().uid.toString()
+                    userHashMap[Constants.USER_CASH] = 0
 
                     if (userType == 0) {
-                        val intent = Intent(applicationContext, CustomerActivity::class.java)
+                        storeData(userHashMap,customerCollectionRef,userType)
+                        val intent = Intent(applicationContext, CustomerMainActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {
+                        userHashMap[Constants.HOUSE_RATING_SUM] = 3
+                        userHashMap[Constants.HOUSE_NUM_RATERS] = 1
+                        storeData(userHashMap,houseCollectionRef,userType)
                         val intent = Intent(applicationContext, HouseActivity::class.java)
                         startActivity(intent)
                         finish()
@@ -355,17 +361,38 @@ class SignUpActivity : AppCompatActivity() {
 
     }
 
-    private fun storeUserData(user: HashMap<String, Any>) {
+
+
+    private fun storeData(user: HashMap<String, Any>, collectionRef: CollectionReference, type:Int) {
         try {
-            firebaseUser?.let { Log.d("tage" , it.uid) }
-            firebaseUser?.let {
-                userCollectionRef.document(it.uid).set(user)
+            var isDataStoreSuccessful = false
+            var isTypeStoreSuccessful = false
+            FirebaseAuth.getInstance().currentUser?.let {
+                collectionRef.document(it.uid).set(user)
                     .addOnSuccessListener {
-                        toast("Data Saved")
-                        progressDialog.dismiss()
+                        isDataStoreSuccessful = true
+                        if (isTypeStoreSuccessful) {
+                            toast("Data Saved")
+                            progressDialog.dismiss()
+                        }
+
+                    }
+                    .addOnFailureListener { toast("Sign Up Failed !!") }
+                usersCollectionRef.document(it.uid).set(
+                    mapOf(
+                        Constants.USER_TYPE to type
+                    )
+                )
+                    .addOnSuccessListener {
+                        isTypeStoreSuccessful = true
+                        if (isDataStoreSuccessful) {
+                            toast("Data Saved")
+                            progressDialog.dismiss()
+                        }
                     }
                     .addOnFailureListener { toast("Sign Up Failed !!") }
             }
+
         } catch (e:Exception){
                 toast(""+ e.message.toString())
                 progressDialog.dismiss()

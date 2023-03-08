@@ -61,18 +61,7 @@
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
-            <TextView
-                android:id="@+id/textview_total_earnings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_weight="1"
-                android:layout_marginTop="15dp"
-                android:fontFamily="@font/metropolis_bold"
-                android:text="Total Earnings: 30000₪"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
+
 
             <TextView
                 android:id="@+id/textview_num_of_items"
@@ -132,19 +121,6 @@
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
-            <TextView
-                android:id="@+id/textView_requested_items"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="20dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/metropolis_bold"
-                android:text="Requested: 150"
-                android:textColor="@color/black"
-                android:textSize="15sp"
-                android:maxLines="1"/>
         </LinearLayout>
 
     </LinearLayout>

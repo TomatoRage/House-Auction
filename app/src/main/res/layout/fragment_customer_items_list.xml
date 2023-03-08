@@ -53,6 +53,17 @@
             android:layout_marginBottom="16dp"
             tools:listitem="@layout/house_item_list_item" />
 
+        <TextView
+            android:id="@+id/textView_empty_items_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:fontFamily="@font/metropolis_regular"
+            android:text="Empty Items List"
+            android:textColor="@color/gray"
+            android:textSize="15sp" />
+
         <Button
             android:id="@+id/btn_auction_item"
             android:layout_width="wrap_content"

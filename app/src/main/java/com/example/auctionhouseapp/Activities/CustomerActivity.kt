@@ -12,8 +12,8 @@ import com.example.auctionhouseapp.Fragments.AuctionDaysSpinner
 import com.example.auctionhouseapp.Fragments.AuctionHousesListFragment
 import com.example.auctionhouseapp.Objects.AuctionHouse
 import com.example.auctionhouseapp.R
-import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.example.auctionhouseapp.Utils.FirebaseUtils.houseCollectionRef
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -32,7 +32,6 @@ class CustomerActivity : AppCompatActivity() {
 
         //fitch all auction houses from firebase and add them to HousesList array
         FetchHousesData(::PerformAfterDataFetch)
-
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentContainerViewAuctionHouses, LoadingFragment)
             commit()
@@ -48,7 +47,7 @@ class CustomerActivity : AppCompatActivity() {
         }
 
         findViewById<TextView>(R.id.txt_sign_out).setOnClickListener {
-            FirebaseUtils.firebaseAuth.signOut()
+            FirebaseAuth.getInstance().signOut()
             val intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
             finish()
@@ -73,12 +72,18 @@ class CustomerActivity : AppCompatActivity() {
     }
 
     fun PerformAfterDataFetch() {
-        List.HousesList = HousesList
+        var HousesListFiltered: ArrayList<AuctionHouse> = arrayListOf()
+        for (house in HousesList) {
+            if (!house.Days.isEmpty())
+                HousesListFiltered.add(house)
+        }
+        List.HousesList = HousesListFiltered
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentContainerViewAuctionHouses, List)
             commit()
         }
     }
+
 
     fun toPerform() {
         this.counter+=1
