@@ -1,6 +1,9 @@
 package com.example.auctionhouseapp.Activities
 
 import android.content.Intent
+import android.content.SharedPreferences
+import android.os.AsyncTask
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -12,8 +15,10 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import com.example.auctionhouseapp.Objects.ImagesSharedPref
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.FirebaseUtils
@@ -22,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.example.auctionhouseapp.adapter.AddOns.loadingDialog
 import com.example.auctionhouseapp.Utils.FirebaseUtils.customerCollectionRef
 import com.example.auctionhouseapp.Utils.FirebaseUtils.houseCollectionRef
+import com.example.auctionhouseapp.Utils.FirebaseUtils.itemsCollectionRef
 import com.example.auctionhouseapp.Utils.FirebaseUtils.usersCollectionRef
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -39,10 +45,13 @@ class LoginActivity : AppCompatActivity() {
     lateinit var emailError:TextView
     lateinit var passwordError:TextView
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        // initiate local memory for items; photos
+        //ImagesSharedPref.init(getApplicationContext())
         val signUpTv = findViewById<TextView>(R.id.signUpTv)
         signInBtn = findViewById(R.id.loginBtn)
         emailEt = findViewById(R.id.emailEt)
@@ -138,6 +147,7 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun checkInput() {
 
         if (emailEt.text.isEmpty()){
@@ -164,6 +174,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun signInUser() {
 
         //loadingDialog.startLoadingDialog()a
@@ -234,6 +245,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun getUserName(userType: Int) {
         if (userType == 0) {
             fetchUserName(Constants.CUSTOMERS_COLLECTION,::goToNextActivity,0)
@@ -244,7 +256,11 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun goToNextActivity(type: Int, name: String) {
+//        AsyncTask.execute {
+//            fetchImagesFromCloud()
+//        }
         if(type == 0) {
             val intent = Intent(applicationContext,CustomerMainActivity::class.java)
             intent.putExtra("User Name", name)
@@ -262,4 +278,22 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun fetchImagesFromCloud() {
+        itemsCollectionRef
+            .get()
+            .addOnSuccessListener { docs ->
+                for (doc in docs) {
+                    val itemImages:ArrayList<String> = doc.data.get("Photos") as ArrayList<String>
+                    for (imageID in itemImages) {
+                        if (ImagesSharedPref.contain(imageID)) continue
+                        ImagesSharedPref.storeImage(imageID)
+                    }
+                }
+            }.addOnFailureListener {
+                Log.i("LoginActivity.kt", "-E- while fetching images")
+            }
+    }
+
 }
+

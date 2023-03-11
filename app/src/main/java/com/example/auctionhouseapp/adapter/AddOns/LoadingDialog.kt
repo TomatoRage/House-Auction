@@ -1,4 +1,4 @@
-package com.example.auctionhouseapp.AddOns
+package com.example.auctionhouseapp.adapter.AddOns
 
 import android.app.Activity
 import android.app.AlertDialog

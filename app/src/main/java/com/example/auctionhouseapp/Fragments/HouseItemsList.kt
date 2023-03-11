@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import com.bumptech.glide.Glide
 import com.example.auctionhouseapp.Activities.ItemsList
 import com.example.auctionhouseapp.Activities.ViewItem
 import com.example.auctionhouseapp.AuctionDays
@@ -50,12 +51,10 @@ class HouseItemsList : Fragment() {
             val intent = Intent(Context, ViewItem::class.java)
             if(!isRequestedList) {
                 var item = Day.ListedItems[position]
-                item.clearImagesArray()
                 intent.putExtra("Item", item)
                 intent.putExtra("ListType",false)
             } else {
                 var item = Day.RequestedItems[position]
-                item.clearImagesArray()
                 intent.putExtra("Item", item)
                 intent.putExtra("ListType",true)
             }
@@ -100,7 +99,10 @@ class HouseItemsList : Fragment() {
 
             View.findViewById<TextView>(R.id.textview_house_item_name).setText(Items[position].Name)
             View.findViewById<TextView>(R.id.textView_description).setText(Items[position].Description)
-             View.findViewById<ImageView>(R.id.imageView_house_item).setImageBitmap(BitmapFactory.decodeByteArray(Items[position].ImagesArray[0],0,Items[position].ImagesArray[0].size))
+            Glide.with(mContext)
+                .load(Items[position].imagesUrls.get(0))
+                .into(View.findViewById<ImageView>(R.id.imageView_house_item))
+            //View.findViewById<ImageView>(R.id.imageView_house_item).setImageBitmap(BitmapFactory.decodeByteArray(Items[position].ImagesArray[0],0,Items[position].ImagesArray[0].size))
             View.findViewById<ImageView>(R.id.imageView_house_item).setBackgroundResource(R.drawable.round_outline)
             View.findViewById<ImageView>(R.id.imageView_house_item).clipToOutline = true
 

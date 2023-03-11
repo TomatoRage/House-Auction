@@ -349,7 +349,7 @@ class CreateDayActivity : AppCompatActivity() {
 
         currentDate.set(Calendar.YEAR, Currentdate.year)
         currentDate.set(Calendar.MONTH, Currentdate.monthValue)
-        currentDate.set(Calendar.DAY_OF_MONTH, Currentdate.dayOfMonth+2)
+        currentDate.set(Calendar.DAY_OF_MONTH, Currentdate.dayOfMonth)
         currentDate.set(Calendar.HOUR_OF_DAY, Currentdate.hour)
         currentDate.set(Calendar.MINUTE, Currentdate.minute)
 

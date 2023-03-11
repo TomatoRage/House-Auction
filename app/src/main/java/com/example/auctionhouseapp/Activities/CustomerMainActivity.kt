@@ -1,10 +1,12 @@
 package com.example.auctionhouseapp.Activities
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -27,7 +29,9 @@ class CustomerMainActivity : AppCompatActivity() {
     lateinit var customerEmail:String
     private lateinit var navController: NavController
     private var customerProfile = CustomerProfile()
+
    // private val auctionHousesListFragment = AuctionHousesListFragment()
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_main)

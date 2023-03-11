@@ -56,6 +56,7 @@ object Constants{
     const val ITEM_IS_ACCEPTED:String               = "Is Accepted" // Identifier between accepted & not accepted Items
     const val ITEM_LAST_BID_TIME:String             = "Last Bid Time" // UserID Of The Last Bidder
     const val ITEM_STATUS:String                    = "Status" // UserID Of The Last Bidder
+    const val ITEM_URL_LIST:String                  = "URLs"
 
     //Customer's Data
     const val AUCTIONED_ITEMS:String                = "Auctioned Items" // Collection Contains Auctioned Items By Customer

@@ -1,10 +1,16 @@
 package com.example.auctionhouseapp.Activities
 
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageSwitcher
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import com.bumptech.glide.Glide
 import com.example.auctionhouseapp.Objects.Item
 import com.example.auctionhouseapp.R
 import com.google.firebase.auth.FirebaseAuth
@@ -12,24 +18,27 @@ import com.google.firebase.auth.FirebaseAuth
 class ViewProfileItem : AppCompatActivity() {
 
     private lateinit var item: Item
+    private lateinit var type: String
     private lateinit var txt_item_name:TextView
     private lateinit var txt_item_description:TextView
     private lateinit var txt_item_start_price:TextView
     private lateinit var txt_item_status:TextView
+    private lateinit var imageView: ImageView
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_profile_item)
 
+        imageView = findViewById<ImageView>(R.id.img_item)
+        //imageSwitcher.setFactory { ImageView(applicationContext) }
         txt_item_name = findViewById<TextView>(R.id.txt_item_name)
         txt_item_description = findViewById<TextView>(R.id.txt_item_description)
         txt_item_start_price = findViewById<TextView>(R.id.txt_start_price)
         txt_item_status = findViewById<TextView>(R.id.txt_item_status)
 
         item = intent.getSerializableExtra("Item") as Item
-        txt_item_name.setText(item.Name)
-        txt_item_description.setText(item.Description)
-        txt_item_start_price.setText(item.startingPrice.toString())
-        txt_item_status.setText(item.status)
+        type = intent.getStringExtra("Items Type") as String
+        //item.FetchImages(-1,::setItemInfoOnScreen)
 
 
         findViewById<TextView>(R.id.txt_sign_out).setOnClickListener {
@@ -40,8 +49,24 @@ class ViewProfileItem : AppCompatActivity() {
         }
 
         findViewById<ImageView>(R.id.ic_back).setOnClickListener {
-            finish()
+            val intent = Intent(applicationContext, ProfileItemsList::class.java)
+            intent.putExtra("Items Type", type)
+            startActivity(intent)
         }
+        setItemInfoOnScreen()
 
+    }
+
+    fun setItemInfoOnScreen() {
+        item = intent.getSerializableExtra("Item") as Item
+        Glide.with(this)
+            .load(item.imagesUrls.get(0))
+            .into(imageView)
+        //val bitmap = BitmapDrawable(BitmapFactory.decodeByteArray(item.ImagesArray[0],0,item.ImagesArray[0].size))
+        //imageSwitcher.setImageDrawable(bitmap)
+        txt_item_name.setText(item.Name)
+        txt_item_description.setText(item.Description)
+        txt_item_start_price.setText(item.startingPrice.toString())
+        txt_item_status.setText(item.status)
     }
 }
