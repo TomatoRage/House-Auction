@@ -40,20 +40,20 @@ class CustomerViewItemFragment : Fragment() {
         PrevBtn = view.findViewById<ImageButton>(R.id.btn_prev_img)
 
         Glide.with(this)
-            .load(item.imagesUrls.get(position))
+            .load(item._imagesUrls.get(position))
             .into(imageView)
-        view.findViewById<TextView>(R.id.item_name).setText(item.Name)
-        view.findViewById<TextView>(R.id.item_description).setText(item.Description)
+        view.findViewById<TextView>(R.id.item_name).setText(item._name)
+        view.findViewById<TextView>(R.id.item_description).setText(item._description)
         view.findViewById<TextView>(R.id.item_sales_day).setText(SalesDate)
         view.findViewById<TextView>(R.id.item_sales_start_time).setText(StartTime)
 
 
 
         NextBtn.setOnClickListener {
-            if (position < item.imagesUrls.size - 1) {
+            if (position < item._imagesUrls.size - 1) {
                 position++
                 Glide.with(this)
-                    .load(item.imagesUrls.get(position))
+                    .load(item._imagesUrls.get(position))
                     .into(imageView)
 
             } else {
@@ -66,7 +66,7 @@ class CustomerViewItemFragment : Fragment() {
                 position--
 
                 Glide.with(this)
-                    .load(item.imagesUrls.get(position))
+                    .load(item._imagesUrls.get(position))
                     .into(imageView)
             } else {
                 Toast.makeText(context, "No More Images...", Toast.LENGTH_SHORT).show()

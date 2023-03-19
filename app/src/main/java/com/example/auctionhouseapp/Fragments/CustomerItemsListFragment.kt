@@ -109,10 +109,10 @@ class CustomerItemsListFragment : Fragment() {
             val layoutInflater = LayoutInflater.from(mContext)
             val View = layoutInflater.inflate(R.layout.house_item_list_item,parent,false)
 
-            View.findViewById<TextView>(R.id.textview_house_item_name).setText(Items[position].Name)
-            View.findViewById<TextView>(R.id.textView_description).setText(Items[position].Description)
+            View.findViewById<TextView>(R.id.textview_house_item_name).setText(Items[position]._name)
+            View.findViewById<TextView>(R.id.textView_description).setText(Items[position]._description)
             Glide.with(mContext)
-                .load(Items[position].imagesUrls.get(0))
+                .load(Items[position]._imagesUrls.get(0))
                 .into(View.findViewById<ImageView>(R.id.imageView_house_item))
             //View.findViewById<ImageView>(R.id.imageView_house_item).setImageBitmap(BitmapFactory.decodeByteArray(Items[position].ImagesArray[0],0,Items[position].ImagesArray[0].size))
             View.findViewById<ImageView>(R.id.imageView_house_item).setBackgroundResource(R.drawable.round_outline)

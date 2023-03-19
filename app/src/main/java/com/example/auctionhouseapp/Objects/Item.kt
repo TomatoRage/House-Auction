@@ -1,40 +1,33 @@
 package com.example.auctionhouseapp.Objects
 
-import android.graphics.BitmapFactory
-import android.os.Build
-import android.provider.SyncStateContract.Helpers.update
 import android.util.Log
-import android.widget.Toast
-import androidx.annotation.RequiresApi
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.FirebaseUtils
-import java.io.ByteArrayOutputStream
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import java.io.Serializable
-import java.net.URL
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.reflect.KFunction1
 
 class Item : Serializable {
-    lateinit var ownerId: String
-    lateinit var ID: String
-    lateinit var Name: String
-    lateinit var auctionHouseName:String
-    lateinit var Description: String
-    lateinit var imagesIDs:ArrayList<String>
-    lateinit var imagesUrls:ArrayList<String>
-    lateinit var status:String
-    var startingPrice: Int = 0
-    var lastBidderId: String? = null
-    var lastBid:Int = 0
+     lateinit var _ownerId: String
+     lateinit var _id: String
+     lateinit var _name: String
+     lateinit var _auctionHouseName:String
+     lateinit var _description: String
+     lateinit var _imagesIDs:ArrayList<String>
+     lateinit var _imagesUrls:ArrayList<String>
+     lateinit var _status:String
+     var _startingPrice: Int = 0
+     var _lastBidderId: String? = null
+     var _lastBid:Int = 0
+    var _time_for_auction_end: Int = 60*1000
 
 
     constructor()
 
     constructor(itemId:String) {
-        ID = itemId
+        _id = itemId
     }
     constructor(Data: MutableMap<String, Any>?) {
         SetData(Data)
@@ -44,19 +37,18 @@ class Item : Serializable {
     fun SetData(Data: MutableMap<String, Any>?) {
         if (Data == null)
             return
-        ownerId = Data[Constants.ITEM_OWNER_ID] as String
-        Name = Data[Constants.ITEM_NAME] as String
-        auctionHouseName = Data[Constants.ITEM_AUCTION_HOUSE] as String
-        Description = Data[Constants.ITEM_DESCRIPTION] as String
-        startingPrice = (Data[Constants.ITEM_START_PRICE] as Long).toInt()
-        imagesIDs = Data[Constants.ITEM_PHOTOS_LIST] as ArrayList<String>
-        imagesUrls = Data[Constants.ITEM_URL_LIST] as ArrayList<String>
-        status = Data[Constants.ITEM_STATUS] as String
-        if(Data[Constants.ITEM_LAST_BIDDER] != null) {
-            lastBidderId = Data[Constants.ITEM_LAST_BIDDER] as String?
-            lastBid = (Data[Constants.ITEM_LAST_BID_AMOUNT] as Long).toInt()
-        }
-        ID = Data[Constants.ITEM_ID] as String
+        _ownerId = Data[Constants.ITEM_OWNER_ID] as String
+        _name = Data[Constants.ITEM_NAME] as String
+        _auctionHouseName = Data[Constants.ITEM_AUCTION_HOUSE] as String
+        _description = Data[Constants.ITEM_DESCRIPTION] as String
+        _startingPrice = (Data[Constants.ITEM_START_PRICE] as Long).toInt()
+        _imagesIDs = Data[Constants.ITEM_PHOTOS_LIST] as ArrayList<String>
+        _imagesUrls = Data[Constants.ITEM_URL_LIST] as ArrayList<String>
+        _status = Data[Constants.ITEM_STATUS] as String
+        _lastBidderId = Data[Constants.ITEM_LAST_BIDDER] as String?
+        _lastBid = (Data[Constants.ITEM_LAST_BID_AMOUNT] as Long).toInt()
+        _id = Data[Constants.ITEM_ID] as String
+        _time_for_auction_end = (Data[Constants.ITEM_TIME_FOR_AUCTION_END] as Long).toInt()
         return
     }
 
@@ -104,19 +96,19 @@ class Item : Serializable {
         FirebaseUtils.itemsCollectionRef.document(item_id)
         .set(
             mapOf(
-                Constants.ITEM_DESCRIPTION to Description,
-                Constants.ITEM_LAST_BID_AMOUNT to lastBid,
+                Constants.ITEM_DESCRIPTION to _description,
+                Constants.ITEM_LAST_BID_AMOUNT to _lastBid,
                 Constants.ITEM_LAST_BID_TIME to Today.toDate(),
-                Constants.ITEM_LAST_BIDDER to lastBidderId,
-                Constants.ITEM_NAME to Name,
-                Constants.ITEM_OWNER_ID to ownerId,
+                Constants.ITEM_LAST_BIDDER to _lastBidderId,
+                Constants.ITEM_NAME to _name,
+                Constants.ITEM_OWNER_ID to _ownerId,
                 Constants.ITEM_ID to item_id,
                 Constants.ITEM_NUM_IN_QUEUE to 0,
-                Constants.ITEM_START_PRICE to startingPrice,
-                Constants.ITEM_PHOTOS_LIST to imagesIDs,
-                Constants.ITEM_URL_LIST to imagesUrls,
-                Constants.ITEM_STATUS to status,
-                Constants.ITEM_AUCTION_HOUSE to auctionHouseName,
+                Constants.ITEM_START_PRICE to _startingPrice,
+                Constants.ITEM_PHOTOS_LIST to _imagesIDs,
+                Constants.ITEM_URL_LIST to _imagesUrls,
+                Constants.ITEM_STATUS to _status,
+                Constants.ITEM_AUCTION_HOUSE to _auctionHouseName,
 
             )
         ) // 2 - Store item id in the given day of the given auction house
@@ -160,7 +152,7 @@ class Item : Serializable {
             .document(HouseID)
             .collection(Constants.SALES_DAY_COLLECTION)
             .document(DayID)
-            .update(Constants.REQUESTED_ITEMS,(FieldValue.arrayRemove(ID)))
+            .update(Constants.REQUESTED_ITEMS,(FieldValue.arrayRemove(_id)))
             .addOnCompleteListener {task->
                 if (task.isSuccessful) {
                     ToPerform()
@@ -176,7 +168,7 @@ class Item : Serializable {
             .document(HouseID)
             .collection(Constants.SALES_DAY_COLLECTION)
             .document(DayID)
-            .update("Listed Items",(FieldValue.arrayUnion(ID)))
+            .update("Listed Items",(FieldValue.arrayUnion(_id)))
             .addOnCompleteListener {task->
                 if (task.isSuccessful) {
                     ToPerform()
@@ -193,7 +185,7 @@ class Item : Serializable {
             .document(HouseID)
             .collection(Constants.SALES_DAY_COLLECTION)
             .document(DayID)
-            .update(items_list_type,FieldValue.arrayRemove(ID)).addOnCompleteListener {task->
+            .update(items_list_type,FieldValue.arrayRemove(_id)).addOnCompleteListener {task->
                 if (task.isSuccessful) {
                     ToPerform()
                     Log.d("Items.kt" ,"successful item remove to $items_list_type")
@@ -204,7 +196,7 @@ class Item : Serializable {
     }
     fun UpdateStatus(newStatus:String,ToPerform:()->Unit={}) {
         FirebaseUtils.itemsCollectionRef
-            .document(ID)
+            .document(_id)
             .update(
                 mapOf(
                     Constants.ITEM_STATUS to newStatus,
@@ -218,7 +210,7 @@ class Item : Serializable {
 
         FirebaseUtils.customerCollectionRef
             .document(customerID)
-            .update(items_list_type,FieldValue.arrayRemove(ID)).addOnCompleteListener {task->
+            .update(items_list_type,FieldValue.arrayRemove(_id)).addOnCompleteListener {task->
                 if (task.isSuccessful) {
                     ToPerform()
                     Log.d("Items.kt" ,"successful item remove to $items_list_type")

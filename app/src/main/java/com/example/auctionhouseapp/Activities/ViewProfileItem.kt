@@ -60,13 +60,13 @@ class ViewProfileItem : AppCompatActivity() {
     fun setItemInfoOnScreen() {
         item = intent.getSerializableExtra("Item") as Item
         Glide.with(this)
-            .load(item.imagesUrls.get(0))
+            .load(item._imagesUrls.get(0))
             .into(imageView)
         //val bitmap = BitmapDrawable(BitmapFactory.decodeByteArray(item.ImagesArray[0],0,item.ImagesArray[0].size))
         //imageSwitcher.setImageDrawable(bitmap)
-        txt_item_name.setText(item.Name)
-        txt_item_description.setText(item.Description)
-        txt_item_start_price.setText(item.startingPrice.toString())
-        txt_item_status.setText(item.status)
+        txt_item_name.setText(item._name)
+        txt_item_description.setText(item._description)
+        txt_item_start_price.setText(item._startingPrice.toString())
+        txt_item_status.setText(item._status)
     }
 }

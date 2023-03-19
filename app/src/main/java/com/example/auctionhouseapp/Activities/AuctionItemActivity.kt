@@ -60,7 +60,7 @@ class AuctionItemActivity : AppCompatActivity() {
         PrevBtn = findViewById<ImageButton>(R.id.btn_prev_img)
         ImagesUri = ArrayList()
         ImagesIDs = ArrayList()
-        item.imagesUrls = arrayListOf()
+        item._imagesUrls = arrayListOf()
         findViewById<Button>(R.id._btn_auction_item).setOnClickListener{
             checkInput()
         }
@@ -150,7 +150,7 @@ class AuctionItemActivity : AppCompatActivity() {
             addOnSuccessListener {
                 binding.imgSwitcher1.setImageURI(null)
                 storageRef.downloadUrl.addOnCompleteListener {
-                    item.imagesUrls.add(it.result.toString())
+                    item._imagesUrls.add(it.result.toString())
                     uploadedImages++
                     checkAllImagesUpload()
                 }
@@ -164,7 +164,7 @@ class AuctionItemActivity : AppCompatActivity() {
 
     fun checkAllImagesUpload() {
         if (uploadedImages == ImagesUri.size) {
-            item.imagesIDs = ImagesIDs
+            item._imagesIDs = ImagesIDs
             storeItem()
         }
     }
@@ -289,19 +289,19 @@ class AuctionItemActivity : AppCompatActivity() {
     }
 
     fun storeItem() {
-        item.ownerId = FirebaseAuth.getInstance().currentUser?.uid.toString()
-        item.Name = edit_item_name.text.toString()
-        item.Description = edit_item_description.text.toString()
-        item.startingPrice = edit_starting_price.text.toString().toInt()
-        item.lastBid = -1
-        item.lastBidderId = null
-        item.status = "Pending"
-        item.auctionHouseName = house.GetName()
+        item._ownerId = FirebaseAuth.getInstance().currentUser?.uid.toString()
+        item._name = edit_item_name.text.toString()
+        item._description = edit_item_description.text.toString()
+        item._startingPrice = edit_starting_price.text.toString().toInt()
+        item._lastBid = -1
+        item._lastBidderId = null
+        item._status = "Pending"
+        item._auctionHouseName = house.GetName()
         item.StoreData(
             Constants.REQUESTED_ITEMS,
             house.GetUID(),
             dayId,
-            item.ownerId,
+            item._ownerId,
             ::OnSuccPerform
         )
     }

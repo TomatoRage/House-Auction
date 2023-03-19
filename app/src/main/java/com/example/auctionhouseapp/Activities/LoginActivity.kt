@@ -44,6 +44,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var loadingDialog: loadingDialog
     lateinit var emailError:TextView
     lateinit var passwordError:TextView
+    lateinit var dialog:AlertDialog
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -221,7 +222,7 @@ class LoginActivity : AppCompatActivity() {
         val dialogView = layoutInflater. inflate (R.layout.fragment_auction_days_spinner,null)
         builder.setView (dialogView)
         builder.setCancelable (false)
-        val dialog = builder.create()
+        dialog = builder.create()
         dialog.show()
         Handler().postDelayed({
             fetchUserType(ToPerform)
@@ -265,12 +266,14 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(applicationContext,CustomerMainActivity::class.java)
             intent.putExtra("User Name", name)
             intent.putExtra("User Email", emailEt.text.toString())
+            dialog.dismiss()
             startActivity(intent)
             finish()
         } else if (type == 1) {
             val intent = Intent(applicationContext,HouseActivity::class.java)
             intent.putExtra("User Name", name)
             intent.putExtra("User Email", emailEt.text.toString())
+            dialog.dismiss()
             startActivity(intent)
             finish()
         } else {

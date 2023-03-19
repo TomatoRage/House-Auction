@@ -179,7 +179,7 @@ fun FetchListedItems(HouseID: String, ToPerform: () -> Unit) {
        ListedItems.clear()
         for (item in oldListedItems) {
             FirebaseUtils.itemsCollectionRef
-                .document(item.ID)
+                .document(item._id)
                 .get()
                 .addOnSuccessListener { doc ->
                     val itemToAdd = Item(doc.data)
@@ -206,7 +206,7 @@ fun FetchRequestedItems(HouseID: String, ToPerform: () -> Unit) {
         RequestedItems.clear()
         for (item in oldRequestedItems) {
             FirebaseUtils.itemsCollectionRef
-                .document(item.ID)
+                .document(item._id)
                 .get()
                 .addOnSuccessListener { doc ->
                     val itemToAdd = Item(doc.data)

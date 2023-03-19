@@ -1,30 +1,22 @@
 package com.example.auctionhouseapp.Fragments
 
-import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.shapes.Shape
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Size
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.auctionhouseapp.Objects.Item
 import com.example.auctionhouseapp.Objects.ItemViewModel
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.FirebaseUtils
-import androidx.lifecycle.Observer
+import com.google.firebase.auth.FirebaseAuth
 import nl.dionsegijn.konfetti.KonfettiView
 
 
@@ -41,9 +33,11 @@ class ItemViewBidFragment : Fragment() {
     private var position = 0
     private  lateinit var viewModel: ItemViewModel
     var MaxBid:Int = 0
+    val currentCustomer = FirebaseAuth.getInstance().uid.toString()
     var START_MILLI_SECONDS = 60000L
     lateinit var countdown_timer: CountDownTimer
     var time_in_milli_seconds = 0L
+
 
 
     override fun onCreateView(
@@ -56,15 +50,16 @@ class ItemViewBidFragment : Fragment() {
         imageView = view.findViewById<ImageView>(R.id.img_item)
         PrevBtn = view.findViewById<ImageButton>(R.id.btn_prev_img)
         BidBtn = view.findViewById<Button>(R.id.btn_bid)
+        LastBid = view.findViewById<TextView>(R.id.txt_last_bid)
         EditBid = view.findViewById<EditText>(R.id.edit_txt_bid)
         RemainingTime = view.findViewById<TextView>(R.id.txt_remaining_time)
         viewKonfetti = view.findViewById(R.id.viewKonfetti)
 
         Glide.with(this)
-            .load(item.imagesUrls.get(position))
+            .load(item._imagesUrls.get(position))
             .into(imageView)
-        view.findViewById<TextView>(R.id.item_name).setText(item.Name)
-        view.findViewById<TextView>(R.id.item_description).setText(item.Description)
+        view.findViewById<TextView>(R.id.item_name).setText(item._name)
+        view.findViewById<TextView>(R.id.item_description).setText(item._description)
         view.findViewById<TextView>(R.id.txt_last_bid).setText(MaxBid.toString())
 
         //Count Down Object
@@ -73,10 +68,10 @@ class ItemViewBidFragment : Fragment() {
 
 
         NextBtn.setOnClickListener {
-            if (position < item.imagesUrls.size - 1) {
+            if (position < item._imagesUrls.size - 1) {
                 position++
                 Glide.with(this)
-                    .load(item.imagesUrls.get(position))
+                    .load(item._imagesUrls.get(position))
                     .into(imageView)
 
             } else {
@@ -89,14 +84,13 @@ class ItemViewBidFragment : Fragment() {
                 position--
 
                 Glide.with(this)
-                    .load(item.imagesUrls.get(position))
+                    .load(item._imagesUrls.get(position))
                     .into(imageView)
             } else {
                 Toast.makeText(context, "No More Images...", Toast.LENGTH_SHORT).show()
             }
         }
-
-
+        MaxBid = item._lastBid
         return view
     }
 
@@ -109,11 +103,10 @@ class ItemViewBidFragment : Fragment() {
 
             override fun onTick(p0: Long) {
                 time_in_milli_seconds = p0
-                updateTextUI()
+                updateTimeUI()
             }
         }
         countdown_timer.start()
-
     }
 
     private fun resetTimer() {
@@ -121,11 +114,65 @@ class ItemViewBidFragment : Fragment() {
         startTimer(START_MILLI_SECONDS)
     }
 
-    private fun updateTextUI() {
+    private fun updateTimeUI() {
         val minute = (time_in_milli_seconds / 1000) / 60
         val seconds = (time_in_milli_seconds / 1000) % 60
 
         RemainingTime.text = "$minute:$seconds"
+        val time_in_mili_seconds_updated = minute*60*1000 + seconds*1000
+        if (currentCustomer.equals(item._lastBidderId) && seconds.toInt()%5==0)
+            updateTimeFirebase(time_in_mili_seconds_updated)
+    }
+
+    private fun updateTimeFirebase(time_in_mili_seconds_updated: Long) {
+        FirebaseUtils.itemsCollectionRef
+            .document(item._id)
+            .update(Constants.ITEM_TIME_FOR_AUCTION_END, time_in_mili_seconds_updated.toLong())
+            .addOnSuccessListener {
+                Log.i("ItemViewBidFragment.kt", "update remaining time in milli seconds to"
+                        + time_in_mili_seconds_updated)
+            }
+            .addOnFailureListener {
+                Toast.makeText(
+                    context,
+                    "Failed to update remaining time !!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+    }
+
+    private fun updateMaxBidFirebase(bidAmount:Int) {
+        FirebaseUtils.itemsCollectionRef
+            .document(item._id)
+            .update(Constants.ITEM_LAST_BID_AMOUNT, bidAmount.toLong())
+            .addOnSuccessListener {
+                Toast.makeText(context, "Highest Bid So Far !!", Toast.LENGTH_SHORT)
+                    .show()
+            }
+            .addOnFailureListener {
+                Toast.makeText(
+                    context,
+                    "Failed to update your bid !!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+    }
+
+    private fun updateLastBidderID() {
+        FirebaseUtils.itemsCollectionRef
+            .document(item._id)
+            .update(Constants.ITEM_LAST_BIDDER, currentCustomer)
+            .addOnSuccessListener {
+                Log.i("ItemViewBidFragment.kt", "update last bidder to $currentCustomer")
+            }
+            .addOnFailureListener {
+                Toast.makeText(
+                    context,
+                    "Failed to update last bidder!!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
     }
 
 
@@ -144,16 +191,26 @@ class ItemViewBidFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ItemViewModel::class.java)
-        viewModel.current_item.observe(viewLifecycleOwner) {
+        //val rooView = view
+        viewModel = ViewModelProvider(this).get(ItemViewModel::class.java)
+        viewModel.allItems.observe(viewLifecycleOwner) {
             if (it != null) {
-                item = it
-            }
-            if (item.lastBid > MaxBid) {
-                LastBid.setText(MaxBid.toString())
-                MaxBid = item.lastBid
+                it.forEach {
+                    if (it._id.equals(item._id)) {
+                        item = it
+                        countdown_timer.cancel()
+                        startTimer(it._time_for_auction_end.toLong())
+                        if (item._lastBid > MaxBid) {
+                            MaxBid = item._lastBid
+                            LastBid.setText(MaxBid.toString())
+                        }
+                    }
+                }
+            } else {
+                Log.e("ItemViewBidFragment.kt", "-W- Null Item !!")
             }
         }
+
 
         BidBtn.setOnClickListener {
             val bid = EditBid.text.toString()
@@ -163,20 +220,15 @@ class ItemViewBidFragment : Fragment() {
                 val bidAmount = bid.toInt()
                 if (bidAmount > MaxBid) {
                     resetTimer()
-                    item.lastBid = bidAmount
-                    FirebaseUtils.itemsCollectionRef
-                        .document(item.ID)
-                        .update(Constants.ITEM_LAST_BID_AMOUNT, bidAmount)
-                        .addOnSuccessListener {
-                            Toast.makeText(context, "Highest Bid So Far !!", Toast.LENGTH_SHORT).show()
-                        }
-                        .addOnFailureListener {
-                            Toast.makeText(context, "Failed to update your bid !!", Toast.LENGTH_SHORT).show()
-                        }
+                    item._lastBid = bidAmount
+                    item._time_for_auction_end = START_MILLI_SECONDS.toInt()
+                    MaxBid = bidAmount
+                    LastBid.setText(MaxBid.toString())
+                    updateMaxBidFirebase(MaxBid)
+                    updateTimeFirebase(START_MILLI_SECONDS)
+                    updateLastBidderID()
                 }
             }
         }
-
-
     }
 }
