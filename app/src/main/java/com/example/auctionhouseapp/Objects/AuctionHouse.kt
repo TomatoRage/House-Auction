@@ -57,6 +57,7 @@ class AuctionHouse: User , Serializable {
                 for(doc in documents) {
                     val Day = AuctionDays(doc.data)
                     Day.DocumentID = doc.id
+                    Day.updateStatus()
                     this.Days.add(Day)
                 }
                 isReadHouseDays = true

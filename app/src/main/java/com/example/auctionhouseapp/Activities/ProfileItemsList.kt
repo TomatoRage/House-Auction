@@ -1,7 +1,9 @@
 package com.example.auctionhouseapp.Activities
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import com.example.auctionhouseapp.Fragments.AuctionDaysSpinner
 import com.example.auctionhouseapp.Fragments.CustomerProfileItemsListFragment
 import com.example.auctionhouseapp.Objects.Customer
@@ -17,6 +19,7 @@ class ProfileItemsList : AppCompatActivity() {
     lateinit var itemType:String
     val LoadingFragment = AuctionDaysSpinner()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_items_list)
@@ -28,15 +31,21 @@ class ProfileItemsList : AppCompatActivity() {
             customer.fetchCustomerBiddedItems(customerUID,::afterItemsFetch)
         }
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragmentContainerView3,LoadingFragment)
+            replace(R.id.fragmentContainerView5,LoadingFragment)
             commit()
         }
-
     }
 
     fun afterItemsFetch() {
-        val customerProfileItemsListFragmentList = CustomerProfileItemsListFragment()
+        var customerProfileItemsListFragmentList = CustomerProfileItemsListFragment()
         supportFragmentManager.beginTransaction().apply {
+            if (itemType == "Auctioned") {
+                customerProfileItemsListFragmentList.items = customer.auctionedItems
+                customerProfileItemsListFragmentList.type = "Auctioned"
+            } else if (itemType == "Bidded") {
+                customerProfileItemsListFragmentList.items = customer.biddedItems
+                customerProfileItemsListFragmentList.type = "Bidded"
+            }
             replace(R.id.fragmentContainerView5, customerProfileItemsListFragmentList)
             commit()
         }

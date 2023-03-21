@@ -4,13 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Activities.ViewItem">
 
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/LayoutTop"
@@ -42,111 +38,8 @@
                 android:text="Sign Out"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
-
-
-
         </LinearLayout>
 
-
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="290dp"
-            app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="5dp"
-            app:cardMaxElevation="1.5dp"
-            app:cardElevation="1dp"
-            app:contentPadding="10dp"
-            app:contentPaddingBottom="0dp"
-            app:cardPreventCornerOverlap="true"
-            app:cardUseCompatPadding="true"
-            android:id="@+id/cardView">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageSwitcher
-                    android:id="@+id/img_item"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="15dp"
-                    android:background = "@drawable/round_outline"
-                    android:layout_width="310dp"
-                    android:layout_height="265dp"
-                    android:clipToOutline="true"
-                    android:scaleType="centerCrop"/>
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/btn_next_img"
-                    android:layout_toRightOf="@+id/img_item"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/arrow"/>
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/btn_prev_img"
-                    android:layout_toLeftOf="@+id/img_item"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/arrow_prev"/>
-
-
-                <TextView
-                    android:id="@+id/item_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/img_item"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="5dp"
-                    android:elevation="15dp"
-                    android:visibility="gone"
-                    android:text="Yamaha V-Max"
-                    android:textColor="#A3162C"
-                    android:textSize="28sp"
-                    android:textStyle="bold" />
-
-            </RelativeLayout>
-
-
-
-        </androidx.cardview.widget.CardView>
-
-
-
-        <LinearLayout
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:text="Description:"
-                android:id="@+id/txt_item_description"
-                android:layout_marginTop="2dp"
-                android:textSize="18sp"
-                android:gravity="center"
-                android:visibility="gone"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                tools:ignore="HardcodedText" />
-
-            <TextView
-                android:id="@+id/item_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:visibility="gone"
-                android:layout_marginStart="5dp"
-                android:text="Well done Yamaha, finally the new V-MAX are here. This Bike hase new R1-derived inline-four that’s boosted to 164 hp. The key upgrade with the SP edition is the new six-axis semi-active Öhlins SMART EC 2.0 electronic suspension."
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                tools:ignore="HardcodedText" />
-        </LinearLayout>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragmentContainerViewItemInfo"
@@ -155,8 +48,5 @@
             android:layout_below="@+id/txt_auction_houses"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="16dp" />
-
-    </LinearLayout>
-
 
 </LinearLayout>

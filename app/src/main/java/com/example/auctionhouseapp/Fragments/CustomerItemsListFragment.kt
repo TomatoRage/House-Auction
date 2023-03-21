@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
+import com.bumptech.glide.Glide
 import com.example.auctionhouseapp.Activities.AuctionItemActivity
 import com.example.auctionhouseapp.Activities.ItemsList
 import com.example.auctionhouseapp.Activities.LoginActivity
@@ -50,7 +51,6 @@ class CustomerItemsListFragment : Fragment() {
             if(!day.ListedItems.isEmpty()) {
                 val intent = Intent(Context, ViewItem::class.java)
                 val item = day.ListedItems[position]
-                item.clearImagesArray()
                 intent.putExtra("Item", item)
                 intent.putExtra("SalesDate", day.PrintDate())
                 intent.putExtra("StartTime", day.PrintStartTime())
@@ -109,9 +109,12 @@ class CustomerItemsListFragment : Fragment() {
             val layoutInflater = LayoutInflater.from(mContext)
             val View = layoutInflater.inflate(R.layout.house_item_list_item,parent,false)
 
-            View.findViewById<TextView>(R.id.textview_house_item_name).setText(Items[position].Name)
-            View.findViewById<TextView>(R.id.textView_description).setText(Items[position].Description)
-            View.findViewById<ImageView>(R.id.imageView_house_item).setImageBitmap(BitmapFactory.decodeByteArray(Items[position].ImagesArray[0],0,Items[position].ImagesArray[0].size))
+            View.findViewById<TextView>(R.id.textview_house_item_name).setText(Items[position]._name)
+            View.findViewById<TextView>(R.id.textView_description).setText(Items[position]._description)
+            Glide.with(mContext)
+                .load(Items[position]._imagesUrls.get(0))
+                .into(View.findViewById<ImageView>(R.id.imageView_house_item))
+            //View.findViewById<ImageView>(R.id.imageView_house_item).setImageBitmap(BitmapFactory.decodeByteArray(Items[position].ImagesArray[0],0,Items[position].ImagesArray[0].size))
             View.findViewById<ImageView>(R.id.imageView_house_item).setBackgroundResource(R.drawable.round_outline)
             View.findViewById<ImageView>(R.id.imageView_house_item).clipToOutline = true
 

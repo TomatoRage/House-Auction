@@ -31,9 +31,6 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
     var ListedItems:ArrayList<Item> = arrayListOf()
     var RequestedItems:ArrayList<Item> = arrayListOf()
 
-    var RequestedImagesFetched = 0
-    var ListedImagesFetched = 0
-
     constructor()
 
     constructor(Data:MutableMap<String,Any>?){
@@ -175,14 +172,14 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
                 Log.d(TAG, "day data read failed with", exception)
             }
     }
-//Listed Items Functions:
-    fun FetchListedItems(HouseID: String,ToPerform: () -> Unit) {
+
+fun FetchListedItems(HouseID: String, ToPerform: () -> Unit) {
         val oldListedItems: ArrayList<Item> = ArrayList(ListedItems)
         val numOfListedItems = ListedItems.size
        ListedItems.clear()
         for (item in oldListedItems) {
             FirebaseUtils.itemsCollectionRef
-                .document(item.ID)
+                .document(item._id)
                 .get()
                 .addOnSuccessListener { doc ->
                     val itemToAdd = Item(doc.data)
@@ -197,34 +194,19 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
     }
 
 
-
     fun checkAllistedItemsFetched(ToPerform: () -> Unit, size:Int) {
         if (ListedItems.size == size) {
-            FetchListedImages(ToPerform)
-        }
-    }
-
-    fun FetchListedImages(ToPerform: () -> Unit) {
-        for (item in ListedItems) {
-            item.FetchImages(1, ::checkAllListedImagesFetched, ToPerform)
-        }
-    }
-
-    fun checkAllListedImagesFetched(ToPerform: () -> Unit) {
-        ListedImagesFetched++
-        if (ListedImagesFetched == ListedItems.size) {
             ToPerform()
         }
     }
 
-//Requested Items Functions:
-    fun FetchRequestedItems(HouseID: String,ToPerform: () -> Unit) {
+fun FetchRequestedItems(HouseID: String, ToPerform: () -> Unit) {
         val oldRequestedItems: ArrayList<Item> = ArrayList(RequestedItems)
         val numOfRequestedItems = RequestedItems.size
         RequestedItems.clear()
         for (item in oldRequestedItems) {
             FirebaseUtils.itemsCollectionRef
-                .document(item.ID)
+                .document(item._id)
                 .get()
                 .addOnSuccessListener { doc ->
                     val itemToAdd = Item(doc.data)
@@ -239,22 +221,8 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
     }
 
 
-
-    fun checkAllRequestedItemsFetched(ToPerform: () -> Unit, size:Int) {
+    fun checkAllRequestedItemsFetched( ToPerform: () -> Unit, size:Int) {
         if (RequestedItems.size == size) {
-            FetchRequestedImages(ToPerform)
-        }
-    }
-
-    fun FetchRequestedImages(ToPerform: () -> Unit) {
-        for (item in RequestedItems) {
-            item.FetchImages(1, ::checkAllRequestedImagesFetched, ToPerform)
-        }
-    }
-
-    fun checkAllRequestedImagesFetched(ToPerform: () -> Unit) {
-        RequestedImagesFetched++
-        if (RequestedImagesFetched == RequestedItems.size) {
             ToPerform()
         }
     }

@@ -16,8 +16,10 @@ import com.example.auctionhouseapp.Fragments.AuctionDaysSpinner
 import com.example.auctionhouseapp.Fragments.AuctionHousesListFragment
 import com.example.auctionhouseapp.Fragments.CustomerItemsListFragment
 import com.example.auctionhouseapp.Fragments.HouseItemsList
+import com.example.auctionhouseapp.Objects.ImagesSharedPref
 import com.example.auctionhouseapp.UserType
 import com.example.auctionhouseapp.Utils.Extensions.toast
+
 
 class ItemsList : AppCompatActivity() {
 
@@ -32,7 +34,7 @@ class ItemsList : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_items_list)
-
+        ImagesSharedPref.decodeImages()
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentContainerView3, LoadingFragment)
             commit()

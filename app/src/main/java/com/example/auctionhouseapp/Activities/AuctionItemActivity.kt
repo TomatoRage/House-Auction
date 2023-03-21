@@ -24,6 +24,7 @@ import com.example.auctionhouseapp.Utils.FirebaseUtils.firebaseStore
 import com.example.auctionhouseapp.Utils.FirebaseUtils.storageReference
 import com.example.auctionhouseapp.databinding.ActivityAuctionItemBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
 import kotlin.collections.ArrayList
 
 class AuctionItemActivity : AppCompatActivity() {
@@ -40,6 +41,9 @@ class AuctionItemActivity : AppCompatActivity() {
     lateinit var binding : ActivityAuctionItemBinding
     lateinit var NextBtn: ImageButton
     lateinit var PrevBtn: ImageButton
+    //init item
+    var item = Item()
+    var uploadedImages = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAuctionItemBinding.inflate(layoutInflater)
@@ -56,6 +60,7 @@ class AuctionItemActivity : AppCompatActivity() {
         PrevBtn = findViewById<ImageButton>(R.id.btn_prev_img)
         ImagesUri = ArrayList()
         ImagesIDs = ArrayList()
+        item._imagesUrls = arrayListOf()
         findViewById<Button>(R.id._btn_auction_item).setOnClickListener{
             checkInput()
         }
@@ -102,16 +107,6 @@ class AuctionItemActivity : AppCompatActivity() {
     }
 
     fun selectImage() {
-//        var intent = Intent()
-//        intent.type = "image/*"
-//        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-//        intent.action = Intent.ACTION_GET_CONTENT
-//        startActivityForResult(Intent.createChooser(intent,"Select Images.."),100)
-//        var intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-//        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-//        intent.addCategory(Intent.CATEGORY_OPENABLE)
-//        intent.type = "image/*"
-//        startActivityForResult(intent, 100)
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         intent.putExtra(Intent.ACTION_GET_CONTENT, true)
@@ -144,28 +139,36 @@ class AuctionItemActivity : AppCompatActivity() {
         progressDialog.setMessage("Uploading File ...")
         progressDialog.setCancelable(false)
         progressDialog.show()
+        uploadedImages = 0
         for (i in 0 until ImagesUri.size) {
-//            val formatter = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault())
-//            val now = Date()
-//            val fileName = formatter.format(now)
             var fileName = ImagesUri.get(i).toString()
             fileName = fileName.split("/").last()
             ImagesIDs.add(fileName)
             val imageUri = ImagesUri.get(i)
             val storageRef = firebaseStore.getReference("Items/$fileName")
-
             storageRef.putFile(imageUri).
             addOnSuccessListener {
-
                 binding.imgSwitcher1.setImageURI(null)
-                Toast.makeText(this, "Successfully Uploaded", Toast.LENGTH_SHORT).show()
-                if(progressDialog.isShowing) progressDialog.dismiss()
+                storageRef.downloadUrl.addOnCompleteListener {
+                    item._imagesUrls.add(it.result.toString())
+                    uploadedImages++
+                    checkAllImagesUpload()
+                }
+                //if(progressDialog.isShowing) progressDialog.dismiss()
             }.addOnFailureListener {
                 if (progressDialog.isShowing) progressDialog.dismiss()
                 Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show()
             }
         }
     }
+
+    fun checkAllImagesUpload() {
+        if (uploadedImages == ImagesUri.size) {
+            item._imagesIDs = ImagesIDs
+            storeItem()
+        }
+    }
+
 
     private fun textAutoCheck() {
         edit_item_name.addTextChangedListener(object : TextWatcher {
@@ -278,31 +281,32 @@ class AuctionItemActivity : AppCompatActivity() {
             toast("Invalid Item's starting price!")
             return
         }
-        StoreItem()
+        CreateItem()
     }
 
-    fun StoreItem() {
-        house.FetchHousePrimaryData(house.GetUID(),::StoreData)
+    fun CreateItem() {
+        house.FetchHousePrimaryData(house.GetUID(),::uploadImages)
     }
-    fun StoreData() {
-        val item = Item()
-        item.ownerId = FirebaseAuth.getInstance().currentUser?.uid.toString()
-        item.Name = edit_item_name.text.toString()
-        item.Description = edit_item_description.text.toString()
-        item.startingPrice = edit_starting_price.text.toString().toInt()
-        item.lastBid = -1
-        item.lastBidderId = null
-        item.status = "Pending"
-        uploadImages()
-        item.imagesIDs = ImagesIDs
-        item.auctionHouseName = house.GetName()
-        val customerUID = FirebaseAuth.getInstance().currentUser?.uid.toString()
-        item.StoreData(Constants.REQUESTED_ITEMS, house.GetUID(), dayId, customerUID, ::OnSuccPerform)
+
+    fun storeItem() {
+        item._ownerId = FirebaseAuth.getInstance().currentUser?.uid.toString()
+        item._name = edit_item_name.text.toString()
+        item._description = edit_item_description.text.toString()
+        item._startingPrice = edit_starting_price.text.toString().toInt()
+        item._lastBid = -1
+        item._lastBidderId = null
+        item._status = "Pending"
+        item._auctionHouseName = house.GetName()
+        item.StoreData(
+            Constants.REQUESTED_ITEMS,
+            house.GetUID(),
+            dayId,
+            item._ownerId,
+            ::OnSuccPerform
+        )
     }
 
     fun OnSuccPerform() {
-        //val intent = Intent(applicationContext, ItemsList::class.java)
-        //setResult(RESULT_OK,intent)
         finish()
     }
 

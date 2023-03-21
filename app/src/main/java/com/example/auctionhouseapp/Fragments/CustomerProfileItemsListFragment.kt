@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
+import com.bumptech.glide.Glide
 import com.example.auctionhouseapp.Activities.*
 import com.example.auctionhouseapp.Objects.Customer
 import com.example.auctionhouseapp.Objects.Item
@@ -21,10 +22,8 @@ import com.google.firebase.auth.FirebaseAuth
 
 class CustomerProfileItemsListFragment : Fragment() {
 
-    var customer:Customer = Customer()
     var items :ArrayList<Item> = arrayListOf()
-    var itemsType:String = String()
-
+    lateinit var type : String
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -34,7 +33,7 @@ class CustomerProfileItemsListFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_customer_items_list, container, false)
         val ListView = view.findViewById<ListView>(R.id.auction_house_items)
-        val Context = activity as CustomerMainActivity
+        val Context = activity as ProfileItemsList
         val text_empty_items_list =  view.findViewById<TextView>(R.id.textView_empty_items_list)
         val btn_auction_item =  view.findViewById<Button>(R.id.btn_auction_item)
         text_empty_items_list.isVisible = false
@@ -46,12 +45,16 @@ class CustomerProfileItemsListFragment : Fragment() {
         ListView.setOnItemClickListener { parent, view, position, id ->
             if(!items.isEmpty()) {
                 val intent = Intent(Context, ViewProfileItem::class.java)
-                intent.putExtra("Item", items[position])
+                val item = items[position]
+                intent.putExtra("Item", item)
+                intent.putExtra("Items Type", type)
                 startActivity(intent)
             }
         }
         view.findViewById<TextView>(R.id.txt_back).setOnClickListener {
-            Context.finish()
+            val intent = Intent(Context, CustomerMainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent)
         }
 
         view.findViewById<TextView>(R.id.txt_sign_out).setOnClickListener {
@@ -63,14 +66,14 @@ class CustomerProfileItemsListFragment : Fragment() {
         return view
     }
 
-    private class CustomListAdapter(context: Context,items:ArrayList<Item>): BaseAdapter(){
+    private class CustomListAdapter(context: Context,_items:ArrayList<Item>): BaseAdapter(){
 
         private val mContext:Context
         private val Items:ArrayList<Item>
 
         init{
             mContext = context
-            Items = items
+            Items = _items
         }
 
         override fun getCount(): Int {
@@ -89,9 +92,12 @@ class CustomerProfileItemsListFragment : Fragment() {
             val layoutInflater = LayoutInflater.from(mContext)
             val View = layoutInflater.inflate(R.layout.house_item_list_item,parent,false)
 
-            View.findViewById<TextView>(R.id.textview_house_item_name).setText(Items[position].Name)
-            View.findViewById<TextView>(R.id.textView_description).setText(Items[position].Description)
-            View.findViewById<ImageView>(R.id.imageView_house_item).setImageBitmap(BitmapFactory.decodeByteArray(Items[position].ImagesArray[0],0,Items[position].ImagesArray[0].size))
+            View.findViewById<TextView>(R.id.textview_house_item_name).setText(Items[position]._name)
+            View.findViewById<TextView>(R.id.textView_description).setText(Items[position]._description)
+            Glide.with(mContext)
+                .load(Items[position]._imagesUrls.get(0))
+                .into(View.findViewById<ImageView>(R.id.imageView_house_item))
+            //View.findViewById<ImageView>(R.id.imageView_house_item).setImageBitmap(BitmapFactory.decodeByteArray(Items[position].ImagesArray[0],0,Items[position].ImagesArray[0].size))
             View.findViewById<ImageView>(R.id.imageView_house_item).setBackgroundResource(R.drawable.round_outline)
             View.findViewById<ImageView>(R.id.imageView_house_item).clipToOutline = true
 
