@@ -54,10 +54,9 @@ object Constants{
     const val ITEM_LAST_BIDDER:String               = "Last Bidder ID " // UserID Of The Last Bidder
     const val ITEM_NUM_IN_QUEUE:String              = "Pos In Queue" // Holds The No' Of Items Before Current Item
     const val ITEM_IS_ACCEPTED:String               = "Is Accepted" // Identifier between accepted & not accepted Items
-    const val ITEM_LAST_BID_TIME:String             = "Last Bid Time" // UserID Of The Last Bidder
+    const val ITEM_LAST_BID_TIME:String             = "Last Bid Time" // Time Of The Last Highest Bid
     const val ITEM_STATUS:String                    = "Status" // UserID Of The Last Bidder
     const val ITEM_URL_LIST:String                  = "URLs"
-    const val ITEM_TIME_FOR_AUCTION_END             = "Time For Auction End"
 
     //Customer's Data
     const val AUCTIONED_ITEMS:String                = "Auctioned Items" // Collection Contains Auctioned Items By Customer
