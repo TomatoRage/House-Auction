@@ -21,7 +21,7 @@ class Item : Serializable {
      var _startingPrice: Int = 0
      var _lastBidderId: String? = null
      var _lastBid:Int = 0
-    var _time_for_auction_end: Int = 60*1000
+     var _last_bid_time: Date? = null
 
 
     constructor()
@@ -48,7 +48,7 @@ class Item : Serializable {
         _lastBidderId = Data[Constants.ITEM_LAST_BIDDER] as String?
         _lastBid = (Data[Constants.ITEM_LAST_BID_AMOUNT] as Long).toInt()
         _id = Data[Constants.ITEM_ID] as String
-        _time_for_auction_end = (Data[Constants.ITEM_TIME_FOR_AUCTION_END] as Long).toInt()
+        _last_bid_time = (Data[Constants.ITEM_LAST_BID_TIME]as Timestamp).toDate()
         return
     }
 
