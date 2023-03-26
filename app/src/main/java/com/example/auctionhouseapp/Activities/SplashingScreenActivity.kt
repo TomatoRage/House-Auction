@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.Extensions.toast
-
+import com.example.auctionhouseapp.Utils.FirebaseUtils
 
 
 class SplashingScreenActivity : AppCompatActivity() {
@@ -28,26 +28,26 @@ class SplashingScreenActivity : AppCompatActivity() {
     }
 
     fun checkUser(ToPerform: () -> Unit) {
-//        if(firebaseUser != null) {
-//            userCollectionRef
-//                .document(firebaseUser.uid)
-//                .get()
-//                .addOnSuccessListener { doc ->
-//                    if (doc != null) {
-//                        userType = (doc.data?.get(Constants.USER_TYPE) as Long).toInt()
-//                        if (userType != -1)
-//                            ToPerform()
-//                    }
-//                }
-//                .addOnFailureListener { exception ->
-//                    Log.d("LoginActivity", "Requested Items data read failed with", exception)
-//                }
-//        }
-       //if(firebaseUser == null){
+        if(FirebaseUtils.firebaseUser != null) {
+            FirebaseUtils.usersCollectionRef
+                .document(FirebaseUtils.firebaseUser.uid)
+                .get()
+                .addOnSuccessListener { doc ->
+                    if (doc != null) {
+                        userType = (doc.data?.get(Constants.USER_TYPE) as Long).toInt()
+                        if (userType != -1)
+                            ToPerform()
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d("LoginActivity", "Requested Items data read failed with", exception)
+                }
+        }
+       if(FirebaseUtils.firebaseUser == null){
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
-        //}
+        }
     }
 
     fun goToNextActivity() {

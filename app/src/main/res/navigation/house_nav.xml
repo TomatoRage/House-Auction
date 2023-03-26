@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/house_nav"
+    app:startDestination="@id/auctionDaysListFragment">
+    <fragment
+        android:id="@+id/customerProfile"
+        android:name="com.example.auctionhouseapp.Fragments.CustomerProfile"
+        android:label="CustomerProfile" />
+
+    <fragment
+        android:id="@+id/auctionDaysListFragment"
+        android:name="com.example.auctionhouseapp.Fragments.AuctionDaysListFragment"
+        android:label="fragment_auction_days_list"
+        tools:layout="@layout/fragment_auction_days_list" />
+</navigation>

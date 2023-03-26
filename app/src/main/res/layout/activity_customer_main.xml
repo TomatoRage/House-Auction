@@ -53,7 +53,7 @@
         android:id="@+id/bottomNavCustomer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:menu="@menu/buttom_nav_menu"
+        app:menu="@menu/buttom_nav_menu_customer"
         android:background="@color/background"
         app:itemIconTint="@drawable/bottom_nav_colors"
         app:layout_constraintBottom_toBottomOf="parent"

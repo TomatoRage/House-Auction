@@ -8,10 +8,13 @@ import android.widget.Button
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
 import com.example.auctionhouseapp.*
 import com.example.auctionhouseapp.Fragments.AuctionDaysListFragment
 import com.example.auctionhouseapp.Fragments.AuctionDaysSpinner
+import com.example.auctionhouseapp.Fragments.CustomerProfile
 import com.example.auctionhouseapp.Objects.AuctionHouse
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -28,7 +31,6 @@ class HouseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auctionhouse)
 
-        //House.FetchHouseData(Firebase.auth.currentUser!!.uid,::PerformAfterData)
         House.Days.clear()
         House.FetchHouseData(Firebase.auth.currentUser!!.uid,::PerformAfterData)
         supportFragmentManager.beginTransaction().apply {
@@ -59,8 +61,29 @@ class HouseActivity : AppCompatActivity() {
             finish()
         }
 
+        findViewById<BottomNavigationView>(R.id.bottomNavHouse).setOnNavigationItemSelectedListener{
+            when(it.itemId){
+                R.id.customerProfile -> {
+                    var profile = CustomerProfile()
+                    profile.customerEmail = House.GetEmail()
+                    profile.customerName = House.GetName()
+                    ReplaceFragment(profile)
+                }
+                R.id.auctionDaysListFragment -> {
+                    House.Days.clear()
+                    ReplaceFragment(LoadingFragment)
+                    House.FetchHouseData(Firebase.auth.currentUser!!.uid,::PerformAfterData)
+                }
+            }
+            true
+        }
 
+    }
 
+    fun ReplaceFragment(fragment:Fragment){
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragmentContainerView, fragment)
+        transaction.commit()
     }
 
     fun PerformAfterData() {

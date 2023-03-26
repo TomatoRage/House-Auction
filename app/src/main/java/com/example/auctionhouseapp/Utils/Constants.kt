@@ -40,6 +40,7 @@ object Constants{
     const val DAY_NUM_OF_SOLD:String                = "Sold Items" // No' of sold items so far
     const val REQUESTED_ITEMS:String                = "Requested Items"// Collection Contains Requested Items per Day
     const val LISTED_ITEMS:String                   = "Listed Items" // Collection Contains Accepted Items per Day
+    const val PROFILE_URL:String                    = "Profile Picture" // House Profile Picture URL
 
 
     //Items' Data

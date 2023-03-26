@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/customerProfile"
+        android:icon="@drawable/profile_vec"
+        android:title="Profile" />
+
+    <item
+        android:id="@+id/auctionDaysListFragment"
+        android:icon="@drawable/auction_houses_vec"
+        android:title="Auction Days" />
+</menu>

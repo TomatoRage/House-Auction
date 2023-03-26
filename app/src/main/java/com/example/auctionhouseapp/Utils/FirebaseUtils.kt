@@ -7,8 +7,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 
 object FirebaseUtils {
-    //val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-    //val firebaseUser: FirebaseUser? = firebaseAuth.currentUser
+    val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    val firebaseUser: FirebaseUser? = firebaseAuth.currentUser
     val firebaseDataBase: FirebaseDatabase = FirebaseDatabase.getInstance()
     val usersCollectionRef = FirebaseFirestore.getInstance().collection(Constants.USERS_COLLECTION)
     val itemsCollectionRef = FirebaseFirestore.getInstance().collection(Constants.ITEMS_COLLECTION)
