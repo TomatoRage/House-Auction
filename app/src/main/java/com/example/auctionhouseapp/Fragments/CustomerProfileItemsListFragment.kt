@@ -1,10 +1,12 @@
 package com.example.auctionhouseapp.Fragments
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,11 +14,15 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.example.auctionhouseapp.Activities.*
+import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.Objects.Customer
 import com.example.auctionhouseapp.Objects.Item
 import com.example.auctionhouseapp.R
+import com.example.auctionhouseapp.Utils.Constants
+import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -24,16 +30,19 @@ class CustomerProfileItemsListFragment : Fragment() {
 
     var items :ArrayList<Item> = arrayListOf()
     lateinit var type : String
+    val currentCustomer = FirebaseAuth.getInstance().uid.toString()
+    val customer = Customer()
+    private lateinit var ListView: ListView
+    private lateinit var Context: Activity
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val view = inflater.inflate(R.layout.fragment_customer_items_list, container, false)
-        val ListView = view.findViewById<ListView>(R.id.auction_house_items)
-        val Context = activity as ProfileItemsList
+        ListView = view.findViewById<ListView>(R.id.auction_house_items)
+        Context = activity as ProfileItemsList
         val text_empty_items_list =  view.findViewById<TextView>(R.id.textView_empty_items_list)
         val btn_auction_item =  view.findViewById<Button>(R.id.btn_auction_item)
         text_empty_items_list.isVisible = false
@@ -51,9 +60,24 @@ class CustomerProfileItemsListFragment : Fragment() {
                 startActivity(intent)
             }
         }
+
+        view.findViewById<SwipeRefreshLayout>(R.id.swiperefresh).setOnRefreshListener {
+            customer.SetID(currentCustomer)
+            if (type.equals("Auctioned")) {
+                customer.fetchCustomerAuctionedItems(currentCustomer, ::updateItemsList)
+                items = customer.auctionedItems
+            }
+            else {
+                customer.fetchCustomerBiddedItems(currentCustomer, ::updateItemsList)
+                items = customer.biddedItems
+            }
+
+        }
+
+
         view.findViewById<TextView>(R.id.txt_back).setOnClickListener {
             val intent = Intent(Context, CustomerMainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
         }
 
@@ -64,6 +88,10 @@ class CustomerProfileItemsListFragment : Fragment() {
         }
 
         return view
+    }
+
+    private fun updateItemsList() {
+        ListView.adapter = CustomListAdapter(Context,items)
     }
 
     private class CustomListAdapter(context: Context,_items:ArrayList<Item>): BaseAdapter(){

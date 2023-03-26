@@ -1,11 +1,13 @@
 package com.example.auctionhouseapp.Fragments
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,15 +16,21 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.core.view.marginStart
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.auctionhouseapp.Activities.*
 import com.example.auctionhouseapp.AuctionDayStatus
+import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.Objects.AuctionHouse
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.UserType
+import com.example.auctionhouseapp.Utils.Constants
+import com.example.auctionhouseapp.Utils.FirebaseUtils
 
 class CustomerDaysListFragment : Fragment() {
 
     var House = AuctionHouse()
+    private lateinit var ListView: ListView
+    private lateinit var Context: Activity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,18 +38,42 @@ class CustomerDaysListFragment : Fragment() {
     ): View? {
 
         val view = inflater.inflate(R.layout.fragment_auction_days_list, container, false)
-        val ListView = view.findViewById<ListView>(R.id.auction_days_list)
-        val Context = activity as CustomerDaysListActivity
-
+        ListView = view.findViewById<ListView>(R.id.auction_days_list)
+        Context = activity as CustomerDaysListActivity
         ListView.adapter = CustomListAdapter(Context,House)
         ListView.setOnItemClickListener { parent, view, position, id ->
             val intent = Intent(Context, ItemsList::class.java)
-            intent.putExtra("Day",House.Days[position])
-            intent.putExtra("House ID", House.GetUID())
-            intent.putExtra("Type", 0)
+            intent.putExtra("DayId",House.Days[position].DocumentID)
+            intent.putExtra("HouseId", House.GetUID())
+            val userType = UserType.Customer.ordinal
+            intent.putExtra("Type", userType)
             startActivity(intent)
         }
+
+        view.findViewById<SwipeRefreshLayout>(R.id.swiperefresh).setOnRefreshListener {
+            FirebaseUtils.houseCollectionRef
+                .document(House.GetUID())
+                .collection(Constants.SALES_DAY_COLLECTION)
+                .get()
+                .addOnSuccessListener {documents->
+                    view.findViewById<SwipeRefreshLayout>(R.id.swiperefresh).isRefreshing = false
+                    House.Days.clear()
+                    for(doc in documents) {
+                        val Day = AuctionDays(doc.data)
+                        Day.updateStatus()
+                        if (!Day.Status.equals(AuctionDayStatus.Occurred))
+                            House.Days.add(Day)
+                    }
+                    updateDaysList()
+                }.addOnFailureListener {
+                    Log.i("CustomerDaysList.kt", "Error! failed to refresh days list")
+                }
+        }
         return view
+    }
+
+    private fun updateDaysList() {
+        ListView.adapter = CustomListAdapter(Context,House)
     }
 
     companion object {

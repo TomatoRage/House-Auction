@@ -10,10 +10,12 @@ import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.Extensions.toast
 import com.example.auctionhouseapp.Utils.FirebaseUtils
+import com.google.firebase.auth.FirebaseAuth
 
 
 class SplashingScreenActivity : AppCompatActivity() {
     var userType = -1
+    val currentUser = FirebaseAuth.getInstance().currentUser
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
@@ -28,20 +30,22 @@ class SplashingScreenActivity : AppCompatActivity() {
     }
 
     fun checkUser(ToPerform: () -> Unit) {
-        if(FirebaseUtils.firebaseUser != null) {
-            FirebaseUtils.usersCollectionRef
-                .document(FirebaseUtils.firebaseUser.uid)
-                .get()
-                .addOnSuccessListener { doc ->
-                    if (doc != null) {
-                        userType = (doc.data?.get(Constants.USER_TYPE) as Long).toInt()
-                        if (userType != -1)
-                            ToPerform()
+        if(currentUser != null) {
+            currentUser.uid.let {
+                FirebaseUtils.usersCollectionRef
+                    .document(it)
+                    .get()
+                    .addOnSuccessListener { doc ->
+                        if (doc != null) {
+                            userType = (doc.data?.get(Constants.USER_TYPE) as Long).toInt()
+                            if (userType != -1)
+                                ToPerform()
+                        }
                     }
-                }
-                .addOnFailureListener { exception ->
-                    Log.d("LoginActivity", "Requested Items data read failed with", exception)
-                }
+                    .addOnFailureListener { exception ->
+                        Log.d("LoginActivity", "Requested Items data read failed with", exception)
+                    }
+            }
         }
        if(FirebaseUtils.firebaseUser == null){
             val intent = Intent(this, LoginActivity::class.java)
@@ -52,7 +56,7 @@ class SplashingScreenActivity : AppCompatActivity() {
 
     fun goToNextActivity() {
         if (userType == 0) {
-            val intent = Intent(applicationContext, CustomerActivity::class.java)
+            val intent = Intent(applicationContext, CustomerMainActivity::class.java)
             startActivity(intent)
             finish()
         } else if (userType == 1) {

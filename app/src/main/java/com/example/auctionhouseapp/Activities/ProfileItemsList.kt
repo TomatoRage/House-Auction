@@ -36,6 +36,7 @@ class ProfileItemsList : AppCompatActivity() {
         }
     }
 
+
     fun afterItemsFetch() {
         var customerProfileItemsListFragmentList = CustomerProfileItemsListFragment()
         supportFragmentManager.beginTransaction().apply {
@@ -50,4 +51,5 @@ class ProfileItemsList : AppCompatActivity() {
             commit()
         }
     }
+
 }

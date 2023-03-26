@@ -35,8 +35,8 @@ class CustomerMainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_main)
-        customerName = intent.getStringExtra("User Name") as String
-        customerEmail = intent.getStringExtra("User Email")  as String
+        //customerName = intent.getStringExtra("User Name") as String
+        //customerEmail = intent.getStringExtra("User Email")  as String
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.customerMainContainer) as NavHostFragment
         navController = navHostFragment.navController
@@ -44,8 +44,8 @@ class CustomerMainActivity : AppCompatActivity() {
         bottomNavigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.customerProfile -> {
-                    customerProfile.customerName = customerName
-                    customerProfile.customerEmail = customerEmail
+                    //customerProfile.customerName = customerName
+                    //customerProfile.customerEmail = customerEmail
                     replaceFragment(customerProfile)
                 }
                 R.id.auctionHousesListFragment -> {
@@ -85,7 +85,6 @@ class CustomerMainActivity : AppCompatActivity() {
                     }
                     if (documents.isEmpty) {
                         PerformAfterDataFetch()
-
                     }
                 } else {
                     Log.i("CustomerActivity", "-E- while fetching auction houses")

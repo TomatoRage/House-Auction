@@ -18,7 +18,7 @@ open class User : Serializable {
     protected lateinit var PhoneNumber:String
     protected lateinit var Location:String
     protected lateinit var UserID:String
-    protected var UserCash = 0
+    protected var UserCash:Int = 0
 
 
     constructor(Data: MutableMap<String,Any>?){

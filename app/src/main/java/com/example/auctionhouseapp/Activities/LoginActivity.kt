@@ -60,8 +60,6 @@ class LoginActivity : AppCompatActivity() {
         emailError = findViewById(R.id.emailError)
         passwordError = findViewById(R.id.passwordError)
 
-
-
         textAutoCheck()
 
         loadingDialog = loadingDialog(this)
@@ -264,15 +262,15 @@ class LoginActivity : AppCompatActivity() {
 //        }
         if(type == 0) {
             val intent = Intent(applicationContext,CustomerMainActivity::class.java)
-            intent.putExtra("User Name", name)
-            intent.putExtra("User Email", emailEt.text.toString())
+            //intent.putExtra("User Name", name)
+            //intent.putExtra("User Email", emailEt.text.toString())
             dialog.dismiss()
             startActivity(intent)
             finish()
         } else if (type == 1) {
             val intent = Intent(applicationContext,HouseActivity::class.java)
-            intent.putExtra("User Name", name)
-            intent.putExtra("User Email", emailEt.text.toString())
+            //intent.putExtra("User Name", name)
+            //intent.putExtra("User Email", emailEt.text.toString())
             dialog.dismiss()
             startActivity(intent)
             finish()

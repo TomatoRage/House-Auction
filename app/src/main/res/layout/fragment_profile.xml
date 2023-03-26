@@ -141,7 +141,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/metropolis_regular"
-                        android:text="My Auctioned Items"
+                        android:text="Auctioned Items"
                         android:textColor="@color/mainText"
                         android:textSize="16sp" />
 
@@ -192,7 +192,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/metropolis_regular"
-                        android:text="My Bidded Items"
+                        android:text="Earned Items"
                         android:textColor="@color/mainText"
                         android:textSize="16sp" />
 
@@ -244,7 +244,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/metropolis_regular"
-                        android:text="My Total Cash"
+                        android:text="Total Cash"
                         android:textColor="@color/mainText"
                         android:textSize="16sp" />
 
@@ -275,7 +275,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="10dp"
-                    android:fontFamily="@font/metropolis_regular"
+                    android:fontFamily="@font/fog"
                     android:text="100"
                     android:textColor="@color/mainText"
                     android:textSize="19sp" />

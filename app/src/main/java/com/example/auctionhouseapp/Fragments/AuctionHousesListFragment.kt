@@ -41,6 +41,7 @@ class AuctionHousesListFragment : Fragment() {
             val House = HousesList[position]
             intent.putExtra("House",House)
             startActivity(intent)
+            Context.finish()
         }
         return view
     }

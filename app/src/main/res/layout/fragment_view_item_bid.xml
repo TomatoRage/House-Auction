@@ -12,12 +12,13 @@
         android:id="@+id/viewKonfetti"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         app:layout_constraintTop_toTopOf="@+id/viewKonfetti"
-        android:orientation="vertical">
+        tools:layout_editor_absoluteX="0dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
@@ -68,8 +69,8 @@
                     android:id="@+id/item_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
                     android:layout_alignParentBottom="true"
+                    android:layout_gravity="bottom"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="2dp"
@@ -119,11 +120,43 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_marginTop="10dp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginTop="3dp"
+                android:text="Starting Price:"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold|normal"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/txt_starting_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/orange"
+                android:textSize="20sp"
+                android:textStyle="bold|normal"
+                tools:ignore="HardcodedText" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txt_remaining_time"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_marginTop="3dp"
@@ -134,15 +167,14 @@
                 tools:ignore="HardcodedText" />
 
             <TextView
-                android:id="@+id/txt_remaining_time"
+                android:id="@+id/txt_remaining_time_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="2dp"
-                android:text="60s"
-                android:textStyle="bold|normal"
                 android:textColor="@color/red"
                 android:textSize="20sp"
+                android:textStyle="bold|normal"
                 tools:ignore="HardcodedText" />
 
 
@@ -151,11 +183,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_marginTop="6dp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/txt_last_bid"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_marginTop="3dp"
@@ -166,15 +199,14 @@
                 tools:ignore="HardcodedText" />
 
             <TextView
-                android:id="@+id/txt_last_bid"
+                android:id="@+id/txt_last_bid_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="2dp"
-                android:text="3500"
-                android:textStyle="bold|normal"
                 android:textColor="@color/green"
                 android:textSize="20sp"
+                android:textStyle="bold|normal"
                 tools:ignore="HardcodedText" />
 
 
@@ -193,23 +225,23 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="5dp"
                 android:layout_weight="2"
-                android:textSize="18sp"
-                android:inputType = "phone"
                 android:background="@drawable/stroke_box"
-                android:padding="8dp" />
+                android:inputType="phone"
+                android:padding="8dp"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <Button
             android:id="@+id/btn_bid"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:text="Bid"
             android:layout_gravity="center"
+            android:layout_marginTop="5dp"
             android:backgroundTint="@color/tomato"
-            android:layout_marginTop="45dp"
-            android:textStyle="bold|normal"
+            android:text="Bid"
             android:textColor="@color/white"
-            android:textSize="18sp">
+            android:textSize="18sp"
+            android:textStyle="bold|normal">
 
         </Button>
     </LinearLayout>

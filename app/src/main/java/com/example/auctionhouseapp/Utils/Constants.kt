@@ -37,6 +37,7 @@ object Constants{
     const val DAY_COMMISSION:String                 = "Commission" // Auction House Commission on Auction Day
     const val DAY_LOCK_TIME:String                  = "Lock Time" // Hours Num To Close Participation in Auction
     const val DAY_NUM_OF_PARTICIPANTS:String        = "Participants" // No' Of Already Participated Customers
+    const val DAY_ID:String                         = "Day ID" // Day Identifier
     const val DAY_NUM_OF_SOLD:String                = "Sold Items" // No' of sold items so far
     const val REQUESTED_ITEMS:String                = "Requested Items"// Collection Contains Requested Items per Day
     const val LISTED_ITEMS:String                   = "Listed Items" // Collection Contains Accepted Items per Day

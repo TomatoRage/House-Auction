@@ -23,11 +23,13 @@ class HouseInformationActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn_upcoming_sales).setOnClickListener {
             val intent = Intent(applicationContext, CustomerDaysListActivity::class.java)
-            intent.putExtra("House",House)
+            intent.putExtra("HouseId",House.GetUID())
             startActivity(intent)
         }
 
         findViewById<TextView>(R.id.txt_back).setOnClickListener {
+            val intent = Intent(applicationContext, CustomerMainActivity::class.java)
+            startActivity(intent)
             finish()
         }
 

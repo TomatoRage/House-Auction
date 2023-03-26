@@ -62,8 +62,8 @@ class HouseItemsList : Fragment() {
             intent.putExtra("DayID", Day.DocumentID)
             intent.putExtra("SalesDate", Day.PrintDate())
             intent.putExtra("StartTime", Day.PrintStartTime())
-            val userType = UserType.AuctionHouse
-            intent.putExtra("Type", 1)
+            val userType = UserType.AuctionHouse.ordinal
+            intent.putExtra("Type", userType)
             startActivity(intent)
         }
 

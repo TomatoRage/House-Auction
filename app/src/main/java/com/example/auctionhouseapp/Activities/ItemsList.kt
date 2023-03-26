@@ -1,32 +1,30 @@
 package com.example.auctionhouseapp.Activities
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import com.example.auctionhouseapp.R
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.core.view.isVisible
 import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.Fragments.AuctionDaysSpinner
-import com.example.auctionhouseapp.Fragments.AuctionHousesListFragment
 import com.example.auctionhouseapp.Fragments.CustomerItemsListFragment
 import com.example.auctionhouseapp.Fragments.HouseItemsList
+import com.example.auctionhouseapp.Objects.AuctionHouse
 import com.example.auctionhouseapp.Objects.ImagesSharedPref
 import com.example.auctionhouseapp.UserType
-import com.example.auctionhouseapp.Utils.Extensions.toast
+import com.example.auctionhouseapp.Utils.Constants
+import com.example.auctionhouseapp.Utils.FirebaseUtils
 
 
 class ItemsList : AppCompatActivity() {
 
     var isRequestedList = false
-    lateinit var userType:UserType
     lateinit var Day:AuctionDays
-    lateinit var HouseID:String
+    lateinit var userType:UserType
+    lateinit var DayId:String
+    lateinit var HouseId:String
     val LoadingFragment = AuctionDaysSpinner()
     lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
@@ -34,49 +32,51 @@ class ItemsList : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_items_list)
-        ImagesSharedPref.decodeImages()
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentContainerView3, LoadingFragment)
             commit()
         }
 
         userType = UserType.getByValue(intent.getIntExtra("Type",0))
-        Day = intent.getSerializableExtra("Day") as AuctionDays
-        HouseID = intent.getStringExtra("House ID")!!
+        DayId = intent.getStringExtra("DayId") as String
+        HouseId = intent.getStringExtra("HouseId") as String
 
-        if(userType == UserType.AuctionHouse) {
-            isRequestedList = intent.getBooleanExtra("ListType",false)
-            if (isRequestedList)
-                Day.FetchRequestedItems(HouseID, ::AfterDataFetch)
-            else
-                Day.FetchListedItems(HouseID, ::AfterDataFetch)
+        FirebaseUtils.houseCollectionRef.document(HouseId)
+            .collection(Constants.SALES_DAY_COLLECTION)
+            .document(DayId)
+            .get()
+            .addOnSuccessListener {
+                Day = AuctionDays(it.data)
+                afterDayFetched()
+            }.addOnFailureListener {
+                Log.i("ItemsList.kt", "Failed while fetching day $DayId")
+            }
 
-
-        } else {
-            Day.FetchListedItems(HouseID, ::AfterDataFetch)
-        }
 
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentContainerView3,LoadingFragment)
             commit()
         }
-//        resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//            if (result.resultCode == Activity.RESULT_OK) {
-//                supportFragmentManager.beginTransaction().apply {
-//                    replace(R.id.fragmentContainerView3,LoadingFragment)
-//                    commit()
-//                }
-//            }
-//        }
 
     }
 
+    fun afterDayFetched() {
+        if(userType == UserType.AuctionHouse) {
+            isRequestedList = intent.getBooleanExtra("ListType",false)
+            if (isRequestedList)
+                Day.FetchRequestedItems(HouseId, ::AfterDataFetch)
+            else
+                Day.FetchListedItems(HouseId, ::AfterDataFetch)
+
+
+        } else {
+            Day.FetchListedItems(HouseId, ::AfterDataFetch)
+        }
+    }
 
     override fun onDestroy() {
         super.onDestroy()
     }
-
-
 
     fun AfterDataFetch(){
 
@@ -86,7 +86,7 @@ class ItemsList : AppCompatActivity() {
         if(userType == UserType.Customer){
             val CustomerList = CustomerItemsListFragment()
             CustomerList.day = Day
-            CustomerList.HouseId = HouseID
+            CustomerList.HouseId = HouseId
             supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fragmentContainerView3, CustomerList)
                 commit()

@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import com.example.auctionhouseapp.AuctionDayStatus
 import com.example.auctionhouseapp.Fragments.AuctionDaysSpinner
 import com.example.auctionhouseapp.Fragments.CustomerDaysListFragment
 import com.example.auctionhouseapp.Objects.AuctionHouse
@@ -12,14 +13,15 @@ import com.google.firebase.auth.FirebaseAuth
 
 
 class CustomerDaysListActivity : AppCompatActivity() {
-    lateinit var House: AuctionHouse
+    var House: AuctionHouse = AuctionHouse()
+    lateinit var HouseId: String
     val LoadingFragment = AuctionDaysSpinner()
     val List = CustomerDaysListFragment()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_days_list)
-        House = intent.getSerializableExtra("House") as AuctionHouse
-        House.FetchHouseDays(House.GetUID(), ::setHouseDaysOnScreen)
+        HouseId = intent.getStringExtra("HouseId") as String
+        House.FetchHouseDays(HouseId, ::setHouseDaysOnScreen)
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentContainerViewAuctionDays,LoadingFragment)
             commit()
@@ -36,12 +38,18 @@ class CustomerDaysListActivity : AppCompatActivity() {
             finish()
         }
     }
+
     fun setHouseDaysOnScreen() {
-        List.House = House
+        var auctionHouse = AuctionHouse()
+        auctionHouse.SetID(HouseId)
+        House.Days.forEach {
+            if (!it.Status.equals(AuctionDayStatus.Occurred))
+                auctionHouse.Days.add(it)
+        }
+        List.House = auctionHouse
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentContainerViewAuctionDays,List)
             commit()
         }
-
     }
 }

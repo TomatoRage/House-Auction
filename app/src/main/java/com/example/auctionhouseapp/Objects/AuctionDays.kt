@@ -68,6 +68,7 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
         Commission = Data[Constants.DAY_COMMISSION] as Double
         LockBefore = (Data[Constants.DAY_LOCK_TIME] as Long).toInt()
         ParticipantsNum = (Data[Constants.DAY_NUM_OF_PARTICIPANTS] as Long).toInt()
+        DocumentID = Data[Constants.DAY_ID] as String
         for(itemId in Data[Constants.REQUESTED_ITEMS] as ArrayList<String>) {
             val item = Item(itemId)
             RequestedItems.add(item)
@@ -127,10 +128,12 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
         val Today = Timestamp(Date())
 
         /**Store Day Data**/
+        val day_id = FirebaseUtils.houseCollectionRef.document()
+            .id
         FirebaseUtils.houseCollectionRef
             .document(HouseID)
             .collection(Constants.SALES_DAY_COLLECTION)
-            .document()
+            .document(day_id)
             .set(
                 mapOf(
                     Constants.DAY_NAME to Title,
@@ -139,6 +142,7 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
                     Constants.DAY_LOCK_TIME to LockBefore,
                     Constants.DAY_NUM_OF_PARTICIPANTS to ParticipantsNum,
                     Constants.DAY_NUM_OF_SOLD to NumOfSoldItems,
+                    Constants.DAY_ID to day_id,
                     Constants.LISTED_ITEMS to ListedItems,
                     Constants.REQUESTED_ITEMS to RequestedItems
                 )

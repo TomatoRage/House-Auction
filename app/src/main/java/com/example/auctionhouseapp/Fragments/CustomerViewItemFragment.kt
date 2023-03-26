@@ -29,6 +29,7 @@ class CustomerViewItemFragment : Fragment() {
     lateinit var PrevBtn: ImageButton
     private var position = 0
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

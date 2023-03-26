@@ -37,6 +37,7 @@
             android:layout_height="40dp"
             android:textSize="15sp"
             android:text = "Sign Out"
+            android:textStyle="bold"
             app:tint="@color/mainText"
             />
 
@@ -54,13 +55,14 @@
         android:id="@+id/txt_auction_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="5dp"
         android:fontFamily="@font/metropolis_regular"
         android:text="Item Details"
         android:textColor="@color/mainText"
         android:textSize="25sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -76,8 +78,10 @@
             android:id="@+id/img_item"
             android:background = "@drawable/round_outline"
             android:layout_width="match_parent"
-            android:layout_height="265dp"
+            android:layout_height="285dp"
             android:clipToOutline="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             android:scaleType="centerCrop"/>
 
         <LinearLayout
@@ -89,12 +93,14 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="140dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
                 android:fontFamily="@font/metropolis_regular"
                 android:text="Item Name: "
+                android:textStyle="bold"
                 android:textColor="@color/mainText"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/txt_item_name"
@@ -103,6 +109,7 @@
                 android:layout_marginStart="20dp"
                 android:fontFamily="@font/metropolis_regular"
                 android:textColor="@color/blue"
+                android:textStyle="bold"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -115,12 +122,14 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="140dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/metropolis_regular"
+                android:layout_marginStart="5dp"
                 android:text="Item Description: "
+                android:textStyle="bold"
                 android:textColor="@color/mainText"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/txt_item_description"
@@ -129,6 +138,7 @@
                 android:layout_marginStart="20dp"
                 android:fontFamily="@font/metropolis_regular"
                 android:textColor="@color/blue"
+                android:textStyle="bold"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -141,12 +151,14 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="140dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/metropolis_regular"
                 android:text="Item Start Price: "
+                android:layout_marginStart="5dp"
+                android:textStyle="bold"
                 android:textColor="@color/mainText"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/txt_start_price"
@@ -155,6 +167,7 @@
                 android:layout_marginStart="20dp"
                 android:fontFamily="@font/metropolis_regular"
                 android:textColor="@color/blue"
+                android:textStyle="bold"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -167,12 +180,14 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="140dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/metropolis_regular"
                 android:text="Item Status: "
+                android:textStyle="bold"
+                android:layout_marginStart="5dp"
                 android:textColor="@color/mainText"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/txt_item_status"
@@ -181,6 +196,7 @@
                 android:layout_marginStart="20dp"
                 android:fontFamily="@font/metropolis_regular"
                 android:textColor="@color/blue"
+                android:textStyle="bold"
                 android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>

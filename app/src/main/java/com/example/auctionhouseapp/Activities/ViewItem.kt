@@ -4,6 +4,7 @@ import com.example.auctionhouseapp.R
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,7 @@ import com.example.auctionhouseapp.Fragments.CustomerViewItemFragment
 import com.example.auctionhouseapp.Fragments.ItemViewBidFragment
 import com.example.auctionhouseapp.Objects.Item
 import com.example.auctionhouseapp.UserType
+import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
@@ -30,6 +32,7 @@ class ViewItem : AppCompatActivity() {
     private var isRequestedList = false
     private lateinit var HouseId: String
     private lateinit var DayId: String
+    private var Commission:Double = 0.1
     val LoadingFragment = AuctionDaysSpinner()
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -40,13 +43,25 @@ class ViewItem : AppCompatActivity() {
 
 
         item = intent.getSerializableExtra("Item") as Item
-        userType = UserType.getByValue(intent.getIntExtra("Type", 0))
+        userType = UserType.getByValue(intent.getIntExtra("Type",0))
         SalesDate = intent.getStringExtra("SalesDate")!!
         StartTime = intent.getStringExtra("StartTime")!!
         HouseId = intent.getStringExtra("HouseID")!!
         DayId = intent.getStringExtra("DayID")!!
+        Commission = intent.getDoubleExtra("Commission",Commission)
         isRequestedList = intent.getBooleanExtra("ListType", false)
 
+
+        FirebaseUtils.itemsCollectionRef
+            .document(item._id)
+            .get()
+            .addOnSuccessListener {
+                val fetchedItem = Item(it.data)
+                item._last_bid_time = fetchedItem._last_bid_time
+                viewItemFragment()
+            } .addOnFailureListener {
+                Log.i("ViewItem.kt","Warning !! Failed to fetch updated time of the last bid")
+            }
 
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.fragmentContainerViewItemInfo, LoadingFragment)
@@ -66,7 +81,9 @@ class ViewItem : AppCompatActivity() {
 
         if(supportFragmentManager.isDestroyed)
             return
+    }
 
+    private fun viewItemFragment() {
         if(userType == UserType.Customer) {
             val date = SalesDate.split("/")
             val clock = StartTime.split(":")
@@ -92,6 +109,10 @@ class ViewItem : AppCompatActivity() {
             } else {
                 val itemInfo = ItemViewBidFragment()
                 itemInfo.item = item
+                itemInfo.Commission = Commission
+                itemInfo.HouseId = HouseId
+                itemInfo.DayId = DayId
+                itemInfo.userType = userType
                 supportFragmentManager.beginTransaction().apply {
                     replace(R.id.fragmentContainerViewItemInfo, itemInfo)
                     commit()

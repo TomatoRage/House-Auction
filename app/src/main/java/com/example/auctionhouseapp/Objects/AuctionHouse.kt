@@ -80,6 +80,26 @@ class AuctionHouse: User , Serializable {
         FetchHouseDays(UserID,ToPerform,true)
     }
 
+    fun FetchHouseDay(HouseId:String,DayId:String,ToPerform: () -> Unit) {
+        FirebaseUtils.houseCollectionRef.document(UserID)
+            .collection(Constants.SALES_DAY_COLLECTION)
+            .document(DayId)
+            .get()
+            .addOnSuccessListener {
+                val Day = AuctionDays(it.data)
+                Days.forEach {
+                    if (it.DocumentID.equals(DayId)) {
+                        Days.remove(it)
+                        Days.add(Day)
+                    } else {
+                        Days.add(Day)
+                    }
+                }
+            }.addOnFailureListener {
+                Log.i(TAG, "Failed while fetching day $DayId")
+            }
+
+    }
     private fun SetupHouseData(Data:MutableMap<String,Any>?){
         if(Data == null)
             return

@@ -72,8 +72,8 @@ class Customer: User {
                                     Log.d("Customer.kt", "Items data read failed with", exception)
                                 }
                         }
-                    }
-                } else {ToPerform()}
+                    } else {ToPerform()}
+                }
             }.addOnFailureListener { exception ->
                 Log.d("Customer", "user data read failed with", exception)
             }

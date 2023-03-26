@@ -69,7 +69,6 @@ class SignUpActivity : AppCompatActivity() {
             }
         }
 
-
         progressDialog = ProgressDialog(this)
 
         textAutoCheck()
