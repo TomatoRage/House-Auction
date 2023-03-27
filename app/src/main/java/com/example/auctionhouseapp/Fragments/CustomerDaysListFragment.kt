@@ -48,6 +48,7 @@ class CustomerDaysListFragment : Fragment() {
             val userType = UserType.Customer.ordinal
             intent.putExtra("Type", userType)
             startActivity(intent)
+            Context.finish()
         }
 
         view.findViewById<SwipeRefreshLayout>(R.id.swiperefresh).setOnRefreshListener {

@@ -46,19 +46,21 @@ class ViewDay : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn_listed_items).setOnClickListener {
             val intent = Intent(applicationContext, ItemsList::class.java)
-            intent.putExtra("Type",UserType.AuctionHouse.Type)
-            intent.putExtra("Day",Day)
-            intent.putExtra("House ID",FirebaseAuth.getInstance().currentUser!!.uid)
+            intent.putExtra("Type",UserType.AuctionHouse.ordinal)
+            intent.putExtra("DayId",Day.DocumentID)
+            intent.putExtra("HouseId",FirebaseAuth.getInstance().currentUser!!.uid)
             intent.putExtra("ListType",false)
             startActivity(intent)
+            finish()
         }
         findViewById<Button>(R.id.btn_requested_items).setOnClickListener {
             val intent = Intent(applicationContext, ItemsList::class.java)
-            intent.putExtra("Type",UserType.AuctionHouse.Type)
-            intent.putExtra("Day",Day)
-            intent.putExtra("House ID",FirebaseAuth.getInstance().currentUser!!.uid)
+            intent.putExtra("Type",UserType.AuctionHouse.ordinal)
+            intent.putExtra("DayId",Day.DocumentID)
+            intent.putExtra("HouseId",FirebaseAuth.getInstance().currentUser!!.uid)
             intent.putExtra("ListType",true)
             startActivity(intent)
+            finish()
         }
         findViewById<Button>(R.id.btn_delete_day).setOnClickListener {
             DeleteDay()

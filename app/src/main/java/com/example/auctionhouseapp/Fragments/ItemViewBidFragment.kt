@@ -52,13 +52,14 @@ class ItemViewBidFragment : Fragment() {
     private var position = 0
     var Commission:Double = 0.1
     private  lateinit var viewModel: ItemViewModel
-    var MaxBid:Int = 0
-    val currentCustomer = FirebaseAuth.getInstance().uid.toString()
-    var START_MILLI_SECONDS = 60000L
-    lateinit var countdown_timer: CountDownTimer
-    var time_in_milli_seconds = 0L
-    var isCustomerInvolvedInAuction:Boolean = false
-    val bidPattern = """\d+"""
+    private var MaxBid:Int = 0
+    private val currentCustomer = FirebaseAuth.getInstance().uid.toString()
+    private var START_MILLI_SECONDS = 60000L
+    private lateinit var countdown_timer: CountDownTimer
+    private var time_in_milli_seconds = 0L
+    private var isCustomerInvolvedInAuction:Boolean = false
+    private val bidPattern = """\d+"""
+    private var winnerName:String = "Lucky One"
 
 
 
@@ -80,13 +81,20 @@ class ItemViewBidFragment : Fragment() {
         RemainingTimeText = view.findViewById<TextView>(R.id.txt_remaining_time)
         StartingPrice = view.findViewById<TextView>(R.id.txt_starting_price)
         val backBtn = activity?.findViewById<TextView>(R.id.txt_back)
+
+        // Hide Bidding ability for Auction House User
+        if (userType.equals(UserType.AuctionHouse)) {
+            BidBtn.isVisible = false
+            EditBid.isVisible = false
+        }
+
         if (backBtn != null) {
             backBtn.setOnClickListener {
                     intent = Intent(context, ItemsList::class.java)
                     intent.putExtra("DayId",DayId)
                     intent.putExtra("HouseId", HouseId)
                     intent.putExtra("Type", userType.ordinal)
-                if (item._status.equals("Sold")) {
+                if (item._status.equals("Sold") && userType.equals(UserType.Customer)) {
                     Toast.makeText(context, "Removing Item..", Toast.LENGTH_SHORT).show()
                     item.RemoveFromHouseList(
                         Constants.LISTED_ITEMS,
@@ -152,11 +160,17 @@ class ItemViewBidFragment : Fragment() {
                         loadConfeti()
                         transferCash()
                         updateItemStatus()
+                        item.StoreDataInCustomer(Constants.BIDDED_ITEMS, item._id, currentCustomer)
                     } else {
                         BidBtn.isVisible = false
                         EditBid.isVisible = false
                         RemainingTime.isVisible = false
-                        RemainingTimeText.text = "Sorry! You Lose The Auction"
+                        if (userType.equals(UserType.Customer))
+                            RemainingTimeText.text = "Sorry! You Lose The Auction"
+                        else {
+                            RemainingTimeText.text = "Item Sold"
+                            RemainingTimeText.setTextColor(Color.GREEN)
+                        }
                     }
                 }
 
@@ -261,6 +275,18 @@ class ItemViewBidFragment : Fragment() {
     private fun goToItemsList() {
         startActivity(intent)
         activity?.finish()
+    }
+    private fun getWinnerName(winnerId:String) {
+        FirebaseUtils.customerCollectionRef
+            .document(winnerId)
+            .get()
+            .addOnSuccessListener {
+                val customer = Customer(it.data)
+                winnerName = customer.GetName()
+            }
+            .addOnFailureListener {
+                Log.i("ItemViewBidFragment.kt", "Failed to update winner name")
+            }
     }
 
     private fun transferCash() {

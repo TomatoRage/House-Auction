@@ -33,6 +33,7 @@ class ViewItem : AppCompatActivity() {
     private lateinit var HouseId: String
     private lateinit var DayId: String
     private var Commission:Double = 0.1
+    private lateinit var AuctionDate:Date
     val LoadingFragment = AuctionDaysSpinner()
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -51,6 +52,16 @@ class ViewItem : AppCompatActivity() {
         Commission = intent.getDoubleExtra("Commission",Commission)
         isRequestedList = intent.getBooleanExtra("ListType", false)
 
+
+        val date = SalesDate.split("/")
+        val clock = StartTime.split(":")
+        val AuctionTime:Calendar = Calendar.getInstance()
+        AuctionTime.set(Calendar.YEAR, date.get(2).toInt())
+        AuctionTime.set(Calendar.MONTH, date.get(1).toInt()-1)
+        AuctionTime.set(Calendar.DAY_OF_MONTH, date.get(0).toInt())
+        AuctionTime.set(Calendar.HOUR_OF_DAY, clock.get(0).toInt())
+        AuctionTime.set(Calendar.MINUTE, clock.get(1).toInt())
+        AuctionDate = AuctionTime.time
 
         FirebaseUtils.itemsCollectionRef
             .document(item._id)
@@ -84,20 +95,9 @@ class ViewItem : AppCompatActivity() {
     }
 
     private fun viewItemFragment() {
-        if(userType == UserType.Customer) {
-            val date = SalesDate.split("/")
-            val clock = StartTime.split(":")
-            val TimeNow = Timestamp(Date()).toDate()
-
-            val AuctionTime:Calendar = Calendar.getInstance()
-            AuctionTime.set(Calendar.YEAR, date.get(2).toInt())
-            AuctionTime.set(Calendar.MONTH, date.get(1).toInt()-1)
-            AuctionTime.set(Calendar.DAY_OF_MONTH, date.get(0).toInt())
-            AuctionTime.set(Calendar.HOUR_OF_DAY, clock.get(0).toInt())
-            AuctionTime.set(Calendar.MINUTE, clock.get(1).toInt())
-            val AuctionDate:Date = AuctionTime.time
-
-            if(AuctionDate.after(TimeNow)) {
+        val TimeNow = Timestamp(Date()).toDate()
+        if(AuctionDate.after(TimeNow)) {
+            if (userType == UserType.Customer) {
                 val itemInfo = CustomerViewItemFragment()
                 itemInfo.item = item
                 itemInfo.SalesDate = SalesDate
@@ -107,30 +107,31 @@ class ViewItem : AppCompatActivity() {
                     commit()
                 }
             } else {
-                val itemInfo = ItemViewBidFragment()
+                val itemInfo = AuctionHouseViewItemFragment()
                 itemInfo.item = item
-                itemInfo.Commission = Commission
+                itemInfo.SalesDate = SalesDate
+                itemInfo.StartTime = StartTime
                 itemInfo.HouseId = HouseId
                 itemInfo.DayId = DayId
-                itemInfo.userType = userType
+                itemInfo.isRequestedList = isRequestedList
                 supportFragmentManager.beginTransaction().apply {
                     replace(R.id.fragmentContainerViewItemInfo, itemInfo)
                     commit()
                 }
-            }
 
+            }
         } else {
-            val itemInfo = AuctionHouseViewItemFragment()
+            val itemInfo = ItemViewBidFragment()
             itemInfo.item = item
-            itemInfo.SalesDate = SalesDate
-            itemInfo.StartTime = StartTime
+            itemInfo.Commission = Commission
             itemInfo.HouseId = HouseId
             itemInfo.DayId = DayId
-            itemInfo.isRequestedList = isRequestedList
+            itemInfo.userType = userType
             supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fragmentContainerViewItemInfo, itemInfo)
                 commit()
             }
         }
+
     }
 }

@@ -26,7 +26,6 @@ class ItemsList : AppCompatActivity() {
     lateinit var DayId:String
     lateinit var HouseId:String
     val LoadingFragment = AuctionDaysSpinner()
-    lateinit var resultLauncher: ActivityResultLauncher<Intent>
 
     @RequiresApi(33)
     override fun onCreate(savedInstanceState: Bundle?) {

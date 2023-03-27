@@ -208,6 +208,10 @@ fun FetchRequestedItems(HouseID: String, ToPerform: () -> Unit) {
         val oldRequestedItems: ArrayList<Item> = ArrayList(RequestedItems)
         val numOfRequestedItems = RequestedItems.size
         RequestedItems.clear()
+        //In Case Auction House Did Not Approve Item Till Auction Time:
+        updateStatus()
+        if (!this.Status.equals(AuctionDayStatus.Pending))
+            ToPerform()
         for (item in oldRequestedItems) {
             FirebaseUtils.itemsCollectionRef
                 .document(item._id)

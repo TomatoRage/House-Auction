@@ -18,9 +18,6 @@ class Customer: User {
     var isReadCustomerAuctionedItemsData = false
     var isReadCustomerBiddedItemsData = false
 
-    var auctionedImagesFetched = 0
-    var biddedImagesFetched = 0
-
     constructor(Data:MutableMap<String,Any>?){
         SetUserData(Data)
         SetType(UserType.Customer)
@@ -85,23 +82,6 @@ class Customer: User {
             ToPerform()
         }
     }
-        //FetchAuctiondImages(ToPerform)
-
-
-
-//    fun FetchAuctiondImages(ToPerform: () -> Unit) {
-//        for (item in auctionedItems) {
-        //item.FetchImages(1, ::checkAllAuctionedImagesFetched, ToPerform)
-//        }
-//    }
-
-//    fun checkAllAuctionedImagesFetched(ToPerform: () -> Unit) {
-//        auctionedImagesFetched++
-//        if (auctionedImagesFetched == auctionedItems.size) {
-//            ToPerform()
-//        }
-//    }
-
 
     fun fetchCustomerBiddedItems(UserID:String, ToPerform:()->Unit) {
 
@@ -141,21 +121,5 @@ class Customer: User {
             //FetchBiddedImages(ToPerform)
         }
     }
-
-//    @RequiresApi(Build.VERSION_CODES.O)
-//    fun FetchBiddedImages(ToPerform: () -> Unit) {
-//        for (item in biddedItems) {
-//            item.FetchImages(1, ::checkAllBiddedImagesFetched, ToPerform)
-//        }
-//    }
-//
-//    fun checkAllBiddedImagesFetched(ToPerform: () -> Unit) {
-//        biddedImagesFetched++
-//        if (biddedImagesFetched == biddedItems.size) {
-//            ToPerform()
-//        }
-//    }
-
-
 
 }

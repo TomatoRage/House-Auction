@@ -65,6 +65,7 @@ class HouseItemsList : Fragment() {
             val userType = UserType.AuctionHouse.ordinal
             intent.putExtra("Type", userType)
             startActivity(intent)
+            Context.finish()
         }
 
 
