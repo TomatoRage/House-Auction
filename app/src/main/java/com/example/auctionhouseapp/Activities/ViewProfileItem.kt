@@ -23,6 +23,9 @@ class ViewProfileItem : AppCompatActivity() {
     private lateinit var txt_item_description:TextView
     private lateinit var txt_item_start_price:TextView
     private lateinit var txt_item_status:TextView
+    private lateinit var txt_item_owner_tel:TextView
+    private lateinit var txt_item_winner_tel:TextView
+    private lateinit var txt_item_auction_house:TextView
     private lateinit var imageView: ImageView
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +38,9 @@ class ViewProfileItem : AppCompatActivity() {
         txt_item_description = findViewById<TextView>(R.id.txt_item_description)
         txt_item_start_price = findViewById<TextView>(R.id.txt_start_price)
         txt_item_status = findViewById<TextView>(R.id.txt_item_status)
+        txt_item_owner_tel = findViewById<TextView>(R.id.txt_owner_tel)
+        txt_item_winner_tel = findViewById<TextView>(R.id.txt_auction_winner_tel)
+        txt_item_auction_house = findViewById<TextView>(R.id.txt_item_auction_house)
 
         item = intent.getSerializableExtra("Item") as Item
         type = intent.getStringExtra("Items Type") as String
@@ -68,5 +74,8 @@ class ViewProfileItem : AppCompatActivity() {
         txt_item_description.setText(item._description)
         txt_item_start_price.setText(item._startingPrice.toString())
         txt_item_status.setText(item._status)
+        txt_item_owner_tel.setText(item._ownerPhoneNumber)
+        txt_item_winner_tel.setText(item._winnerPhoneNumber)
+        txt_item_auction_house.setText(item._auctionHouseName)
     }
 }

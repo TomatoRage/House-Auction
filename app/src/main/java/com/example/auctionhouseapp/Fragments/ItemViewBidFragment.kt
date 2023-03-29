@@ -159,7 +159,7 @@ class ItemViewBidFragment : Fragment() {
                         RemainingTimeText.setTextColor(Color.RED)
                         loadConfeti()
                         transferCash()
-                        updateItemStatus()
+                        updateItem()
                         item.StoreDataInCustomer(Constants.BIDDED_ITEMS, item._id, currentCustomer)
                     } else {
                         BidBtn.isVisible = false
@@ -258,16 +258,30 @@ class ItemViewBidFragment : Fragment() {
             .streamFor(300, 5000L)
     }
 
-    private fun updateItemStatus() {
-        FirebaseUtils.itemsCollectionRef
-            .document(item._id)
-            .update(Constants.ITEM_STATUS, "Sold")
+    private fun updateItem() {
+        FirebaseUtils.customerCollectionRef
+            .document(currentCustomer)
+            .get()
             .addOnSuccessListener {
-                Log.i("ItemViewBidFragment.kt", "update item status")
-            }
-            .addOnFailureListener {
-                Log.i("ItemViewBidFragment.kt", "Error! failed update item status")
-            }
+                val customer = Customer(it.data)
+                val customer_tel = customer.GetPhoneNumber()
+                FirebaseUtils.itemsCollectionRef
+                    .document(item._id)
+                    .update(
+                        mapOf(
+                            Constants.ITEM_STATUS to  "Sold",
+                            Constants.ITEM_WINNER_PHONE to customer_tel
+                        )
+                    )
+                    .addOnSuccessListener {
+                        Log.i("ItemViewBidFragment.kt", "update item status")
+                    }
+                    .addOnFailureListener {
+                        Log.i("ItemViewBidFragment.kt", "Error! failed update item status")
+                    }
+            } .addOnFailureListener {
+            Log.i("ItemViewBidFragment.kt", "Error! failed get customer tel")
+        }
         // update status locally also avoid any error when moving backwards
         item._status = "Sold"
     }

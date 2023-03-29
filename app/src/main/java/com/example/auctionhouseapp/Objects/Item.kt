@@ -20,8 +20,11 @@ class Item : Serializable {
      lateinit var _status:String
      var _startingPrice: Int = 0
      var _lastBidderId: String? = null
+    var _ownerPhoneNumber:String? = "Unknown"
+    var _winnerPhoneNumber:String? = "Unknown"
      var _lastBid:Int = 0
      var _last_bid_time: Date? = null
+
 
 
     constructor()
@@ -48,46 +51,13 @@ class Item : Serializable {
         _lastBidderId = Data[Constants.ITEM_LAST_BIDDER] as String?
         _lastBid = (Data[Constants.ITEM_LAST_BID_AMOUNT] as Long).toInt()
         _id = Data[Constants.ITEM_ID] as String
+        _ownerPhoneNumber = Data[Constants.ITEM_OWNER_PHONE] as String
+        _winnerPhoneNumber = Data[Constants.ITEM_WINNER_PHONE] as String
         _last_bid_time = (Data[Constants.ITEM_LAST_BID_TIME]as Timestamp).toDate()
         return
     }
 
-//    @RequiresApi(Build.VERSION_CODES.O)
-//    fun FetchImages(NumOfImages:Int, ToPerform1: KFunction1<() -> Unit, Unit>, ToPerform2: () -> Unit={}) {
-//
-//        var NumOfImagesRead:Int = 0
-//        val MaxImageSize:Long = 1080*1080 * 1000
-//        var NumToFetch:Int = NumOfImages
-//
-//
-//
-//        if(NumOfImages == -1)
-//            NumToFetch = imagesIDs.size
-//
-//        for(i in 0 until NumToFetch){
-//            if (ImagesSharedPref.contain(imagesIDs[i])) {
-//                ImagesSharedPref.fetchImage(imagesIDs[i])?.let { ImagesArray.add(it) }
-//                continue
-//            }
-//            FirebaseUtils.firebaseStore.reference
-//                .child(Constants.STORAGE_ITEM+imagesIDs[i])
-//                .getBytes(MaxImageSize)
-//                .addOnSuccessListener { Bytes ->
-//                    val Bitmap = BitmapFactory.decodeByteArray(Bytes,0,Bytes.size)
-//                    var Stream = ByteArrayOutputStream()
-//                    Bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG,100,Stream)
-//                    ImagesArray.add(Stream.toByteArray())
-//                    NumOfImagesRead +=1
-//                    if(NumOfImagesRead == NumToFetch)
-//                        ToPerform1(ToPerform2)
-//                }
-//                .addOnFailureListener { exception ->
-//                    Log.d("Item.kt", "Items Image failed with", exception)
-//                }
-//        }
-//    }
-
-    fun StoreData(items_list_type:String,HouseID:String, DayID:String, customerID:String, ToPerform:()->Unit={}){
+    fun StoreData(items_list_type:String,HouseID:String, DayID:String, customerID:String, ToPerform:()->Unit={}) {
         // 1 - Store item in Items Collection
         val Today = Timestamp(Date())
         /**Store Day Data**/
@@ -109,7 +79,8 @@ class Item : Serializable {
                 Constants.ITEM_URL_LIST to _imagesUrls,
                 Constants.ITEM_STATUS to _status,
                 Constants.ITEM_AUCTION_HOUSE to _auctionHouseName,
-
+                Constants.ITEM_OWNER_PHONE to _ownerPhoneNumber,
+                Constants.ITEM_WINNER_PHONE to _winnerPhoneNumber,
             )
         ) // 2 - Store item id in the given day of the given auction house
         .addOnSuccessListener {

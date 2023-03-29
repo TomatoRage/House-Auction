@@ -12,14 +12,17 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.*
 import androidx.core.content.ContextCompat
 import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.Objects.AuctionHouse
+import com.example.auctionhouseapp.Objects.Customer
 import com.example.auctionhouseapp.Objects.Item
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.Extensions.toast
+import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.example.auctionhouseapp.Utils.FirebaseUtils.firebaseStore
 import com.example.auctionhouseapp.Utils.FirebaseUtils.storageReference
 import com.example.auctionhouseapp.databinding.ActivityAuctionItemBinding
@@ -41,6 +44,7 @@ class AuctionItemActivity : AppCompatActivity() {
     lateinit var binding : ActivityAuctionItemBinding
     lateinit var NextBtn: ImageButton
     lateinit var PrevBtn: ImageButton
+    private var itemOwner:Customer = Customer()
     //init item
     var item = Item()
     var uploadedImages = 0
@@ -61,6 +65,7 @@ class AuctionItemActivity : AppCompatActivity() {
         ImagesUri = ArrayList()
         ImagesIDs = ArrayList()
         item._imagesUrls = arrayListOf()
+        fetchItemOwner()
         findViewById<Button>(R.id._btn_auction_item).setOnClickListener{
             checkInput()
         }
@@ -104,6 +109,19 @@ class AuctionItemActivity : AppCompatActivity() {
                 toast("No More Images...")
             }
         }
+    }
+
+    private fun fetchItemOwner() {
+        val itemOwnerId = FirebaseAuth.getInstance().uid.toString()
+        FirebaseUtils.customerCollectionRef
+            .document(itemOwnerId)
+            .get()
+            .addOnSuccessListener {
+                itemOwner = Customer(it.data)
+            }
+            .addOnFailureListener {
+                Log.i("ItemViewBidFragment.kt", "Failed to update winner name")
+            }
     }
 
     fun selectImage() {
@@ -297,6 +315,7 @@ class AuctionItemActivity : AppCompatActivity() {
         item._lastBidderId = null
         item._status = "Pending"
         item._auctionHouseName = house.GetName()
+        item._ownerPhoneNumber = itemOwner.GetPhoneNumber()
         item.StoreData(
             Constants.REQUESTED_ITEMS,
             house.GetUID(),

@@ -52,6 +52,8 @@ object Constants{
     const val ITEM_PHOTOS_LIST:String               = "Photos" // Array Of Photos IDs
     const val ITEM_ID:String                        = "ID" // ID Of Item
     const val ITEM_OWNER_ID:String                  = "Owner ID" // UserID Of Item Owner
+    const val ITEM_OWNER_PHONE:String               = "Owner Phone No" // Phone NO. Of The Owner
+    const val ITEM_WINNER_PHONE:String              = "Winner Phone No" // Phone NO. Of The Winner
     const val ITEM_LAST_BID_AMOUNT:String           = "Last Bid" // Last Amount Of Money Bidded
     const val ITEM_LAST_BIDDER:String               = "Last Bidder ID " // UserID Of The Last Bidder
     const val ITEM_NUM_IN_QUEUE:String              = "Pos In Queue" // Holds The No' Of Items Before Current Item
