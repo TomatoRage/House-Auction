@@ -96,7 +96,7 @@ class ViewItem : AppCompatActivity() {
 
     private fun viewItemFragment() {
         val TimeNow = Timestamp(Date()).toDate()
-        if(AuctionDate.after(TimeNow)) {
+        if(AuctionDate.after(TimeNow) || isRequestedList) {
             if (userType == UserType.Customer) {
                 val itemInfo = CustomerViewItemFragment()
                 itemInfo.item = item
