@@ -2,7 +2,6 @@ package com.example.auctionhouseapp.Fragments
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.example.auctionhouseapp.Activities.ItemsList
 import com.example.auctionhouseapp.Activities.ViewItem
@@ -25,6 +25,8 @@ class HouseItemsList : Fragment() {
     var Day:AuctionDays = AuctionDays()
     var isRequestedList:Boolean = false
     val HouseId = FirebaseAuth.getInstance().currentUser?.uid
+    lateinit var ListView:ListView
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +35,7 @@ class HouseItemsList : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_house_items_list, container, false)
         val Context = activity as ItemsList
-        val ListView = view.findViewById<ListView>(R.id.house_items_list)
+        ListView = view.findViewById<ListView>(R.id.house_items_list)
         if(!isRequestedList)
             view.findViewById<TextView>(R.id.textview_list_title).setText("Listed Items")
         else
@@ -68,8 +70,18 @@ class HouseItemsList : Fragment() {
             Context.finish()
         }
 
+        view.findViewById<SwipeRefreshLayout>(R.id.swiperefresh).setOnRefreshListener {
+            Day.ListedItems.clear()
+            Day.FetchListedItems(HouseId!!,::PerformAfterRefresh)
+            Day.FetchRequestedItems(HouseId,::PerformAfterRefresh)
+        }
 
         return view
+    }
+
+    fun PerformAfterRefresh(){
+        this.requireView().findViewById<SwipeRefreshLayout>(R.id.swiperefresh).isRefreshing = false
+        ListView.adapter = CustomListAdapter(activity as ItemsList,Day.ListedItems)
     }
 
     private class CustomListAdapter(context: Context,items:ArrayList<Item>): BaseAdapter(){

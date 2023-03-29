@@ -9,11 +9,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.ListView
-import android.widget.RatingBar
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.RequiresApi
+import com.bumptech.glide.Glide
 import com.example.auctionhouseapp.Activities.CustomerActivity
 import com.example.auctionhouseapp.Activities.CustomerMainActivity
 import com.example.auctionhouseapp.Activities.HouseInformationActivity
@@ -76,6 +74,9 @@ class AuctionHousesListFragment : Fragment() {
             View.findViewById<RatingBar>(R.id.house_rating).rating = mHousesList[position].Rating.toFloat()
             View.findViewById<TextView>(R.id.closest_sale_day).setText(SimpleDateFormat("dd/MM/yyyy")
                 .format(mHousesList[position].NextSalesDay))
+            Glide.with(mContext)
+                .load(mHousesList[position].profile_img_url)
+                .into(View.findViewById<ImageView>(R.id.img_house))
             Log.i("AuctionHouseListFrag",mHousesList[position].NextSalesDay.toString())
             Log.i("AuctionHouseListFrag",mHousesList[position].Rating.toString())
             Log.i("AuctionHouseListFrag",mHousesList[position].TotalRaters.toString())

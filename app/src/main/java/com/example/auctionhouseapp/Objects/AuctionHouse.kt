@@ -20,6 +20,7 @@ class AuctionHouse: User , Serializable {
     val Days:ArrayList<AuctionDays> = arrayListOf()
     var isReadHousePrimaryData:Boolean = false
     var isReadHouseDays:Boolean = false
+    var profile_img_url:String? = null
 
 
     constructor(Data:MutableMap<String,Any>?){
@@ -107,6 +108,7 @@ class AuctionHouse: User , Serializable {
         TotalRaters = (Data[Constants.HOUSE_NUM_RATERS] as Long).toInt()
         Rating = (Data[Constants.HOUSE_RATING_SUM] as Long).toDouble()/TotalRaters
         NextSalesDay = (Data[Constants.HOUSE_NEXT_SALES_DATE] as Timestamp?)?.toDate()
+        profile_img_url = Data[Constants.PROFILE_URL] as String?
     }
 
     companion object {

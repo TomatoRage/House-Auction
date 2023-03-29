@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/house_nav"
-    app:startDestination="@id/auctionDaysListFragment">
+    app:startDestination="@id/houseProfile">
     <fragment
-        android:id="@+id/customerProfile"
-        android:name="com.example.auctionhouseapp.Fragments.CustomerProfile"
-        android:label="CustomerProfile" />
+        android:id="@+id/houseProfile"
+        android:name="com.example.auctionhouseapp.Fragments.HouseProfile"
+        android:label="houseProfile" />
 
     <fragment
         android:id="@+id/auctionDaysListFragment"

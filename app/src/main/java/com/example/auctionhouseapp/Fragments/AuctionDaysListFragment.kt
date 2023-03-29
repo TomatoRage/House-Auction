@@ -6,6 +6,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,11 +15,16 @@ import android.widget.BaseAdapter
 import android.widget.ListView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.auctionhouseapp.Activities.HouseActivity
 import com.example.auctionhouseapp.Activities.ViewDay
 import com.example.auctionhouseapp.AuctionDayStatus
+import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.Objects.AuctionHouse
 import com.example.auctionhouseapp.R
+import com.example.auctionhouseapp.Utils.Constants
+import com.example.auctionhouseapp.Utils.FirebaseUtils
+import com.google.firebase.firestore.Query
 
 class AuctionDaysListFragment : Fragment() {
 
@@ -41,7 +47,31 @@ class AuctionDaysListFragment : Fragment() {
             Context.resultLauncher.launch(intent)
         }
 
+        view.findViewById<SwipeRefreshLayout>(R.id.swiperefresh).setOnRefreshListener {
+            FirebaseUtils.houseCollectionRef
+                .document(House.GetUID())
+                .collection(Constants.SALES_DAY_COLLECTION)
+                .orderBy(Constants.DAY_START_DATE,Query.Direction.DESCENDING)
+                .get()
+                .addOnSuccessListener {documents->
+                    view.findViewById<SwipeRefreshLayout>(R.id.swiperefresh).isRefreshing = false
+                    House.Days.clear()
+                    for(doc in documents) {
+                        val Day = AuctionDays(doc.data)
+                        Day.updateStatus()
+                        House.Days.add(Day)
+                    }
+                    updateDaysList(Context,ListView)
+                }.addOnFailureListener {
+                    Log.i("CustomerDaysList.kt", "Error! failed to refresh days list")
+                }
+        }
+
         return view
+    }
+
+    private fun updateDaysList(Context:Context,List:ListView) {
+        List.adapter = CustomListAdapter(Context, House)
     }
 
     companion object {

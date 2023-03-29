@@ -13,6 +13,7 @@ import com.example.auctionhouseapp.*
 import com.example.auctionhouseapp.Fragments.AuctionDaysListFragment
 import com.example.auctionhouseapp.Fragments.AuctionDaysSpinner
 import com.example.auctionhouseapp.Fragments.CustomerProfile
+import com.example.auctionhouseapp.Fragments.HouseProfile
 import com.example.auctionhouseapp.Objects.AuctionHouse
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -63,16 +64,13 @@ class HouseActivity : AppCompatActivity() {
 
         findViewById<BottomNavigationView>(R.id.bottomNavHouse).setOnNavigationItemSelectedListener{
             when(it.itemId){
-                R.id.customerProfile -> {
-                    var profile = CustomerProfile()
-                    profile.customerEmail = House.GetEmail()
-                    profile.customerName = House.GetName()
+                R.id.houseProfile -> {
+                    var profile = HouseProfile()
+                    profile.my_house = House
                     ReplaceFragment(profile)
                 }
                 R.id.auctionDaysListFragment -> {
-                    House.Days.clear()
-                    ReplaceFragment(LoadingFragment)
-                    House.FetchHouseData(Firebase.auth.currentUser!!.uid,::PerformAfterData)
+                    PerformAfterData()
                 }
             }
             true

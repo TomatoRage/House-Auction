@@ -2,11 +2,9 @@ package com.example.auctionhouseapp.Activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.RatingBar
-import android.widget.TextView
-import android.widget.Toolbar
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.Objects.AuctionHouse
 import com.example.auctionhouseapp.R
@@ -53,7 +51,10 @@ class HouseInformationActivity : AppCompatActivity() {
                 .format(it)
         }
 
-
+        if(House.profile_img_url != null)
+            Glide.with(this)
+                .load(House.profile_img_url)
+                .into(findViewById<ImageView>(R.id.img_house))
 
 
         findViewById<TextView>(R.id.house_closes_sale_start_time).text = House.NextSalesDay?.let {

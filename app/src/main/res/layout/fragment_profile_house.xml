@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".Fragments.CustomerProfile">
+    tools:context=".Fragments.HouseProfile">
 
     <!--    Top Bar-->
     <LinearLayout
@@ -51,20 +51,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
+        <ImageView
+            android:id="@+id/imageView_house_profile"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/img_house_info" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:gravity="center"
             android:orientation="vertical">
-
-            <com.mikhaellopez.circularimageview.CircularImageView
-                android:id="@+id/profileImage_profileFrag"
-                android:layout_width="150dp"
-                android:layout_height="match_parent"
-                app:civ_border_color="@color/mainText"
-                app:srcCompat="@drawable/ic_profile"
-                app:tint="@color/mainText" />
 
             <TextView
                 android:id="@+id/txt_profile_name"
@@ -107,108 +105,6 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
         <androidx.cardview.widget.CardView
-            android:id = "@+id/my_auctioned_items"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_marginTop="30dp"
-            app:cardBackgroundColor="@color/background"
-            app:cardElevation="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/metropolis_regular"
-                        android:text="My Auctioned Items"
-                        android:textColor="@color/mainText"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:fontFamily="@font/metropolis_regular"
-                        android:text="Items you offered in auctions"
-                        android:textColor="@color/textAd"
-                        android:textSize="12sp" />
-
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/my_bidded_items"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            app:cardBackgroundColor="@color/background"
-            app:cardElevation="0dp"
-            android:layout_marginTop="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/metropolis_regular"
-                        android:text="My Bidded Items"
-                        android:textColor="@color/mainText"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:fontFamily="@font/metropolis_regular"
-                        android:text="Items you bidded for in auctions"
-                        android:textColor="@color/textAd"
-                        android:textSize="12sp" />
-
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
             android:id="@+id/paymentMethod_ProfilePage"
             android:layout_width="match_parent"
             android:layout_height="70dp"
@@ -248,40 +144,41 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/metropolis_regular"
-                        android:textColor="@color/textAd"
                         android:text="Total amount of cash accumulated"
+                        android:textColor="@color/textAd"
                         android:textSize="12sp" />
 
                 </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/txt_my_total_cash"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="10dp"
-                    android:fontFamily="@font/metropolis_regular"
-                    android:text="100"
-                    android:textColor="@color/mainText"
-                    android:textSize="19sp" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/metropolis_regular"
-                    android:textColor="@color/textAd"
-                    android:layout_marginStart="10dp"
-                    android:text="Coins"
-                    android:textSize="16sp" />
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/txt_my_total_cash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:fontFamily="@font/metropolis_regular"
+                        android:text="100"
+                        android:textColor="@color/mainText"
+                        android:textSize="19sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/metropolis_regular"
+                        android:text="Coins"
+                        android:textColor="@color/textAd"
+                        android:textSize="16sp" />
+                </LinearLayout>
 
                 <ImageView
                     android:layout_width="40dp"
@@ -291,10 +188,185 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/paymentMethod_ProfilePage_Rating"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            app:cardBackgroundColor="@color/background"
+            app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/metropolis_regular"
+                        android:text="My Rating"
+                        android:textColor="@color/mainText"
+                        android:textSize="16sp" />
 
 
+                    <TextView
+                        android:id="@+id/cardsNumber_profileFragRating"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/metropolis_regular"
+                        android:text="Your auction house rating"
+                        android:textColor="@color/textAd"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/text_view_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:fontFamily="@font/metropolis_regular"
+                        android:text="10"
+                        android:textColor="@color/mainText"
+                        android:textSize="19sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/metropolis_regular"
+                        android:text="Stars"
+                        android:textColor="@color/textAd"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/rating_star" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/paymentMethod_ProfilePage_Raters"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            app:cardBackgroundColor="@color/background"
+            app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/metropolis_regular"
+                        android:text="Raters"
+                        android:textColor="@color/mainText"
+                        android:textSize="16sp" />
 
 
+                    <TextView
+                        android:id="@+id/cardsNumber_profileFragRaters"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/metropolis_regular"
+                        android:text="Number of people who rated your auction house"
+                        android:textColor="@color/textAd"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/text_view_no_raters"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="10dp"
+                        android:fontFamily="@font/metropolis_regular"
+                        android:text="100"
+                        android:textColor="@color/mainText"
+                        android:textSize="19sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/metropolis_regular"
+                        android:text="Raters"
+                        android:textColor="@color/textAd"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/people" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <Button
+            android:id="@+id/profileConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_bg"
+            android:text="Confirm"
+            android:textColor = "@color/white"
+            android:layout_margin="25dp"
+            android:elevation="10dp"
+            />
     </LinearLayout>
 
 
