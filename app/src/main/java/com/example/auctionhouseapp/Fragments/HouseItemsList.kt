@@ -40,10 +40,6 @@ class HouseItemsList : Fragment() {
             view.findViewById<TextView>(R.id.textview_list_title).setText("Listed Items")
         else
             view.findViewById<TextView>(R.id.textview_list_title).setText("Requested Items")
-        view.findViewById<Button>(R.id.btn_house_items_list_bck).setOnClickListener { it ->
-            parentFragmentManager.beginTransaction().remove(this).commitAllowingStateLoss();
-            Context.finish()
-        }
         if(!isRequestedList)
             ListView.adapter = CustomListAdapter(Context,Day.ListedItems)
         else
@@ -70,18 +66,26 @@ class HouseItemsList : Fragment() {
             Context.finish()
         }
 
-        view.findViewById<SwipeRefreshLayout>(R.id.swiperefresh).setOnRefreshListener {
-            Day.ListedItems.clear()
-            Day.FetchListedItems(HouseId!!,::PerformAfterRefresh)
-            Day.FetchRequestedItems(HouseId,::PerformAfterRefresh)
+        view.findViewById<SwipeRefreshLayout>(R.id.frameLayout).setOnRefreshListener {
+            if(!isRequestedList) {
+                Day.ListedItems.clear()
+                Day.FetchListedItems(HouseId!!, ::PerformAfterRefresh)
+            }
+            else {
+                Day.RequestedItems.clear()
+                Day.FetchRequestedItems(HouseId!!, ::PerformAfterRefresh)
+            }
         }
 
         return view
     }
 
     fun PerformAfterRefresh(){
-        this.requireView().findViewById<SwipeRefreshLayout>(R.id.swiperefresh).isRefreshing = false
-        ListView.adapter = CustomListAdapter(activity as ItemsList,Day.ListedItems)
+        this.requireView().findViewById<SwipeRefreshLayout>(R.id.frameLayout).isRefreshing = false
+        if(!isRequestedList)
+            ListView.adapter = this.context?.let { CustomListAdapter(it,Day.ListedItems) }
+        else
+            ListView.adapter = this.context?.let { CustomListAdapter(it,Day.RequestedItems) }
     }
 
     private class CustomListAdapter(context: Context,items:ArrayList<Item>): BaseAdapter(){
