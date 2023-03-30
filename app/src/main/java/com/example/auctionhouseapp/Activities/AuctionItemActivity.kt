@@ -311,8 +311,6 @@ class AuctionItemActivity : AppCompatActivity() {
         item._name = edit_item_name.text.toString()
         item._description = edit_item_description.text.toString()
         item._startingPrice = edit_starting_price.text.toString().toInt()
-        item._lastBid = -1
-        item._lastBidderId = null
         item._status = "Pending"
         item._auctionHouseName = house.GetName()
         item._ownerPhoneNumber = itemOwner.GetPhoneNumber()
