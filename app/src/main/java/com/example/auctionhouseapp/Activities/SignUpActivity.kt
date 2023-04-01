@@ -343,8 +343,8 @@ class SignUpActivity : AppCompatActivity() {
                         startActivity(intent)
                         finish()
                     } else {
-                        userHashMap[Constants.HOUSE_RATING_SUM] = 3
-                        userHashMap[Constants.HOUSE_NUM_RATERS] = 1
+                        userHashMap[Constants.HOUSE_RATING_SUM] = 0
+                        userHashMap[Constants.HOUSE_NUM_RATERS] = 0
                         storeData(userHashMap,houseCollectionRef,userType)
                         val intent = Intent(applicationContext, HouseActivity::class.java)
                         startActivity(intent)

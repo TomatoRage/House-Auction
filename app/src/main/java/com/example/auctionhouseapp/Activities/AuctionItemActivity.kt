@@ -44,6 +44,7 @@ class AuctionItemActivity : AppCompatActivity() {
     lateinit var binding : ActivityAuctionItemBinding
     lateinit var NextBtn: ImageButton
     lateinit var PrevBtn: ImageButton
+    private var Commission:Double = 0.1
     private var itemOwner:Customer = Customer()
     //init item
     var item = Item()
@@ -56,7 +57,7 @@ class AuctionItemActivity : AppCompatActivity() {
         imageSwitcher.setFactory { ImageView(applicationContext) }
         house.SetID(intent.getStringExtra("House ID")!!)
         dayId = intent.getStringExtra("Day ID")!!
-
+        Commission = intent.getDoubleExtra("Commission",Commission)
         edit_item_name = findViewById<EditText>(R.id.edit_item_name)
         edit_item_description = findViewById<EditText>(R.id.edit_item_description)
         edit_starting_price = findViewById<EditText>(R.id.edit_txt_starting_price)
@@ -314,6 +315,7 @@ class AuctionItemActivity : AppCompatActivity() {
         item._status = "Pending"
         item._auctionHouseName = house.GetName()
         item._ownerPhoneNumber = itemOwner.GetPhoneNumber()
+        item._commission = Commission
         item.StoreData(
             Constants.REQUESTED_ITEMS,
             house.GetUID(),

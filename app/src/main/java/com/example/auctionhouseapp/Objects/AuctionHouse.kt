@@ -14,8 +14,8 @@ import kotlin.collections.ArrayList
 
 class AuctionHouse: User , Serializable {
 
-    var Rating:Double = -1.0
-    var TotalRaters:Int = -1
+    var Rating:Double = 0.0
+    var TotalRaters:Int = 0
     var NextSalesDay:Date? = null
     val Days:ArrayList<AuctionDays> = arrayListOf()
     var isReadHousePrimaryData:Boolean = false
@@ -106,7 +106,10 @@ class AuctionHouse: User , Serializable {
             return
         SetUserData(Data)
         TotalRaters = (Data[Constants.HOUSE_NUM_RATERS] as Long).toInt()
-        Rating = (Data[Constants.HOUSE_RATING_SUM] as Long).toDouble()/TotalRaters
+        if (TotalRaters == 0)
+            Rating = 0.0
+        else
+            Rating = (Data[Constants.HOUSE_RATING_SUM] as Long).toDouble()/TotalRaters
         NextSalesDay = (Data[Constants.HOUSE_NEXT_SALES_DATE] as Timestamp?)?.toDate()
         profile_img_url = Data[Constants.PROFILE_URL] as String?
     }

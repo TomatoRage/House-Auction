@@ -23,6 +23,7 @@ class Item : Serializable {
     var _ownerPhoneNumber:String? = "Unknown"
     var _winnerPhoneNumber:String? = "Unknown"
      var _lastBid:Int = 0
+    var _commission:Double = 0.0
      var _last_bid_time: Date? = null
 
 
@@ -50,6 +51,7 @@ class Item : Serializable {
         _status = Data[Constants.ITEM_STATUS] as String
         _lastBidderId = Data[Constants.ITEM_LAST_BIDDER] as String?
         _lastBid = (Data[Constants.ITEM_LAST_BID_AMOUNT] as Long).toInt()
+        _commission = Data[Constants.DAY_COMMISSION] as Double
         _id = Data[Constants.ITEM_ID] as String
         _ownerPhoneNumber = Data[Constants.ITEM_OWNER_PHONE] as String
         _winnerPhoneNumber = Data[Constants.ITEM_WINNER_PHONE] as String
@@ -81,6 +83,7 @@ class Item : Serializable {
                 Constants.ITEM_AUCTION_HOUSE to _auctionHouseName,
                 Constants.ITEM_OWNER_PHONE to _ownerPhoneNumber,
                 Constants.ITEM_WINNER_PHONE to _winnerPhoneNumber,
+                Constants.DAY_COMMISSION to _commission,
             )
         ) // 2 - Store item id in the given day of the given auction house
         .addOnSuccessListener {
