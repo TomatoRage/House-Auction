@@ -69,6 +69,7 @@ class ViewItem : AppCompatActivity() {
             .addOnSuccessListener {
                 val fetchedItem = Item(it.data)
                 item._last_bid_time = fetchedItem._last_bid_time
+                item._status = fetchedItem._status
                 viewItemFragment()
             } .addOnFailureListener {
                 Log.i("ViewItem.kt","Warning !! Failed to fetch updated time of the last bid")
@@ -121,6 +122,9 @@ class ViewItem : AppCompatActivity() {
 
             }
         } else {
+            if (item._status.equals("Sold")) {
+
+            }
             val itemInfo = ItemViewBidFragment()
             itemInfo.item = item
             itemInfo.Commission = Commission
