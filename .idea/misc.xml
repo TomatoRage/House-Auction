@@ -51,7 +51,7 @@
         <entry key="app/src/main/res/layout/fragment_auction_days_list.xml" value="0.25084745762711863" />
         <entry key="app/src/main/res/layout/fragment_auction_days_spinner.xml" value="0.22866849837764613" />
         <entry key="app/src/main/res/layout/fragment_auction_house_list.xml" value="0.21324889270971856" />
-        <entry key="app/src/main/res/layout/fragment_auction_house_view_item.xml" value="0.5161458333333333" />
+        <entry key="app/src/main/res/layout/fragment_auction_house_view_item.xml" value="0.19324497648567765" />
         <entry key="app/src/main/res/layout/fragment_auction_houses_list.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layout/fragment_customer_items.xml" value="0.5161458333333333" />
         <entry key="app/src/main/res/layout/fragment_customer_items_list.xml" value="0.1723419189453125" />

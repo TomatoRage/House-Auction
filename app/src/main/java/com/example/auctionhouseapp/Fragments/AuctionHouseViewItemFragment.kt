@@ -5,18 +5,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.auctionhouseapp.Activities.HouseActivity
+import com.example.auctionhouseapp.Activities.ViewItem
 import com.example.auctionhouseapp.Objects.Item
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.UserType
 import com.example.auctionhouseapp.Utils.Constants
+import com.example.auctionhouseapp.Utils.FirebaseUtils
+import com.example.auctionhouseapp.adapter.AddOns.loadingDialog
+import com.google.firebase.firestore.FieldValue
 
 
 class AuctionHouseViewItemFragment : Fragment() {
@@ -28,6 +30,7 @@ class AuctionHouseViewItemFragment : Fragment() {
     lateinit var imageView: ImageView
     lateinit var NextBtn: ImageButton
     lateinit var PrevBtn: ImageButton
+    lateinit var dialog:AlertDialog
     private var position = 0
     var isRequestedList = false
 
@@ -49,10 +52,12 @@ class AuctionHouseViewItemFragment : Fragment() {
         view.findViewById<TextView>(R.id.item_sales_day).setText(SalesDate)
         view.findViewById<TextView>(R.id.item_sales_start_time).setText(StartTime)
         view.findViewById<TextView>(R.id.item_start_price).setText(item._startingPrice.toString())
-        view.findViewById<TextView>(R.id.btn_accept_item).isVisible = false
         view.findViewById<TextView>(R.id.btn_reject_item).isVisible = false
 
-
+        if(isRequestedList)
+            view.findViewById<Button>(R.id.btn_accept_item).setText("Accpet")
+        else
+            view.findViewById<Button>(R.id.btn_accept_item).setText("Delete")
 
         NextBtn.setOnClickListener {
             if (position < item._imagesUrls.size - 1) {
@@ -78,17 +83,54 @@ class AuctionHouseViewItemFragment : Fragment() {
             }
         }
 
-        if (isRequestedList) {
-            view.findViewById<TextView>(R.id.btn_accept_item).isVisible = true
-            view.findViewById<TextView>(R.id.btn_reject_item).isVisible = true
-            view.findViewById<TextView>(R.id.btn_accept_item).setOnClickListener {
+        view.findViewById<TextView>(R.id.btn_accept_item).setOnClickListener {
+            if(isRequestedList) {
                 //remvoe from req and add to listed
-                item.AddToListedItems(HouseId ,DayId)
-                item.RemoveFromRequestedItems(HouseId ,DayId,::backToPrevActivity)
+                item.AddToListedItems(HouseId, DayId)
+                item.RemoveFromRequestedItems(HouseId, DayId, ::backToPrevActivity)
                 item.UpdateStatus("Accepted", ::toastAccept)
 
                 Toast.makeText(context, "Item Accepted!", Toast.LENGTH_SHORT).show()
+            }else{
+                //Delete Item Button
+                val builder = AlertDialog.Builder(activity as ViewItem)
+                val dialogView = layoutInflater. inflate (R.layout.fragment_auction_days_spinner,null)
+                builder.setView (dialogView)
+                builder.setCancelable (false)
+                dialog.show()
+                FirebaseUtils.houseCollectionRef
+                    .document(HouseId)
+                    .collection(Constants.SALES_DAY_COLLECTION)
+                    .document(DayId)
+                    .update(Constants.LISTED_ITEMS,FieldValue.arrayRemove(item._id))
+                    .addOnSuccessListener {
+
+                        FirebaseUtils.itemsCollectionRef.document(item._id).delete()
+                            .addOnSuccessListener {
+                                dialog.dismiss()
+                                backToPrevActivity()
+                            }
+                            .addOnFailureListener {
+
+                                FirebaseUtils.houseCollectionRef
+                                    .document(HouseId)
+                                    .collection(Constants.SALES_DAY_COLLECTION)
+                                    .document(DayId)
+                                    .update(Constants.LISTED_ITEMS,FieldValue.arrayUnion(item._id)).addOnSuccessListener {
+                                        Toast.makeText(context, "Failed To Delete", Toast.LENGTH_SHORT).show()
+                                    }
+
+                            }
+
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(context, "Failed To Delete", Toast.LENGTH_SHORT).show()
+                    }
             }
+        }
+
+        if (isRequestedList) {
+            view.findViewById<TextView>(R.id.btn_reject_item).isVisible = true
             view.findViewById<TextView>(R.id.btn_reject_item).setOnClickListener {
                 item.RemoveFromHouseList(Constants.REQUESTED_ITEMS,HouseId,DayId,::backToPrevActivity)
                 item.UpdateStatus("Rejected", ::toastReject)

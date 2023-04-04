@@ -27,7 +27,7 @@ object Constants{
 
 
     //Auction Houses' Data + Users' Data
-    const val HOUSE_RATING_SUM:String               = "Rating" // The Sum Of Ratings For A House
+    const val HOUSE_RATING_SUM:String               = "Total Rating" // The Sum Of Ratings For A House
     const val HOUSE_NUM_RATERS:String               = "Total Raters"// No' Of Users Rated The House
     const val HOUSE_NEXT_SALES_DATE:String          = "Next Sales Day" // The Next Upcoming Sales Day Date
 
