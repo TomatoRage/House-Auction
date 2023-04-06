@@ -122,9 +122,6 @@ class ViewItem : AppCompatActivity() {
 
             }
         } else {
-            if (item._status.equals("Sold")) {
-
-            }
             val itemInfo = ItemViewBidFragment()
             itemInfo.item = item
             itemInfo.Commission = Commission
