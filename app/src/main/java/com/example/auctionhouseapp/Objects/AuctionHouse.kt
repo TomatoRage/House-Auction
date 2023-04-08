@@ -111,7 +111,7 @@ class AuctionHouse: User , Serializable {
         if (TotalRaters == 0)
             Rating = 0.0
         else
-            Rating = (Data[Constants.HOUSE_RATING_SUM].toString().toDouble()/TotalRaters).toDouble()
+            Rating = (Data[Constants.HOUSE_RATING_SUM] as Double)/TotalRaters
         NextSalesDay = (Data[Constants.HOUSE_NEXT_SALES_DATE] as Timestamp?)?.toDate()
         profile_img_url = Data[Constants.PROFILE_URL] as String?
     }

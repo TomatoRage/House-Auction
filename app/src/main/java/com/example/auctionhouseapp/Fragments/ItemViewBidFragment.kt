@@ -6,6 +6,8 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.text.*
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +28,7 @@ import com.example.auctionhouseapp.Objects.ItemViewModel
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.UserType
 import com.example.auctionhouseapp.Utils.Constants
+import com.example.auctionhouseapp.Utils.Extensions.toast
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -46,6 +49,7 @@ class ItemViewBidFragment : Fragment() {
     lateinit var LastBidText:TextView
     lateinit var StartingPrice:TextView
     lateinit var RateAuctionHouseText: TextView
+    lateinit var EarningText:TextView
     lateinit var viewKonfetti:KonfettiView
     lateinit var HouseId:String
     lateinit var DayId:String
@@ -83,8 +87,11 @@ class ItemViewBidFragment : Fragment() {
         LastBidText = view.findViewById<TextView>(R.id.txt_last_bid)
         RemainingTimeText = view.findViewById<TextView>(R.id.txt_remaining_time)
         StartingPrice = view.findViewById<TextView>(R.id.txt_starting_price)
+        EarningText = view.findViewById<TextView>(R.id.txt_earning_value)
         RateAuctionHouseText = view.findViewById<TextView>(R.id.txt_rate_auction_house)
         val backBtn = activity?.findViewById<TextView>(R.id.txt_back)
+
+        EarningText.isVisible = false
         RateAuctionHouseText.isVisible= false
         // Hide Bidding ability for Auction House User
         if (userType.equals(UserType.AuctionHouse)) {
@@ -158,6 +165,7 @@ class ItemViewBidFragment : Fragment() {
         return view
     }
 
+
     private fun startTimer(time_in_seconds: Long) {
         countdown_timer = object : CountDownTimer(time_in_seconds, 1000) {
             override fun onFinish() {
@@ -166,6 +174,15 @@ class ItemViewBidFragment : Fragment() {
                         EditBid.isVisible = false
                         LastBidText.setText("  You Won The Auction")
                         LastBidText.setTextColor(Color.RED)
+                        if(userType.equals(UserType.AuctionHouse)){
+                            LastBidText.text = "Sold For: "
+                            EarningText.isVisible = true
+                            val value = item._lastBid * item._commission
+                            val Number = SpannableString(value.toString())
+                            Number.setSpan(ForegroundColorSpan(Color.GREEN), 0, value.toString().length,
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                            EarningText.text = TextUtils.concat("You Earned: ",Number)
+                        }
                         LastBid.isVisible = false
                         RemainingTime.isVisible = false
                         RemainingTimeText.text = "   Congratulations!"
@@ -184,6 +201,15 @@ class ItemViewBidFragment : Fragment() {
                         else {
                             RemainingTimeText.text = "Item Sold"
                             RemainingTimeText.setTextColor(Color.GREEN)
+                            if(userType.equals(UserType.AuctionHouse)){
+                                LastBidText.text = "Sold For: "
+                                EarningText.isVisible = true
+                                val value = item._lastBid * item._commission
+                                val Number = SpannableString(value.toString())
+                                Number.setSpan(ForegroundColorSpan(Color.GREEN), 0, value.toString().length,
+                                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                                EarningText.text = TextUtils.concat("You Earned: ",Number)
+                            }
                         }
                     }
                         RateAuctionHouseText.isVisible= true
