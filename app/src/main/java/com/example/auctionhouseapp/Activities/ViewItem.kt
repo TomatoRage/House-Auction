@@ -82,6 +82,9 @@ class ViewItem : AppCompatActivity() {
 
         //item.FetchImages(-1,::setItemInfoOnScreen)
         findViewById<TextView>(R.id.txt_back).setOnClickListener {
+            val intent = Intent(applicationContext, CustomerDaysListActivity::class.java)
+            intent.putExtra("HouseId", HouseId)
+            startActivity(intent)
             finish()
         }
         findViewById<TextView>(R.id.txt_sign_out).setOnClickListener {
@@ -119,7 +122,6 @@ class ViewItem : AppCompatActivity() {
                     replace(R.id.fragmentContainerViewItemInfo, itemInfo)
                     commit()
                 }
-
             }
         } else {
             if (item._status.equals("Sold")) {

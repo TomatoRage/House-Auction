@@ -77,9 +77,6 @@ class AuctionHousesListFragment : Fragment() {
             Glide.with(mContext)
                 .load(mHousesList[position].profile_img_url)
                 .into(View.findViewById<ImageView>(R.id.img_house))
-            Log.i("AuctionHouseListFrag",mHousesList[position].NextSalesDay.toString())
-            Log.i("AuctionHouseListFrag",mHousesList[position].Rating.toString())
-            Log.i("AuctionHouseListFrag",mHousesList[position].TotalRaters.toString())
             return View
         }
     }

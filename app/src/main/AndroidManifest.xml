@@ -20,8 +20,10 @@
         </activity>
         <activity android:name=".Activities.ProfileItemsList" />
         <activity android:name=".Activities.ViewProfileItem" />
-        <activity android:name=".Activities.CustomerMainActivity"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".Activities.CustomerMainActivity"
+            android:launchMode="singleTask" />
+        <activity android:name=".Activities.WithdrawFromBankActivity" />
         <activity android:name=".Activities.CustomerActivity" />
         <activity android:name=".Activities.LoginActivity" />
         <activity android:name=".Activities.SignUpActivity" />

@@ -68,7 +68,7 @@ class HouseItemsList : Fragment() {
 
         view.findViewById<SwipeRefreshLayout>(R.id.frameLayout).setOnRefreshListener {
             if(!isRequestedList) {
-                Day.FetchListedItems(HouseId!!, ::PerformAfterRefresh)
+                Day.FetchListedItems(HouseId!!, ::PerformAfterRefresh, UserType.AuctionHouse)
             }
             else {
                 Day.RequestedItems.clear()

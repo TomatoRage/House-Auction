@@ -2,13 +2,17 @@ package com.example.auctionhouseapp.Activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.Objects.AuctionHouse
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.User
+import com.example.auctionhouseapp.Utils.Constants
+import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 
@@ -38,6 +42,20 @@ class HouseInformationActivity : AppCompatActivity() {
             finish()
         }
         setHouseInfoOnScreen()
+
+        findViewById<SwipeRefreshLayout>(R.id.swiperefresh).setOnRefreshListener {
+            FirebaseUtils.houseCollectionRef
+                .document(House.GetUID())
+                .get()
+                .addOnSuccessListener {
+                   findViewById<SwipeRefreshLayout>(R.id.swiperefresh).isRefreshing = false
+                    val fetchedHouse = AuctionHouse(it.data)
+                    House = fetchedHouse
+                    setHouseInfoOnScreen()
+                }.addOnFailureListener {
+                    Log.i("CustomerItemsList.kt", "Error! failed to refresh day")
+                }
+        }
 
     }
 

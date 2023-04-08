@@ -17,7 +17,9 @@ import androidx.core.view.isVisible
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.example.auctionhouseapp.Activities.*
+import com.example.auctionhouseapp.AuctionDayStatus
 import com.example.auctionhouseapp.AuctionDays
+import com.example.auctionhouseapp.Objects.Customer
 import com.example.auctionhouseapp.Objects.Item
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.UserType
@@ -62,8 +64,7 @@ class CustomerItemsListFragment : Fragment() {
                 intent.putExtra("Commission", day.Commission)
                 val userType = UserType.Customer.ordinal
                 intent.putExtra("Type", userType)
-                startActivity(intent)
-                Context.finish()
+                checkCustomerCashSufficiency(item._startingPrice,intent)
             }
         }
 
@@ -99,11 +100,32 @@ class CustomerItemsListFragment : Fragment() {
             val intent = Intent(Context, AuctionItemActivity::class.java)
             intent.putExtra("Day ID",day.DocumentID)
             intent.putExtra("House ID", HouseId)
+            intent.putExtra("Commission", day.Commission)
             //intent.putExtra("Type", UserType.Customer.Type)
             startActivity(intent)
         }
-
         return view
+    }
+
+    private fun checkCustomerCashSufficiency(startingPrice: Int, intent: Intent) {
+        val currentCustomer = FirebaseAuth.getInstance().uid.toString()
+        FirebaseUtils.customerCollectionRef
+            .document(currentCustomer)
+            .get()
+            .addOnSuccessListener {
+                val customer = Customer(it.data)
+                val customerCash = customer.getCash()
+                if (customerCash >= startingPrice || !day.Status.equals(AuctionDayStatus.Happening)) {
+                    startActivity(intent)
+                    Context.finish()
+                } else {
+                    Toast.makeText(activity, "Blocked !\nNot Enough Cash In Your Account To Bid For This Item", Toast.LENGTH_LONG).show()
+                }
+            }
+            .addOnFailureListener {
+                Log.i("ItemViewBidFragment.kt", "Failed to update winner name")
+            }
+
     }
 
     private fun updateListView() {
@@ -136,7 +158,6 @@ class CustomerItemsListFragment : Fragment() {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val layoutInflater = LayoutInflater.from(mContext)
             val View = layoutInflater.inflate(R.layout.house_item_list_item,parent,false)
-
             View.findViewById<TextView>(R.id.textview_house_item_name).setText(Items[position]._name)
             View.findViewById<TextView>(R.id.textView_description).setText(Items[position]._description)
             Glide.with(mContext)

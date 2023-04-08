@@ -1,22 +1,24 @@
 package com.example.auctionhouseapp.Fragments
 
+import android.accessibilityservice.GestureDescription
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.content.ContextCompat
+import android.widget.RatingBar.OnRatingBarChangeListener
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.auctionhouseapp.Activities.ItemsList
+import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.Objects.AuctionHouse
 import com.example.auctionhouseapp.Objects.Customer
 import com.example.auctionhouseapp.Objects.Item
@@ -24,7 +26,6 @@ import com.example.auctionhouseapp.Objects.ItemViewModel
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.UserType
 import com.example.auctionhouseapp.Utils.Constants
-import com.example.auctionhouseapp.Utils.Extensions.toast
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -44,6 +45,7 @@ class ItemViewBidFragment : Fragment() {
     lateinit var LastBid:TextView
     lateinit var LastBidText:TextView
     lateinit var StartingPrice:TextView
+    lateinit var RateAuctionHouseText: TextView
     lateinit var viewKonfetti:KonfettiView
     lateinit var HouseId:String
     lateinit var DayId:String
@@ -54,7 +56,8 @@ class ItemViewBidFragment : Fragment() {
     private  lateinit var viewModel: ItemViewModel
     private var MaxBid:Int = 0
     private val currentCustomer = FirebaseAuth.getInstance().uid.toString()
-    private var START_MILLI_SECONDS = 60000L
+    private var currentCustomerCash = -1
+    private var START_MILLI_SECONDS = 30000L
     private lateinit var countdown_timer: CountDownTimer
     private var time_in_milli_seconds = 0L
     private var isCustomerInvolvedInAuction:Boolean = false
@@ -80,12 +83,15 @@ class ItemViewBidFragment : Fragment() {
         LastBidText = view.findViewById<TextView>(R.id.txt_last_bid)
         RemainingTimeText = view.findViewById<TextView>(R.id.txt_remaining_time)
         StartingPrice = view.findViewById<TextView>(R.id.txt_starting_price)
+        RateAuctionHouseText = view.findViewById<TextView>(R.id.txt_rate_auction_house)
         val backBtn = activity?.findViewById<TextView>(R.id.txt_back)
-
+        RateAuctionHouseText.isVisible= false
         // Hide Bidding ability for Auction House User
         if (userType.equals(UserType.AuctionHouse)) {
             BidBtn.isVisible = false
             EditBid.isVisible = false
+        } else {
+            updateCustomerCash()
         }
 
         if (backBtn != null) {
@@ -96,12 +102,15 @@ class ItemViewBidFragment : Fragment() {
                     intent.putExtra("Type", userType.ordinal)
                 if (item._status.equals("Sold") && userType.equals(UserType.Customer)) {
                     Toast.makeText(context, "Removing Item..", Toast.LENGTH_SHORT).show()
-                    item.RemoveFromHouseList(
-                        Constants.LISTED_ITEMS,
-                        HouseId,
-                        DayId,
-                        ::goToItemsList
-                    )
+
+//                    item.RemoveFromHouseList(
+//                        Constants.LISTED_ITEMS,
+//                        HouseId,
+//                        DayId,
+//                        ::goToItemsList
+//                    )
+                    startActivity(intent)
+                    activity?.finish()
                 } else {
                         startActivity(intent)
                         activity?.finish()
@@ -138,12 +147,16 @@ class ItemViewBidFragment : Fragment() {
                 Toast.makeText(context, "No More Images...", Toast.LENGTH_SHORT).show()
             }
         }
+
+        RateAuctionHouseText.setOnClickListener{
+            ShowDialog()
+            RateAuctionHouseText.isVisible= false
+        }
         startTimer(START_MILLI_SECONDS)
         MaxBid = item._lastBid
         LastBid.setText(MaxBid.toString())
         return view
     }
-
 
     private fun startTimer(time_in_seconds: Long) {
         countdown_timer = object : CountDownTimer(time_in_seconds, 1000) {
@@ -161,6 +174,7 @@ class ItemViewBidFragment : Fragment() {
                         transferCash()
                         updateItem()
                         item.StoreDataInCustomer(Constants.BIDDED_ITEMS, item._id, currentCustomer)
+                        incrementDaySoldItems()
                     } else {
                         BidBtn.isVisible = false
                         EditBid.isVisible = false
@@ -172,6 +186,7 @@ class ItemViewBidFragment : Fragment() {
                             RemainingTimeText.setTextColor(Color.GREEN)
                         }
                     }
+                        RateAuctionHouseText.isVisible= true
                 }
 
             override fun onTick(p0: Long) {
@@ -244,7 +259,31 @@ class ItemViewBidFragment : Fragment() {
             }
     }
 
+    private fun incrementDaySoldItems() {
+        FirebaseUtils.houseCollectionRef
+            .document(HouseId)
+            .collection(Constants.SALES_DAY_COLLECTION)
+            .document(DayId)
+            .get()
+            .addOnSuccessListener {
+                val numOfSoldItems = AuctionDays(it.data).NumOfSoldItems
+                FirebaseUtils.houseCollectionRef
+                    .document(HouseId)
+                    .collection(Constants.SALES_DAY_COLLECTION)
+                    .document(DayId)
+                    .update(Constants.DAY_NUM_OF_SOLD,numOfSoldItems+1)
+                    .addOnSuccessListener {
+                        Log.i("ItemViewBidFragment.k", "Successfully Incrementing No. of sold items")
+                    }.addOnFailureListener {
+                        Log.i("ItemViewBidFragment.k", "Failed to Increment No. of sold items")
+                    }
 
+            }.addOnFailureListener {
+                Log.i("ItemViewBidFragment.k", "Failed to read  No. of sold items")
+            }
+
+
+    }
     private fun loadConfeti() {
         viewKonfetti.build()
             .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
@@ -290,17 +329,85 @@ class ItemViewBidFragment : Fragment() {
         startActivity(intent)
         activity?.finish()
     }
-    private fun getWinnerName(winnerId:String) {
+    private fun updateCustomerCash(ToPerform:()->Unit={}) {
         FirebaseUtils.customerCollectionRef
-            .document(winnerId)
+            .document(currentCustomer)
             .get()
             .addOnSuccessListener {
                 val customer = Customer(it.data)
-                winnerName = customer.GetName()
+                currentCustomerCash = customer.getCash()
+                ToPerform()
             }
             .addOnFailureListener {
                 Log.i("ItemViewBidFragment.kt", "Failed to update winner name")
             }
+    }
+
+    fun ShowDialog() {
+        val popDialog: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
+        val linearLayout = LinearLayout(requireActivity())
+        val rating = RatingBar(requireActivity())
+        val lp = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        rating.layoutParams = lp
+        rating.numStars = 5
+        rating.stepSize = 1f
+
+        //add ratingBar to linearLayout
+        linearLayout.addView(rating)
+        popDialog.setIcon(android.R.drawable.btn_star_big_on)
+        popDialog.setTitle("Add Rating: ")
+
+        //add linearLayout to dailog
+        popDialog.setView(linearLayout)
+        rating.onRatingBarChangeListener =
+            OnRatingBarChangeListener { ratingBar, v, b -> println("Rated val:$v") }
+
+
+        // Button OK
+        popDialog.setPositiveButton(android.R.string.ok,
+            DialogInterface.OnClickListener { dialog, which ->
+                val auctionHouseRating = rating.progress
+                updateAuctionHouseRating(auctionHouseRating)
+                dialog.dismiss()
+                dialog.cancel()
+            }) // Button Cancel
+            .setNegativeButton("Cancel",
+                DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
+        popDialog.create()
+        popDialog.show()
+    }
+
+    private fun updateAuctionHouseRating(auctionHouseRating: Int) {
+        FirebaseUtils.houseCollectionRef
+            .document(HouseId)
+            .get()
+            .addOnSuccessListener {
+                val auctionHouse = AuctionHouse(it.data)
+                val totalRaters = auctionHouse.TotalRaters
+                val totalRating = totalRaters*auctionHouse.Rating
+                FirebaseUtils.houseCollectionRef
+                    .document(HouseId)
+                    .update(
+                        mapOf(
+                            Constants.HOUSE_RATING_SUM to (totalRating+auctionHouseRating),
+                            Constants.HOUSE_NUM_RATERS to (totalRaters+1)
+                        )
+
+                    )
+                    .addOnSuccessListener {
+                        Log.i("ItemViewBidFragment.kt", "updating house Rating")
+                    }
+                    .addOnFailureListener {
+                        Log.i("ItemViewBidFragment.kt", "Failed updating house Rating")
+                    }
+
+            }.addOnFailureListener {
+                Log.i("ItemViewBidFragment.kt", "Failed updating house Rating")
+            }
+
     }
 
     private fun transferCash() {
@@ -391,6 +498,16 @@ class ItemViewBidFragment : Fragment() {
             Toast.makeText(context, "Insert Valid Bid", Toast.LENGTH_SHORT).show()
         } else {
             val bidAmount = bid.toInt()
+            if (currentCustomerCash == -1)
+                updateCustomerCash(::bid)
+            if (currentCustomerCash < bidAmount) {
+                Toast.makeText(
+                    context,
+                    "Bid Blocked!\nYou Do Not Have Enough Cash",
+                    Toast.LENGTH_LONG
+                ).show()
+                return
+            }
             if (bidAmount > MaxBid && bidAmount > item._startingPrice) {
                 //resetTimer()
                 val BidTime: Date = Timestamp(Date()).toDate()

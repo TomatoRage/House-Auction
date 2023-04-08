@@ -177,7 +177,7 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
             }
     }
 
-fun FetchListedItems(HouseID: String, ToPerform: () -> Unit) {
+fun FetchListedItems(HouseID: String, ToPerform: () -> Unit, type:UserType=UserType.Customer) {
         val oldListedItems: ArrayList<Item> = ArrayList(ListedItems)
         val numOfListedItems = ListedItems.size
        ListedItems.clear()
@@ -187,8 +187,10 @@ fun FetchListedItems(HouseID: String, ToPerform: () -> Unit) {
                 .get()
                 .addOnSuccessListener { doc ->
                     val itemToAdd = Item(doc.data)
-                    ListedItems.add(itemToAdd)
-                    checkAllistedItemsFetched(ToPerform,numOfListedItems)
+                    if (!(type.equals(UserType.Customer) && itemToAdd._status.equals("Sold"))) {
+                        ListedItems.add(itemToAdd)
+                        checkAllistedItemsFetched(ToPerform,numOfListedItems)
+                    }
                 }
                 .addOnFailureListener { exception ->
                     Log.d(TAG, "Items data read failed with", exception)

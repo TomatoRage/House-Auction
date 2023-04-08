@@ -245,4 +245,19 @@
 
         </Button>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_rate_auction_house"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rate Auction House"
+        android:textSize="12sp"
+        android:visibility="gone"
+        android:fontFamily="@font/metropolis_bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+    </TextView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

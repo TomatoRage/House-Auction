@@ -10,7 +10,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import com.example.auctionhouseapp.Activities.CustomerMainActivity
 import com.example.auctionhouseapp.Activities.ProfileItemsList
+import com.example.auctionhouseapp.Activities.WithdrawFromBankActivity
 import com.example.auctionhouseapp.Objects.Customer
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.FirebaseUtils
@@ -35,6 +37,7 @@ class CustomerProfile : Fragment() {
         val txt_profile_email = view.findViewById<TextView>(R.id.txt_profile_email)
         val my_auction_items  = view.findViewById<CardView>(R.id.my_auctioned_items)
         val my_bidded_items   = view.findViewById<CardView>(R.id.my_bidded_items)
+        val withdraw_from_bank   = view.findViewById<CardView>(R.id.withdraw_from_bank)
         val txt_my_total_cash = view.findViewById<TextView>(R.id.txt_my_total_cash)
 
         txt_profile_name.setText(customerName)
@@ -43,13 +46,23 @@ class CustomerProfile : Fragment() {
            var intent = Intent(activity, ProfileItemsList::class.java)
             intent.putExtra("Items Type", "Auctioned")
             startActivity(intent)
+            (activity as CustomerMainActivity).finish()
         }
 
         my_bidded_items.setOnClickListener{
             var intent = Intent(activity,ProfileItemsList::class.java)
             intent.putExtra("Items Type", "Bidded")
             startActivity(intent)
+            (activity as CustomerMainActivity).finish()
         }
+
+        withdraw_from_bank.setOnClickListener{
+            var intent = Intent(activity,WithdrawFromBankActivity::class.java)
+            startActivity(intent)
+            (activity as CustomerMainActivity).finish()
+        }
+
+
         FirebaseUtils.customerCollectionRef
             .document(currentCustomer)
             .get()

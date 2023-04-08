@@ -79,6 +79,7 @@ class CustomerProfileItemsListFragment : Fragment() {
             val intent = Intent(Context, CustomerMainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
+            Context.finish()
         }
 
         view.findViewById<TextView>(R.id.txt_sign_out).setOnClickListener {

@@ -65,7 +65,7 @@ class ItemsList : AppCompatActivity() {
             if (isRequestedList)
                 Day.FetchRequestedItems(HouseId, ::AfterDataFetch)
             else
-                Day.FetchListedItems(HouseId, ::AfterDataFetch)
+                Day.FetchListedItems(HouseId, ::AfterDataFetch, UserType.AuctionHouse)
 
 
         } else {
@@ -90,7 +90,7 @@ class ItemsList : AppCompatActivity() {
                 replace(R.id.fragmentContainerView3, CustomerList)
                 commit()
             }
-        } else{
+        } else {
             val HouseList = HouseItemsList()
             HouseList.Day = Day
             HouseList.isRequestedList = isRequestedList
