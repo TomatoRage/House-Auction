@@ -2,6 +2,7 @@ package com.example.auctionhouseapp.Fragments
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +11,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.example.auctionhouseapp.Activities.CustomerActivity
 import com.example.auctionhouseapp.Activities.CustomerMainActivity
@@ -74,9 +77,13 @@ class AuctionHousesListFragment : Fragment() {
             View.findViewById<RatingBar>(R.id.house_rating).rating = mHousesList[position].Rating.toFloat()
             View.findViewById<TextView>(R.id.closest_sale_day).setText(SimpleDateFormat("dd/MM/yyyy")
                 .format(mHousesList[position].NextSalesDay))
-            Glide.with(mContext)
-                .load(mHousesList[position].profile_img_url)
-                .into(View.findViewById<ImageView>(R.id.img_house))
+            if(mHousesList[position].profile_img_url == null)
+                View.findViewById<ImageView>(R.id.img_house).setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.img_northen_house))
+            else{
+                Glide.with(mContext)
+                    .load(mHousesList[position].profile_img_url)
+                    .into(View.findViewById<ImageView>(R.id.img_house))
+            }
             return View
         }
     }
