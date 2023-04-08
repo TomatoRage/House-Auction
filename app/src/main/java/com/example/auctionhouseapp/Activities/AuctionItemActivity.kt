@@ -300,6 +300,11 @@ class AuctionItemActivity : AppCompatActivity() {
             toast("Invalid Item's starting price!")
             return
         }
+
+        if ( ImagesUri.isEmpty()) {
+            toast("Must upload at least one image!")
+            return
+        }
         CreateItem()
     }
 

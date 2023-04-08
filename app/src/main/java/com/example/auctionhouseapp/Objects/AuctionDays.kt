@@ -69,6 +69,7 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
         LockBefore = (Data[Constants.DAY_LOCK_TIME] as Long).toInt()
         ParticipantsNum = (Data[Constants.DAY_NUM_OF_PARTICIPANTS] as Long).toInt()
         DocumentID = Data[Constants.DAY_ID] as String
+        NumOfSoldItems = (Data[Constants.DAY_NUM_OF_SOLD] as Long).toInt()
         for(itemId in Data[Constants.REQUESTED_ITEMS] as ArrayList<String>) {
             val item = Item(itemId)
             RequestedItems.add(item)
@@ -180,6 +181,7 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
 fun FetchListedItems(HouseID: String, ToPerform: () -> Unit, type:UserType=UserType.Customer) {
         val oldListedItems: ArrayList<Item> = ArrayList(ListedItems)
         val numOfListedItems = ListedItems.size
+        var numOfSoldItemsInItemsList =  0
        ListedItems.clear()
         for (item in oldListedItems) {
             FirebaseUtils.itemsCollectionRef
@@ -189,8 +191,10 @@ fun FetchListedItems(HouseID: String, ToPerform: () -> Unit, type:UserType=UserT
                     val itemToAdd = Item(doc.data)
                     if (!(type.equals(UserType.Customer) && itemToAdd._status.equals("Sold"))) {
                         ListedItems.add(itemToAdd)
-                        checkAllistedItemsFetched(ToPerform,numOfListedItems)
+                    } else {
+                        numOfSoldItemsInItemsList++
                     }
+                    checkAllistedItemsFetched(ToPerform,numOfListedItems,numOfSoldItemsInItemsList)
                 }
                 .addOnFailureListener { exception ->
                     Log.d(TAG, "Items data read failed with", exception)
@@ -200,8 +204,8 @@ fun FetchListedItems(HouseID: String, ToPerform: () -> Unit, type:UserType=UserT
     }
 
 
-    fun checkAllistedItemsFetched(ToPerform: () -> Unit, size:Int) {
-        if (ListedItems.size == size) {
+    fun checkAllistedItemsFetched(ToPerform: () -> Unit, size:Int, numOfSoldItemsInItemsList:Int) {
+        if (ListedItems.size == size || NumOfSoldItems == numOfSoldItemsInItemsList) {
             ToPerform()
         }
     }
