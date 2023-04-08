@@ -14,7 +14,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="45dp"
         android:fontFamily="@font/metropolis_semibold"
-        android:text="Auction Days"
+        android:text="Auctions"
         android:textColor="@color/black"
         android:textSize="27sp"
         tools:ignore="HardcodedText" />

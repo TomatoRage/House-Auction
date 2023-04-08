@@ -77,6 +77,13 @@
         <entry key="..\:/Users/odaib/StudioProjects/House-auction/caches/transforms-3/9596797a20e2bc1d4cf3bc4c7be9f7bf/transformed/core-1.9.0/res/layout/custom_dialog.xml" value="0.4015625" />
         <entry key="app/src/main/res/drawable/auction_houses_vec.xml" value="0.217" />
         <entry key="app/src/main/res/drawable/back_arrow.xml" value="0.217" />
+        <entry key="app/src/main/res/layout/activity_auctionhouse.xml" value="0.1767905711695376" />
+        <entry key="app/src/main/res/layout/activity_customer_days_list.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/fragment_auction_days_list.xml" value="0.1767905711695376" />
+        <entry key="app/src/main/res/layout/fragment_auction_days_spinner.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/fragment_auction_house_view_item.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/fragment_auction_houses_list.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/fragment_customer_view_item.xml" value="0.1672710788757933" />
       </map>
     </option>
   </component>
