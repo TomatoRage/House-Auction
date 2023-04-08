@@ -23,6 +23,7 @@ import java.util.*
 class ViewDay : AppCompatActivity() {
 
     lateinit var Day: AuctionDays
+    lateinit var loadDialog: AlertDialog
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,6 +80,12 @@ class ViewDay : AppCompatActivity() {
         builder.setMessage("Are you sure you want to delete this day?")
         builder.setPositiveButton("Confirm",DialogInterface.OnClickListener{dialog,id ->
             /** Delete Document **/
+            val builder = AlertDialog.Builder(this)
+            val dialogView = layoutInflater. inflate (R.layout.fragment_auction_days_spinner,null)
+            builder.setView (dialogView)
+            builder.setCancelable (false)
+            loadDialog = builder.create()
+            loadDialog.show()
             FirebaseUtils.houseCollectionRef
                 .document(FirebaseAuth.getInstance().currentUser!!.uid)
                 .collection(Constants.SALES_DAY_COLLECTION)
@@ -100,22 +107,26 @@ class ViewDay : AppCompatActivity() {
                                 .update(Constants.HOUSE_NEXT_SALES_DATE, NextDate)
                                 .addOnSuccessListener {
                                     dialog.cancel()
+                                    loadDialog.dismiss()
                                     val intent = Intent(applicationContext, HouseActivity::class.java)
                                     setResult(RESULT_OK)
                                     finish()
                                 }
                                 .addOnFailureListener { exception ->
                                     Log.d(TAG, "house data write failed with", exception)
+                                    loadDialog.dismiss()
                                 }
 
                         }
                         .addOnFailureListener { exception ->
                             Log.d(TAG, "day data read failed with", exception)
+                            loadDialog.dismiss()
                         }
 
                 }
                 .addOnFailureListener { exception ->
                     Log.d(TAG, "day data delete failed with", exception)
+                    loadDialog.dismiss()
                 }
         })
         builder.setNegativeButton("Cancel",DialogInterface.OnClickListener { dialog, which ->

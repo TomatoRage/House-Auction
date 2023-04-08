@@ -97,6 +97,7 @@ class AuctionHouseViewItemFragment : Fragment() {
                 val dialogView = layoutInflater. inflate (R.layout.fragment_auction_days_spinner,null)
                 builder.setView (dialogView)
                 builder.setCancelable (false)
+                dialog = builder.create()
                 dialog.show()
                 FirebaseUtils.houseCollectionRef
                     .document(HouseId)

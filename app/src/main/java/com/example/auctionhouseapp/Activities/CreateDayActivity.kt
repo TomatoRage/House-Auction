@@ -10,6 +10,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.Objects.AuctionHouse
@@ -34,6 +35,7 @@ class CreateDayActivity : AppCompatActivity() {
     private lateinit var Commission:EditText
     private lateinit var Lock:EditText
     private lateinit var FinishedDay:AuctionDays
+    private lateinit var dialog: AlertDialog
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -309,24 +311,36 @@ class CreateDayActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     fun checkInput(){
 
+        val builder = AlertDialog.Builder(this)
+        val dialogView = layoutInflater. inflate (R.layout.fragment_auction_days_spinner,null)
+        builder.setView (dialogView)
+        builder.setCancelable (false)
+        dialog = builder.create()
+        dialog.show()
+
         if(DayTitle.text.isEmpty()) {
             toast("Title can't be empty!")
+            dialog.dismiss()
             return
         }
         if(AuctionDay.text.isEmpty() || AuctionMonth.text.isEmpty() || AuctionYear.text.isEmpty()) {
             toast("Start date can't be empty!")
+            dialog.dismiss()
             return
         }
         if(AuctionHour.text.isEmpty() || AuctionMin.text.isEmpty()) {
             toast("Start time can't be empty!")
+            dialog.dismiss()
             return
         }
         if(Commission.text.isEmpty()) {
             toast("Commission can't be empty!")
+            dialog.dismiss()
             return
         }
         if(Lock.text.isEmpty()) {
             toast("Participation lock time can't be empty!")
+            dialog.dismiss()
             return
         }
         if(AuctionDay.text.toString().toInt() < 0 || AuctionMonth.text.toString().toInt() < 0 ||
@@ -335,6 +349,7 @@ class CreateDayActivity : AppCompatActivity() {
             AuctionMonth.text.toString().toInt() > 12 || AuctionYear.text.count() != 4 ||
             AuctionHour.text.toString().toInt() > 24 || AuctionMin.text.toString().toInt() > 60){
             toast("Start date and time must be a valid number")
+            dialog.dismiss()
             return
         }
         val Currentdate:LocalDateTime = LocalDateTime.now()
@@ -355,14 +370,17 @@ class CreateDayActivity : AppCompatActivity() {
 
         if(inputedDate.before(currentDate)){
             toast("Start date and time must be a valid number")
+            dialog.dismiss()
             return
         }
         if(Commission.text.toString().toInt() < 0){
             toast("Commission must be a valid number")
+            dialog.dismiss()
             return
         }
         if(Lock.text.toString().toInt() < 0){
             toast("Participation lock time must be a valid number")
+            dialog.dismiss()
             return
         }
 
@@ -413,6 +431,7 @@ class CreateDayActivity : AppCompatActivity() {
 
     fun OnSuccPerform() {
         UpdateNextSalesDay()
+        dialog.dismiss()
         val intent = Intent(applicationContext, HouseActivity::class.java)
         setResult(RESULT_OK,intent)
         startActivity(intent)
