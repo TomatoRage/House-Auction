@@ -422,7 +422,7 @@ class CreateDayActivity : AppCompatActivity() {
         Day.StartDate = inputDate
         Day.Commission = (Commission.text.toString().toDouble())/100
         Day.LockBefore = Lock.text.toString().toInt()
-        Day.ParticipantsNum = 0
+        Day.TotalEarnings = 0
         Day.NumOfSoldItems = 0
 
         Day.StoreData(FirebaseAuth.getInstance().currentUser!!.uid,::OnSuccPerform)

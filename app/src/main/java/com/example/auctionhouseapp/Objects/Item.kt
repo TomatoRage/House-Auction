@@ -55,7 +55,10 @@ class Item : Serializable {
         _id = Data[Constants.ITEM_ID] as String
         _ownerPhoneNumber = Data[Constants.ITEM_OWNER_PHONE] as String
         _winnerPhoneNumber = Data[Constants.ITEM_WINNER_PHONE] as String
-        _last_bid_time = (Data[Constants.ITEM_LAST_BID_TIME] as? Timestamp) as? Date
+        if (Data[Constants.ITEM_LAST_BID_TIME] == null)
+            _last_bid_time = null
+        else
+            _last_bid_time = (Data[Constants.ITEM_LAST_BID_TIME] as Timestamp).toDate()
         return
     }
 

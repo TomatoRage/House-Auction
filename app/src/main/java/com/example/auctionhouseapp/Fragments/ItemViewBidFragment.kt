@@ -32,7 +32,9 @@ import com.example.auctionhouseapp.Utils.Extensions.toast
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import nl.dionsegijn.konfetti.KonfettiView
+import java.lang.reflect.Field
 import java.util.*
 
 
@@ -66,7 +68,6 @@ class ItemViewBidFragment : Fragment() {
     private var time_in_milli_seconds = 0L
     private var isCustomerInvolvedInAuction:Boolean = false
     private val bidPattern = """\d+"""
-    private var winnerName:String = "Lucky One"
 
 
 
@@ -94,10 +95,11 @@ class ItemViewBidFragment : Fragment() {
         EarningText.isVisible = false
         RateAuctionHouseText.isVisible= false
         // Hide Bidding ability for Auction House User
-        if (userType.equals(UserType.AuctionHouse)) {
+        if (userType.equals(UserType.AuctionHouse) || currentCustomer.equals(item._ownerId)) {
             BidBtn.isVisible = false
             EditBid.isVisible = false
-        } else {
+        }
+        else {
             updateCustomerCash()
         }
 
@@ -119,6 +121,7 @@ class ItemViewBidFragment : Fragment() {
                     startActivity(intent)
                     activity?.finish()
                 } else {
+                        countdown_timer.cancel()
                         startActivity(intent)
                         activity?.finish()
                 }
@@ -174,15 +177,6 @@ class ItemViewBidFragment : Fragment() {
                         EditBid.isVisible = false
                         LastBidText.setText("  You Won The Auction")
                         LastBidText.setTextColor(Color.RED)
-                        if(userType.equals(UserType.AuctionHouse)){
-                            LastBidText.text = "Sold For: "
-                            EarningText.isVisible = true
-                            val value = item._lastBid * item._commission
-                            val Number = SpannableString(value.toString())
-                            Number.setSpan(ForegroundColorSpan(Color.GREEN), 0, value.toString().length,
-                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                            EarningText.text = TextUtils.concat("You Earned: ",Number)
-                        }
                         LastBid.isVisible = false
                         RemainingTime.isVisible = false
                         RemainingTimeText.text = "   Congratulations!"
@@ -196,13 +190,18 @@ class ItemViewBidFragment : Fragment() {
                         BidBtn.isVisible = false
                         EditBid.isVisible = false
                         RemainingTime.isVisible = false
-                        if (userType.equals(UserType.Customer))
+                        LastBidText.text = "Sold For: "
+                        if (userType.equals(UserType.Customer)) {
                             RemainingTimeText.text = "Sorry! You Lose The Auction"
+                            if (item._ownerId.equals(currentCustomer)) {
+                                RemainingTimeText.text = "Item Sold"
+                            }
+                        }
+
                         else {
                             RemainingTimeText.text = "Item Sold"
                             RemainingTimeText.setTextColor(Color.GREEN)
                             if(userType.equals(UserType.AuctionHouse)){
-                                LastBidText.text = "Sold For: "
                                 EarningText.isVisible = true
                                 val value = item._lastBid * item._commission
                                 val Number = SpannableString(value.toString())
@@ -213,6 +212,9 @@ class ItemViewBidFragment : Fragment() {
                         }
                     }
                         RateAuctionHouseText.isVisible= true
+                        if (userType.equals(UserType.AuctionHouse))
+                            RateAuctionHouseText.isVisible = false
+
                 }
 
             override fun onTick(p0: Long) {
@@ -481,6 +483,15 @@ class ItemViewBidFragment : Fragment() {
 
             }.addOnFailureListener {
                 Log.i("ItemViewBidFragment.kt", "Failed get cash for transferring")
+            }
+
+        FirebaseUtils.houseCollectionRef
+            .document(HouseId)
+            .collection(Constants.SALES_DAY_COLLECTION)
+            .document(DayId)
+            .update(Constants.DAY_TOTAL_EARNINGS,FieldValue.increment((item._lastBid*Commission).toLong()))
+            .addOnFailureListener {
+                Log.i("ItemViewBidFragment.kt", "Failed update total earnings for auction house")
             }
 
         //3- move the rest of the money into owner account

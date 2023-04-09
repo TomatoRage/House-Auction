@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
@@ -12,16 +13,20 @@ import com.example.auctionhouseapp.Objects.AuctionHouse
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.User
 import com.example.auctionhouseapp.Utils.Constants
+import com.example.auctionhouseapp.Utils.Extensions.toast
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 
 class HouseInformationActivity : AppCompatActivity() {
     lateinit var House:AuctionHouse
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_house_information)
         House = intent.getSerializableExtra("House")  as AuctionHouse
+
+        onBackPressedDispatcher.addCallback(this,onBackPressedCallback)
 
         findViewById<Button>(R.id.btn_upcoming_sales).setOnClickListener {
             val intent = Intent(applicationContext, CustomerDaysListActivity::class.java)
@@ -34,6 +39,7 @@ class HouseInformationActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
 
         findViewById<TextView>(R.id.txt_sign_out).setOnClickListener {
             FirebaseAuth.getInstance().signOut()
@@ -57,6 +63,13 @@ class HouseInformationActivity : AppCompatActivity() {
                 }
         }
 
+    }
+    val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            val intent = Intent(applicationContext, CustomerMainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     fun setHouseInfoOnScreen () {

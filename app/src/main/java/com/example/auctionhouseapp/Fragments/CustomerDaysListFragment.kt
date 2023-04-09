@@ -112,14 +112,11 @@ class CustomerDaysListFragment : Fragment() {
             View.findViewById<TextView>(R.id.textview_date).setText(House.Days[position].PrintDate())
             View.findViewById<TextView>(R.id.textview_time).setText(House.Days[position].PrintStartTime())
             //View.findViewById<TextView>(R.id.textview_commission).setText((House.Days[position].Commission*100).toInt().toString() + "%")
-            View.findViewById<TextView>(R.id.textView_sales_commission).isVisible = false
-            View.findViewById<TextView>(R.id.textview_commission).isVisible = false
+            View.findViewById<TextView>(R.id.textView_sales_commission).isVisible = true
+            View.findViewById<TextView>(R.id.textview_commission).isVisible = true
             View.findViewById<TextView>(R.id.textview_numofitems).setText("No' of Listed Items: " + House.Days[position].ListedItems.size.toString())
             View.findViewById<TextView>(R.id.textview_earnings).isVisible = false
             //View.findViewById<TextView>(R.id.textview_earnings).setText("Total Earnings: " + House.Days[position].Earnings.toString())
-            View.findViewById<TextView>(R.id.textview_numofpeople).setText("No' of Participants: " + House.Days[position].ParticipantsNum.toString())
-            val param  =  View.findViewById<TextView>(R.id.textview_numofpeople).getLayoutParams() as ViewGroup.MarginLayoutParams
-            param.setMargins(param.leftMargin+140,param.topMargin, param.rightMargin, param.bottomMargin)
            val param1  =  View.findViewById<LinearLayout>(R.id.linear_layout_start_time).getLayoutParams() as ViewGroup.MarginLayoutParams
             param1.setMargins(param1.leftMargin+140,param1.topMargin, param1.rightMargin, param1.bottomMargin)
             val param2  =  View.findViewById<ImageView>(R.id.imageView2).getLayoutParams() as ViewGroup.MarginLayoutParams

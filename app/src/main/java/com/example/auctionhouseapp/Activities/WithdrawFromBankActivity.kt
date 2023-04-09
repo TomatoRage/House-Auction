@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import com.example.auctionhouseapp.Objects.Customer
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.Utils.Constants
@@ -22,7 +23,7 @@ class WithdrawFromBankActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_withdraw_from_bank)
-
+        onBackPressedDispatcher.addCallback(this,onBackPressedCallback)
         btnWithdraw = findViewById<Button>(R.id.btn_withdraw)
         editAmount = findViewById<EditText>(R.id.edit_txt_withdraw)
 
@@ -77,5 +78,13 @@ class WithdrawFromBankActivity : AppCompatActivity() {
             }.addOnFailureListener {
                 Log.i("WithdrawFromBank.kt", "Failed get cash for withdrawing")
             }
+    }
+
+    val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            val intent = Intent(applicationContext, CustomerMainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 }

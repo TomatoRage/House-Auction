@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -40,8 +41,7 @@ class ViewItem : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_item)
-        //imageSwitcher = findViewById<ImageSwitcher>(R.id.img_item)
-
+        onBackPressedDispatcher.addCallback(this,onBackPressedCallback)
 
         item = intent.getSerializableExtra("Item") as Item
         userType = UserType.getByValue(intent.getIntExtra("Type",0))
@@ -82,8 +82,10 @@ class ViewItem : AppCompatActivity() {
 
         //item.FetchImages(-1,::setItemInfoOnScreen)
         findViewById<TextView>(R.id.txt_back).setOnClickListener {
-            val intent = Intent(applicationContext, CustomerDaysListActivity::class.java)
+            intent = Intent(applicationContext, ItemsList::class.java)
+            intent.putExtra("DayId",DayId)
             intent.putExtra("HouseId", HouseId)
+            intent.putExtra("Type", userType.ordinal)
             startActivity(intent)
             finish()
         }
@@ -96,6 +98,16 @@ class ViewItem : AppCompatActivity() {
 
         if(supportFragmentManager.isDestroyed)
             return
+    }
+    val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            intent = Intent(applicationContext, ItemsList::class.java)
+            intent.putExtra("DayId",DayId)
+            intent.putExtra("HouseId", HouseId)
+            intent.putExtra("Type", userType.ordinal)
+            startActivity(intent)
+            finish()
+        }
     }
 
     private fun viewItemFragment() {

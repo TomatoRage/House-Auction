@@ -82,7 +82,7 @@ class ItemsList : AppCompatActivity() {
         if(supportFragmentManager.isDestroyed)
             return
 
-        if(userType == UserType.Customer){
+        if(userType == UserType.Customer) {
             val CustomerList = CustomerItemsListFragment()
             CustomerList.day = Day
             CustomerList.HouseId = HouseId

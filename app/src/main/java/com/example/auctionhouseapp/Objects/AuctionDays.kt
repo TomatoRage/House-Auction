@@ -25,7 +25,7 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
     lateinit var DocumentID:String
     var Commission:Double = 0.0
     var LockBefore:Int = 0
-    var ParticipantsNum:Int = 0
+    var TotalEarnings:Int = 0
     var NumOfSoldItems:Int = 0
     var Status:AuctionDayStatus = AuctionDayStatus.Pending
     var ListedItems:ArrayList<Item> = arrayListOf()
@@ -67,7 +67,7 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
         StartDate = (Data[Constants.DAY_START_DATE] as Timestamp).toDate()
         Commission = Data[Constants.DAY_COMMISSION] as Double
         LockBefore = (Data[Constants.DAY_LOCK_TIME] as Long).toInt()
-        ParticipantsNum = (Data[Constants.DAY_NUM_OF_PARTICIPANTS] as Long).toInt()
+        TotalEarnings = (Data[Constants.DAY_TOTAL_EARNINGS] as Long).toInt()
         DocumentID = Data[Constants.DAY_ID] as String
         NumOfSoldItems = (Data[Constants.DAY_NUM_OF_SOLD] as Long).toInt()
         for(itemId in Data[Constants.REQUESTED_ITEMS] as ArrayList<String>) {
@@ -141,7 +141,7 @@ class AuctionDays: Serializable,Comparable<AuctionDays> {
                     Constants.DAY_START_DATE to StartDate,
                     Constants.DAY_COMMISSION to Commission,
                     Constants.DAY_LOCK_TIME to LockBefore,
-                    Constants.DAY_NUM_OF_PARTICIPANTS to ParticipantsNum,
+                    Constants.DAY_TOTAL_EARNINGS to TotalEarnings,
                     Constants.DAY_NUM_OF_SOLD to NumOfSoldItems,
                     Constants.DAY_ID to day_id,
                     Constants.LISTED_ITEMS to ListedItems,

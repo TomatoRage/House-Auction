@@ -8,6 +8,7 @@
     <application
         android:icon="@drawable/auction_app_face"
         android:label="@string/app_name"
+        android:enableOnBackInvokedCallback="true"
         android:theme="@style/Theme.AuctionHouseApp">
         <activity
             android:name=".Activities.SplashingScreenActivity"

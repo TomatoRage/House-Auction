@@ -306,10 +306,6 @@
                 android:text="UPCOMING SALES"
                 android:textColor="@color/white"/>
 
-
-
-
-
         </LinearLayout>
 
 

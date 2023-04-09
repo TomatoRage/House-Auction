@@ -339,17 +339,14 @@ class SignUpActivity : AppCompatActivity() {
 
                     if (userType == 0) {
                         storeData(userHashMap,customerCollectionRef,userType)
-                        val intent = Intent(applicationContext, CustomerMainActivity::class.java)
-                        startActivity(intent)
-                        finish()
+
                     } else {
                         userHashMap[Constants.HOUSE_RATING_SUM] = 0
                         userHashMap[Constants.HOUSE_NUM_RATERS] = 0
                         storeData(userHashMap,houseCollectionRef,userType)
-                        val intent = Intent(applicationContext, HouseActivity::class.java)
-                        startActivity(intent)
-                        finish()
+
                     }
+
 
                 } else {
                     // check if user document is no
@@ -361,7 +358,6 @@ class SignUpActivity : AppCompatActivity() {
     }
 
 
-
     private fun storeData(user: HashMap<String, Any>, collectionRef: CollectionReference, type:Int) {
         try {
             var isDataStoreSuccessful = false
@@ -371,8 +367,7 @@ class SignUpActivity : AppCompatActivity() {
                     .addOnSuccessListener {
                         isDataStoreSuccessful = true
                         if (isTypeStoreSuccessful) {
-                            toast("Data Saved")
-                            progressDialog.dismiss()
+                            moveToNextActivity()
                         }
 
                     }
@@ -384,10 +379,8 @@ class SignUpActivity : AppCompatActivity() {
                 )
                     .addOnSuccessListener {
                         isTypeStoreSuccessful = true
-                        if (isDataStoreSuccessful) {
-                            toast("Data Saved")
-                            progressDialog.dismiss()
-                        }
+                        if (isDataStoreSuccessful)
+                            moveToNextActivity()
                     }
                     .addOnFailureListener { toast("Sign Up Failed !!") }
             }
@@ -396,6 +389,19 @@ class SignUpActivity : AppCompatActivity() {
                 toast(""+ e.message.toString())
                 progressDialog.dismiss()
         }
+    }
+
+    private fun moveToNextActivity() {
+        if (userType == 0) {
+            val intent = Intent(applicationContext, CustomerMainActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            val intent = Intent(applicationContext, HouseActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
     }
 
 

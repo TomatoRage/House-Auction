@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import com.example.auctionhouseapp.AuctionDayStatus
 import com.example.auctionhouseapp.Fragments.AuctionDaysSpinner
 import com.example.auctionhouseapp.Fragments.CustomerDaysListFragment
@@ -20,6 +21,7 @@ class CustomerDaysListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_days_list)
+        onBackPressedDispatcher.addCallback(this,onBackPressedCallback)
         HouseId = intent.getStringExtra("HouseId") as String
         House.FetchHouseDays(HouseId, ::setHouseDaysOnScreen)
         supportFragmentManager.beginTransaction().apply {
@@ -35,6 +37,13 @@ class CustomerDaysListActivity : AppCompatActivity() {
         }
 
         findViewById<TextView>(R.id.txt_back).setOnClickListener {
+            finish()
+        }
+
+    }
+
+    val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
             finish()
         }
     }

@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -26,7 +27,9 @@ import com.example.auctionhouseapp.UserType
 import com.example.auctionhouseapp.Utils.Constants
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.auth.FirebaseAuth
-
+import java.time.LocalDateTime
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class CustomerItemsListFragment : Fragment() {
@@ -96,7 +99,31 @@ class CustomerItemsListFragment : Fragment() {
             startActivity(intent)
         }
 
+
         view.findViewById<Button>(R.id.btn_auction_item).setOnClickListener {
+
+            val Currentdate:LocalDateTime = LocalDateTime.now()
+            val currentDate:Calendar = Calendar.getInstance()
+
+            currentDate.set(Calendar.YEAR, Currentdate.year)
+            currentDate.set(Calendar.MONTH, Currentdate.monthValue)
+            currentDate.set(Calendar.DAY_OF_MONTH, Currentdate.dayOfMonth)
+            currentDate.set(Calendar.HOUR_OF_DAY, Currentdate.hour)
+            currentDate.set(Calendar.MINUTE, Currentdate.minute)
+
+
+            val LockDate:Calendar = Calendar.getInstance()
+            LockDate.set(Calendar.YEAR, day.StartDate.year)
+            LockDate.set(Calendar.MONTH, day.StartDate.month)
+            LockDate.set(Calendar.DAY_OF_MONTH, day.StartDate.day)
+            LockDate.set(Calendar.HOUR_OF_DAY, day.StartDate.hours)
+            LockDate.set(Calendar.MINUTE, day.StartDate.minutes)
+            LockDate.add(Calendar.HOUR_OF_DAY,-1*day.LockBefore)
+
+            if (currentDate.after(LockDate)) {
+                Toast.makeText(Context, "Auctions Have Been Locked!", Toast.LENGTH_SHORT).show()
+            }
+
             val intent = Intent(Context, AuctionItemActivity::class.java)
             intent.putExtra("Day ID",day.DocumentID)
             intent.putExtra("House ID", HouseId)
@@ -104,8 +131,23 @@ class CustomerItemsListFragment : Fragment() {
             //intent.putExtra("Type", UserType.Customer.Type)
             startActivity(intent)
         }
+
+        val onBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val intent = Intent(context, CustomerDaysListActivity::class.java)
+                intent.putExtra("HouseId", HouseId)
+                startActivity(intent)
+                Context.finish()
+            }
+        }
+
+        (activity as ItemsList).onBackPressedDispatcher.addCallback((activity as ItemsList),onBackPressedCallback)
         return view
     }
+
+
+
+
 
     private fun checkCustomerCashSufficiency(startingPrice: Int, intent: Intent) {
         val currentCustomer = FirebaseAuth.getInstance().uid.toString()

@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -87,6 +88,16 @@ class CustomerProfileItemsListFragment : Fragment() {
             val intent = Intent(Context, LoginActivity::class.java)
             startActivity(intent)
         }
+        val onBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val intent = Intent(Context, CustomerMainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+                Context.finish()
+            }
+        }
+
+        (activity as ProfileItemsList).onBackPressedDispatcher.addCallback((activity as ProfileItemsList),onBackPressedCallback)
 
         return view
     }
