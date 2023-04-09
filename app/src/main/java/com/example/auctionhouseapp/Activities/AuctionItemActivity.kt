@@ -46,6 +46,7 @@ class AuctionItemActivity : AppCompatActivity() {
     lateinit var PrevBtn: ImageButton
     private var Commission:Double = 0.1
     private var itemOwner:Customer = Customer()
+    private lateinit var progressDialog: ProgressDialog
     //init item
     var item = Item()
     var uploadedImages = 0
@@ -154,7 +155,7 @@ class AuctionItemActivity : AppCompatActivity() {
     }
 
     private fun uploadImages() {
-        val progressDialog = ProgressDialog(this)
+        progressDialog = ProgressDialog(this)
         progressDialog.setMessage("Uploading File ...")
         progressDialog.setCancelable(false)
         progressDialog.show()
@@ -331,6 +332,7 @@ class AuctionItemActivity : AppCompatActivity() {
     }
 
     fun OnSuccPerform() {
+        progressDialog.dismiss()
         finish()
     }
 

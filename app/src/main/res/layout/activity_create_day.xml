@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/metropolis_bold"
-            android:text="Day Title:"
+            android:text="Auction Title:"
             android:textSize="16sp" />
 
         <EditText

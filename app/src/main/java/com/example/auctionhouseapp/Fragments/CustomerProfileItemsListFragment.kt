@@ -72,6 +72,7 @@ class CustomerProfileItemsListFragment : Fragment() {
                 customer.fetchCustomerBiddedItems(currentCustomer, ::updateItemsList)
                 items = customer.biddedItems
             }
+            view.findViewById<SwipeRefreshLayout>(R.id.swiperefresh).isRefreshing = false
 
         }
 
