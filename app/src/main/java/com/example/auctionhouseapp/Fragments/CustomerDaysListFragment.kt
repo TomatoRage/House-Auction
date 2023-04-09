@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.core.view.isEmpty
 import androidx.core.view.isVisible
 import androidx.core.view.marginStart
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -31,6 +32,7 @@ class CustomerDaysListFragment : Fragment() {
     var House = AuctionHouse()
     private lateinit var ListView: ListView
     private lateinit var Context: Activity
+    private lateinit var text_empty_days_list : TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +42,10 @@ class CustomerDaysListFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_auction_days_list, container, false)
         ListView = view.findViewById<ListView>(R.id.auction_days_list)
         Context = activity as CustomerDaysListActivity
+        text_empty_days_list =  view.findViewById<TextView>(R.id.textView_empty_days_list)
+        text_empty_days_list.isVisible = false
+        if(House.Days.isEmpty())
+            text_empty_days_list.isVisible = true
         ListView.adapter = CustomListAdapter(Context,House)
         ListView.setOnItemClickListener { parent, view, position, id ->
             val intent = Intent(Context, ItemsList::class.java)
@@ -75,6 +81,9 @@ class CustomerDaysListFragment : Fragment() {
 
     private fun updateDaysList() {
         ListView.adapter = CustomListAdapter(Context,House)
+        text_empty_days_list.isVisible = false
+        if (House.Days.isEmpty())
+            text_empty_days_list.isVisible = true
     }
 
     companion object {

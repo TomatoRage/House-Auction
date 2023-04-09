@@ -41,6 +41,8 @@ class HouseActivity : AppCompatActivity() {
 
         resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
+                House.Days.clear()
+                House.FetchHouseData(Firebase.auth.currentUser!!.uid,::PerformAfterData)
                 supportFragmentManager.beginTransaction().apply {
                     replace(R.id.fragmentContainerView,LoadingFragment)
                     commit()

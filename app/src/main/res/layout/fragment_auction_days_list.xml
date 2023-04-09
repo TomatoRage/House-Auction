@@ -9,19 +9,31 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.AuctionDaysListFragment">
 
-    <ListView
-        android:id="@+id/auction_days_list"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:scrollbarSize="3dp"
-        android:scrollbarStyle="outsideOverlay"
-        android:scrollbars="vertical"
-        android:scrollingCache="true"
-        android:smoothScrollbar="true"
-        tools:listitem="@layout/days_list_item"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView_empty_days_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:fontFamily="@font/metropolis_regular"
+            android:text="Empty Items List"
+            android:textColor="@color/gray"
+            android:textSize="15sp" />
+
+        <ListView
+            android:id="@+id/auction_days_list"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:scrollbarSize="3dp"
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbars="vertical"
+            android:scrollingCache="true"
+            android:smoothScrollbar="true"
+            tools:listitem="@layout/days_list_item"/>
+    </RelativeLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

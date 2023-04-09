@@ -98,6 +98,12 @@ class ViewDay : AppCompatActivity() {
                         .whereGreaterThan(Constants.DAY_START_DATE,Today).limit(1)
                         .get()
                         .addOnSuccessListener{ docs ->
+                            if (docs.isEmpty()) {
+                                loadDialog.dismiss()
+                                setResult(RESULT_OK)
+                                finish()
+                                return@addOnSuccessListener
+                            }
 
                             val NextDate = docs.documents[0].data!![Constants.DAY_START_DATE] as Timestamp
 

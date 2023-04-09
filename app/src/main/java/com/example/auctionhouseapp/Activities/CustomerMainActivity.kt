@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -15,6 +16,7 @@ import com.example.auctionhouseapp.Fragments.AuctionHousesListFragment
 import com.example.auctionhouseapp.Fragments.CustomerProfile
 import com.example.auctionhouseapp.Objects.AuctionHouse
 import com.example.auctionhouseapp.R
+import com.example.auctionhouseapp.Utils.Extensions.toast
 import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -33,6 +35,7 @@ class CustomerMainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_main)
+       onBackPressedDispatcher.addCallback(this,onBackPressedCallback)
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.customerMainContainer) as NavHostFragment
         navController = navHostFragment.navController
@@ -102,5 +105,11 @@ class CustomerMainActivity : AppCompatActivity() {
         }
         List.HousesList = HousesListFiltered
         replaceFragment(List)
+    }
+
+    val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            finish()
+        }
     }
 }

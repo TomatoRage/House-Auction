@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.example.auctionhouseapp.Activities.ItemsList
@@ -25,6 +26,7 @@ class HouseItemsList : Fragment() {
     var Day:AuctionDays = AuctionDays()
     var isRequestedList:Boolean = false
     val HouseId = FirebaseAuth.getInstance().currentUser?.uid
+    private lateinit var text_empty_items_list : TextView
     lateinit var ListView:ListView
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -35,6 +37,9 @@ class HouseItemsList : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_house_items_list, container, false)
         val Context = activity as ItemsList
+        text_empty_items_list.isVisible = false
+        if(Day.ListedItems.isEmpty())
+            text_empty_items_list.isVisible = true
         ListView = view.findViewById<ListView>(R.id.house_items_list)
         if(!isRequestedList)
             view.findViewById<TextView>(R.id.textview_list_title).setText("Listed Items")
@@ -74,6 +79,9 @@ class HouseItemsList : Fragment() {
                 Day.RequestedItems.clear()
                 Day.FetchRequestedItems(HouseId!!, ::PerformAfterRefresh)
             }
+            text_empty_items_list.isVisible = false
+            if(Day.ListedItems.isEmpty())
+                text_empty_items_list.isVisible = true
         }
 
         return view

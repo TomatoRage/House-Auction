@@ -15,6 +15,8 @@ import android.widget.BaseAdapter
 import android.widget.ListView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.core.view.isEmpty
+import androidx.core.view.isVisible
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.auctionhouseapp.Activities.HouseActivity
 import com.example.auctionhouseapp.Activities.ViewDay
@@ -29,7 +31,7 @@ import com.google.firebase.firestore.Query
 class AuctionDaysListFragment : Fragment() {
 
     var House = AuctionHouse()
-
+    private lateinit var text_empty_days_list : TextView
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,6 +40,10 @@ class AuctionDaysListFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_auction_days_list, container, false)
         val ListView = view.findViewById<ListView>(R.id.auction_days_list)
         val Context = activity as HouseActivity
+        text_empty_days_list =  view.findViewById<TextView>(R.id.textView_empty_days_list)
+        text_empty_days_list.isVisible = false
+        if(House.Days.isEmpty())
+            text_empty_days_list.isVisible = true
 
         ListView.adapter = CustomListAdapter(Context,House)
 
@@ -72,6 +78,10 @@ class AuctionDaysListFragment : Fragment() {
 
     private fun updateDaysList(Context:Context,List:ListView) {
         List.adapter = CustomListAdapter(Context, House)
+        text_empty_days_list.isVisible = false
+        if (List.isEmpty())
+            text_empty_days_list.isVisible = true
+
     }
 
     companion object {

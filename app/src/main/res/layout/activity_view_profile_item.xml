@@ -149,6 +149,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginTop="15dp"
+                android:textStyle="bold|normal"
                 android:fontFamily="@font/fog"
                 android:textColor="#A3162C"
                 android:textSize="17sp"
@@ -180,6 +181,7 @@
                 android:layout_marginTop="15dp"
                 android:textSize="17sp"
                 android:textColor="#A3162C"
+                android:textStyle="bold|normal"
                 android:fontFamily="@font/fog"
                 android:layout_width="match_parent"
                 tools:ignore="HardcodedText"
@@ -212,6 +214,7 @@
                 android:textSize="17sp"
                 android:textColor="#A3162C"
                 android:fontFamily="@font/fog"
+                android:textStyle="bold|normal"
                 android:layout_width="match_parent"
                 tools:ignore="HardcodedText"
                 android:layout_height="30dp"/>
@@ -243,6 +246,7 @@
                 android:textSize="17sp"
                 android:textColor="#A3162C"
                 android:fontFamily="@font/fog"
+                android:textStyle="bold|normal"
                 android:layout_width="match_parent"
                 tools:ignore="HardcodedText"
                 android:layout_height="30dp"/>
@@ -274,6 +278,7 @@
                 android:textSize="17sp"
                 android:textColor="#A3162C"
                 android:fontFamily="@font/fog"
+                android:textStyle="bold|normal"
                 android:layout_width="match_parent"
                 tools:ignore="HardcodedText"
                 android:layout_height="30dp"/>
@@ -305,6 +310,7 @@
                 android:layout_marginTop="5dp"
                 android:textSize="17sp"
                 android:textColor="#A3162C"
+                android:textStyle="bold|normal"
                 android:fontFamily="@font/fog"
                 android:layout_width="match_parent"
                 tools:ignore="HardcodedText"

@@ -10,5 +10,5 @@
     <item
         android:id="@+id/auctionDaysListFragment"
         android:icon="@drawable/auction_houses_vec"
-        android:title="Auction Days" />
+        android:title="Auctions" />
 </menu>

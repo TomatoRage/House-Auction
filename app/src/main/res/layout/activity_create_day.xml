@@ -15,7 +15,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="45dp"
         android:fontFamily="@font/metropolis_bold"
-        android:text="Create Day"
+        android:text="Create Auction"
         android:textColor="@color/mainText"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
