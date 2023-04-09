@@ -79,7 +79,7 @@ class AuctionDaysListFragment : Fragment() {
     private fun updateDaysList(Context:Context,List:ListView) {
         List.adapter = CustomListAdapter(Context, House)
         text_empty_days_list.isVisible = false
-        if (List.isEmpty())
+        if (House.Days.isEmpty())
             text_empty_days_list.isVisible = true
 
     }
