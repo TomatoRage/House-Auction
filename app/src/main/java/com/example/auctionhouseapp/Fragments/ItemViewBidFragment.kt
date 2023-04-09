@@ -183,10 +183,14 @@ class ItemViewBidFragment : Fragment() {
                         RemainingTimeText.setTextColor(Color.RED)
                         loadConfeti()
                         transferCash()
-                        updateItem()
+                        updateItemWrapper()
                         item.StoreDataInCustomer(Constants.BIDDED_ITEMS, item._id, currentCustomer)
                         incrementDaySoldItems()
                     } else {
+                        if (item._lastBid == 0) {
+                            updateItem("Unkown")
+                            incrementDaySoldItems()
+                        }
                         BidBtn.isVisible = false
                         EditBid.isVisible = false
                         RemainingTime.isVisible = false
@@ -196,19 +200,15 @@ class ItemViewBidFragment : Fragment() {
                             if (item._ownerId.equals(currentCustomer)) {
                                 RemainingTimeText.text = "Item Sold"
                             }
-                        }
-
-                        else {
+                        } else {
                             RemainingTimeText.text = "Item Sold"
                             RemainingTimeText.setTextColor(Color.GREEN)
-                            if(userType.equals(UserType.AuctionHouse)){
-                                EarningText.isVisible = true
-                                val value = item._lastBid * item._commission
-                                val Number = SpannableString(value.toString())
-                                Number.setSpan(ForegroundColorSpan(Color.GREEN), 0, value.toString().length,
-                                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                                EarningText.text = TextUtils.concat("You Earned: ",Number)
-                            }
+                            EarningText.isVisible = true
+                            val value = item._lastBid * item._commission
+                            val Number = SpannableString(value.toString())
+                            Number.setSpan(ForegroundColorSpan(Color.GREEN), 0, value.toString().length,
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                            EarningText.text = TextUtils.concat("You Earned: ",Number)
                         }
                     }
                         RateAuctionHouseText.isVisible= true
@@ -325,32 +325,36 @@ class ItemViewBidFragment : Fragment() {
             .streamFor(300, 5000L)
     }
 
-    private fun updateItem() {
+    private fun updateItemWrapper() {
         FirebaseUtils.customerCollectionRef
             .document(currentCustomer)
             .get()
             .addOnSuccessListener {
                 val customer = Customer(it.data)
-                val customer_tel = customer.GetPhoneNumber()
-                FirebaseUtils.itemsCollectionRef
-                    .document(item._id)
-                    .update(
-                        mapOf(
-                            Constants.ITEM_STATUS to  "Sold",
-                            Constants.ITEM_WINNER_PHONE to customer_tel
-                        )
-                    )
-                    .addOnSuccessListener {
-                        Log.i("ItemViewBidFragment.kt", "update item status")
-                    }
-                    .addOnFailureListener {
-                        Log.i("ItemViewBidFragment.kt", "Error! failed update item status")
-                    }
+                val customer_phone = customer.GetPhoneNumber()
+                updateItem(customer_phone)
             } .addOnFailureListener {
             Log.i("ItemViewBidFragment.kt", "Error! failed get customer tel")
         }
         // update status locally also avoid any error when moving backwards
         item._status = "Sold"
+    }
+
+    fun updateItem(customer_phone:String) {
+        FirebaseUtils.itemsCollectionRef
+            .document(item._id)
+            .update(
+                mapOf(
+                    Constants.ITEM_STATUS to  "Sold",
+                    Constants.ITEM_WINNER_PHONE to customer_phone
+                )
+            )
+            .addOnSuccessListener {
+                Log.i("ItemViewBidFragment.kt", "update item status")
+            }
+            .addOnFailureListener {
+                Log.i("ItemViewBidFragment.kt", "Error! failed update item status")
+            }
     }
 
     private fun goToItemsList() {

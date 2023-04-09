@@ -67,7 +67,8 @@ class CustomerItemsListFragment : Fragment() {
                 intent.putExtra("Commission", day.Commission)
                 val userType = UserType.Customer.ordinal
                 intent.putExtra("Type", userType)
-                checkCustomerCashSufficiency(item._startingPrice,intent)
+                startActivity(intent)
+                Context.finish()
             }
         }
 
@@ -113,23 +114,23 @@ class CustomerItemsListFragment : Fragment() {
 
 
             val LockDate:Calendar = Calendar.getInstance()
-            LockDate.set(Calendar.YEAR, day.StartDate.year)
-            LockDate.set(Calendar.MONTH, day.StartDate.month)
-            LockDate.set(Calendar.DAY_OF_MONTH, day.StartDate.day)
-            LockDate.set(Calendar.HOUR_OF_DAY, day.StartDate.hours)
-            LockDate.set(Calendar.MINUTE, day.StartDate.minutes)
+            LockDate.set(Calendar.MILLISECOND, day.StartDate.time.toInt())
+            LockDate.add(Calendar.MONTH,1)
             LockDate.add(Calendar.HOUR_OF_DAY,-1*day.LockBefore)
 
             if (currentDate.after(LockDate)) {
                 Toast.makeText(Context, "Auctions Have Been Locked!", Toast.LENGTH_SHORT).show()
+
+            } else {
+                val intent = Intent(Context, AuctionItemActivity::class.java)
+                intent.putExtra("Day ID",day.DocumentID)
+                intent.putExtra("House ID", HouseId)
+                intent.putExtra("Commission", day.Commission)
+                //intent.putExtra("Type", UserType.Customer.Type)
+                startActivity(intent)
             }
 
-            val intent = Intent(Context, AuctionItemActivity::class.java)
-            intent.putExtra("Day ID",day.DocumentID)
-            intent.putExtra("House ID", HouseId)
-            intent.putExtra("Commission", day.Commission)
-            //intent.putExtra("Type", UserType.Customer.Type)
-            startActivity(intent)
+
         }
 
         val onBackPressedCallback = object : OnBackPressedCallback(true) {

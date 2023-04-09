@@ -50,7 +50,7 @@
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/btn_auction_item"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="14dp"
             android:scrollbarSize="3dp"
             android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical"
