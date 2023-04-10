@@ -121,7 +121,6 @@ class ItemViewBidFragment : Fragment() {
                     startActivity(intent)
                     activity?.finish()
                 } else {
-                        countdown_timer.cancel()
                         startActivity(intent)
                         activity?.finish()
                 }
@@ -187,10 +186,11 @@ class ItemViewBidFragment : Fragment() {
                         item.StoreDataInCustomer(Constants.BIDDED_ITEMS, item._id, currentCustomer)
                         incrementDaySoldItems()
                     } else {
-                        if (item._lastBid == 0) {
-                            updateItem("Unkown")
-                            incrementDaySoldItems()
-                        }
+//                        if (item._lastBid == 0) {
+//                            updateItem("Unkown")
+//                            incrementDaySoldItems()
+//                        }
+
                         BidBtn.isVisible = false
                         EditBid.isVisible = false
                         RemainingTime.isVisible = false
@@ -209,6 +209,10 @@ class ItemViewBidFragment : Fragment() {
                             Number.setSpan(ForegroundColorSpan(Color.GREEN), 0, value.toString().length,
                                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                             EarningText.text = TextUtils.concat("You Earned: ",Number)
+                        }
+                        if (item._lastBid == 0) {
+                            RemainingTimeText.text = "Item Not Sold"
+                            RemainingTimeText.setTextColor(Color.RED)
                         }
                     }
                         RateAuctionHouseText.isVisible= true

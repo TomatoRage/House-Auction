@@ -105,6 +105,8 @@ class ViewItem : AppCompatActivity() {
             intent.putExtra("DayId",DayId)
             intent.putExtra("HouseId", HouseId)
             intent.putExtra("Type", userType.ordinal)
+            if (userType.equals(UserType.AuctionHouse))
+                intent.putExtra("ListType",isRequestedList)
             startActivity(intent)
             finish()
         }

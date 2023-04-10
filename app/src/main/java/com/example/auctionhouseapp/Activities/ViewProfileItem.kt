@@ -101,7 +101,7 @@ class ViewProfileItem : AppCompatActivity() {
                 txt_sold_for_price.setText(sold_for_price.toString())
             } else {
                 txt_sold_for.setText("Bought For:")
-                txt_sold_for.setText(item._lastBid)
+                txt_sold_for_price.setText(item._lastBid.toString())
             }
         }
 

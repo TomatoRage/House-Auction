@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,8 @@ import com.example.auctionhouseapp.AuctionDays
 import com.example.auctionhouseapp.Objects.Item
 import com.example.auctionhouseapp.R
 import com.example.auctionhouseapp.UserType
+import com.example.auctionhouseapp.Utils.Constants
+import com.example.auctionhouseapp.Utils.FirebaseUtils
 import com.google.firebase.auth.FirebaseAuth
 
 class HouseItemsList : Fragment() {
@@ -40,21 +43,23 @@ class HouseItemsList : Fragment() {
         val Context = activity as ItemsList
         text_empty_items_list = view.findViewById<TextView>(R.id.textView_empty_items_list)
         text_empty_items_list.isVisible = false
-        if(Day.ListedItems.isEmpty())
-            text_empty_items_list.isVisible = true
-        ListView = view.findViewById<ListView>(R.id.house_items_list)
-        if(!isRequestedList)
-            view.findViewById<TextView>(R.id.textview_list_title).setText("Listed Items")
-        else
-            view.findViewById<TextView>(R.id.textview_list_title).setText("Requested Items")
-        if(!isRequestedList)
-            ListView.adapter = CustomListAdapter(Context,Day.ListedItems)
-        else {
-            if (!this.Status.equals(AuctionDayStatus.Pending)) {
-                Day.RequestedItems.clear()
-                ListView.adapter = CustomListAdapter(Context,Day.RequestedItems)
-            }
 
+        ListView = view.findViewById<ListView>(R.id.house_items_list)
+        if(!isRequestedList) {
+            view.findViewById<TextView>(R.id.textview_list_title).setText("Listed Items")
+            if(Day.ListedItems.isEmpty())
+                text_empty_items_list.isVisible = true
+            ListView.adapter = CustomListAdapter(Context, Day.ListedItems)
+
+        }
+        else {
+            view.findViewById<TextView>(R.id.textview_list_title).setText("Requested Items")
+            if (Day.RequestedItems.isEmpty())
+                text_empty_items_list.isVisible = true
+            if (!Day.Status.equals(AuctionDayStatus.Pending)) {
+                Day.RequestedItems.clear()
+            }
+                ListView.adapter = CustomListAdapter(Context, Day.RequestedItems)
         }
 
 
@@ -79,21 +84,35 @@ class HouseItemsList : Fragment() {
             Context.finish()
         }
 
-        view.findViewById<SwipeRefreshLayout>(R.id.frameLayout).setOnRefreshListener {
-            text_empty_items_list.isVisible = false
-            if(!isRequestedList) {
-                Day.FetchListedItems(HouseId!!, ::PerformAfterRefresh, UserType.AuctionHouse)
-            }
-            else {
-                Day.RequestedItems.clear()
-                Day.FetchRequestedItems(HouseId!!, ::PerformAfterRefresh)
-            }
+        view.findViewById<SwipeRefreshLayout>(R.id.swiperefresh).setOnRefreshListener {
+            FirebaseUtils.houseCollectionRef
+                .document(HouseId!!)
+                .collection(Constants.SALES_DAY_COLLECTION)
+                .document(Day.DocumentID)
+                .get()
+                .addOnSuccessListener {
+                    view.findViewById<SwipeRefreshLayout>(R.id.swiperefresh).isRefreshing = false
+                    Day = AuctionDays(it.data)
+                    PerformAfterRefresh()
+                }.addOnFailureListener {
+                    Log.i("CustomerItemsList.kt", "Error! failed to refresh day")
+                }
         }
+
+
         return view
     }
 
-    fun PerformAfterRefresh(){
-        this.requireView().findViewById<SwipeRefreshLayout>(R.id.frameLayout).isRefreshing = false
+    fun PerformAfterRefresh() {
+        if (!isRequestedList) {
+            Day.FetchListedItems(HouseId!!, ::updateView, UserType.AuctionHouse)
+        } else {
+            Day.FetchRequestedItems(HouseId!!, ::updateView)
+        }
+    }
+
+    private fun updateView () {
+        this.requireView().findViewById<SwipeRefreshLayout>(R.id.swiperefresh).isRefreshing = false
         text_empty_items_list.isVisible = false
         if(!isRequestedList) {
             ListView.adapter = this.context?.let { CustomListAdapter(it,Day.ListedItems) }
@@ -106,10 +125,8 @@ class HouseItemsList : Fragment() {
             if(Day.RequestedItems.isEmpty())
                 text_empty_items_list.isVisible = true
         }
-
-
-
     }
+
 
     private class CustomListAdapter(context: Context,items:ArrayList<Item>): BaseAdapter(){
 
