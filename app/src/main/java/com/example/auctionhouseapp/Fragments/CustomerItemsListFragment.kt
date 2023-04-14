@@ -114,7 +114,8 @@ class CustomerItemsListFragment : Fragment() {
 
 
             val LockDate:Calendar = Calendar.getInstance()
-            LockDate.set(Calendar.MILLISECOND, day.StartDate.time.toInt())
+            LockDate.setTime(day.StartDate)
+            LockDate.setTimeZone(TimeZone.getTimeZone("Israel"))
             LockDate.add(Calendar.MONTH,1)
             LockDate.add(Calendar.HOUR_OF_DAY,-1*day.LockBefore)
 
