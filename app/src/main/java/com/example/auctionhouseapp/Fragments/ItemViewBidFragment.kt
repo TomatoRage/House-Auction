@@ -118,11 +118,14 @@ class ItemViewBidFragment : Fragment() {
 //                        DayId,
 //                        ::goToItemsList
 //                    )
+                    countdown_timer.cancel()
                     startActivity(intent)
                     activity?.finish()
+
                 } else {
-                        startActivity(intent)
-                        activity?.finish()
+                    countdown_timer.cancel()
+                    startActivity(intent)
+                    activity?.finish()
                 }
             }
         }
@@ -556,8 +559,11 @@ class ItemViewBidFragment : Fragment() {
                                 Log.i("ItemViewBidFragment.kt", "Warning! Illegal time")
                             }
                         }
-                        countdown_timer.cancel()
-                        startTimer(time_in_milli_seconds)
+                        if (!item._status.equals("Sold")) {
+                            countdown_timer.cancel()
+                            startTimer(time_in_milli_seconds)
+                        }
+
                         if (item._lastBid >= MaxBid) {
                             MaxBid = item._lastBid
                             LastBid.setText(MaxBid.toString())
