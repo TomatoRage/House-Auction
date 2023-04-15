@@ -452,22 +452,10 @@ class ItemViewBidFragment : Fragment() {
         //1- move money out from winner account
         FirebaseUtils.customerCollectionRef
             .document(currentCustomer)
-            .get()
+            .update(Constants.USER_CASH,FieldValue.increment((-1*item._lastBid).toLong()))
             .addOnSuccessListener {
-                val customer = Customer(it.data)
-                val cash = (customer.getCash() - item._lastBid).toInt()
-                FirebaseUtils.customerCollectionRef
-                    .document(currentCustomer)
-                    .update(Constants.USER_CASH, cash)
-                    .addOnSuccessListener {
-                        //Toast.makeText(activity, "transferring money from your account...", Toast.LENGTH_SHORT).show()
-                        Log.i("ItemViewBidFragment.kt", "transferring money from your account")
-
-                    }
-                    .addOnFailureListener {
-                        Log.i("ItemViewBidFragment.kt", "Failed to transfer money")
-                    }
-
+            //Toast.makeText(activity, "transferring money from your account...", Toast.LENGTH_SHORT).show()
+            Log.i("ItemViewBidFragment.kt", "transferring money from your account")
             }.addOnFailureListener {
                 Log.i("ItemViewBidFragment.kt", "Failed get cash for transferring")
             }
@@ -475,21 +463,10 @@ class ItemViewBidFragment : Fragment() {
         //2- move commission into auction house account
         FirebaseUtils.houseCollectionRef
             .document(HouseId)
-            .get()
+            .update(Constants.USER_CASH,FieldValue.increment((Commission*item._lastBid).toLong()))
             .addOnSuccessListener {
-                val auctionHouse = AuctionHouse(it.data)
-                val cash = (auctionHouse.getCash() + item._lastBid*Commission).toInt()
-                FirebaseUtils.houseCollectionRef
-                    .document(HouseId)
-                    .update(Constants.USER_CASH, cash)
-                    .addOnSuccessListener {
-                        Log.i("ItemViewBidFragment.kt", "transferring commission money to auction house")
-                    }
-                    .addOnFailureListener {
-                        Log.i("ItemViewBidFragment.kt", "Failed to transfer commission money")
-                    }
-
-            }.addOnFailureListener {
+                Log.i("ItemViewBidFragment.kt", "transferring commission money to auction house")
+            } .addOnFailureListener {
                 Log.i("ItemViewBidFragment.kt", "Failed get cash for transferring")
             }
 
@@ -505,20 +482,10 @@ class ItemViewBidFragment : Fragment() {
         //3- move the rest of the money into owner account
         FirebaseUtils.customerCollectionRef
             .document(item._ownerId)
-            .get()
-            .addOnSuccessListener {
-                val customer = Customer(it.data)
-                val cash = (customer.getCash() + item._lastBid - Commission*item._lastBid).toInt()
-                FirebaseUtils.customerCollectionRef
-                    .document(item._ownerId)
-                    .update(Constants.USER_CASH,cash )
-                    .addOnSuccessListener {
-                        Log.i("ItemViewBidFragment.kt", "transferring money to owner")
-                    }
-                    .addOnFailureListener {
-                        Log.i("ItemViewBidFragment.kt", "Failed to transfer money")
-                    }
+            .update(Constants.USER_CASH,FieldValue.increment((item._lastBid - Commission*item._lastBid).toLong()))
 
+            .addOnSuccessListener {
+                Log.i("ItemViewBidFragment.kt", "transferring profit to owner account")
             }.addOnFailureListener {
                 Log.i("ItemViewBidFragment.kt", "Failed get cash for transferring")
             }

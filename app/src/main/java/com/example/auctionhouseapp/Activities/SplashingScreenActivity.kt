@@ -22,7 +22,6 @@ class SplashingScreenActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 
         Handler().postDelayed({
-
             checkUser(::goToNextActivity)
 
         }, 300)
