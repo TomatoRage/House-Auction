@@ -76,6 +76,34 @@
         <entry key="..\:/Users/odaib/StudioProjects/House-auction/app/src/main/res/menu/buttom_nav_menu_house.xml" value="0.45092592592592595" />
         <entry key="..\:/Users/odaib/StudioProjects/House-auction/app/src/main/res/menu/menu_main.xml" value="0.5255208333333333" />
         <entry key="..\:/Users/odaib/StudioProjects/House-auction/caches/transforms-3/9596797a20e2bc1d4cf3bc4c7be9f7bf/transformed/core-1.9.0/res/layout/custom_dialog.xml" value="0.4015625" />
+        <entry key="app/src/main/res/layout/activity_auctionhouse.xml" value="0.1767905711695376" />
+        <entry key="app/src/main/res/layout/activity_create_day.xml" value="0.1767905711695376" />
+        <entry key="app/src/main/res/layout/activity_customer.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/activity_customer_days_list.xml" value="0.1767905711695376" />
+        <entry key="app/src/main/res/layout/activity_customer_main.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/activity_house_information.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/activity_items_list.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/activity_profile_items_list.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/activity_view_day.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/activity_view_item.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/activity_view_profile_item.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/activity_withdraw_from_bank.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/days_list_item.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/fragment_auction_days_list.xml" value="0.1767905711695376" />
+        <entry key="app/src/main/res/layout/fragment_auction_days_spinner.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/fragment_auction_house_view_item.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/fragment_auction_houses_list.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/fragment_customer_items_list.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/fragment_customer_view_item.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/fragment_house_items_list.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/fragment_profile_house.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/fragment_view_item_bid.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/house_item_list_item.xml" value="0.1672710788757933" />
+        <entry key="app/src/main/res/layout/houses_list_item.xml" value="0.1767905711695376" />
       </map>
     </option>
   </component>
